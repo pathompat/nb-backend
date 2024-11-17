@@ -65,7 +65,7 @@ jobs:
     - name: Authenticate with Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        credentials_json: ${{ secrets.GCLOUD_SA_KEY }}
+        credentials_json: ${{ secrets.GCE_SA_KEY }}
     - run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
     - name: Build Docker image
@@ -88,16 +88,16 @@ jobs:
     - name: Authenticate with Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        credentials_json: ${{ secrets.GCLOUD_SA_KEY }}
+        credentials_json: ${{ secrets.GCE_SA_KEY }}
     - run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
     - name: Deploy to GCE with Docker
-      uses: appleboy/ssh-action@v0.1.7
+      uses: appleboy/ssh-action@1.2.0
       with:
         host: ${{ vars.GCE_IP }}
         username: ${{ vars.GCE_SSH_USER }}
         password: ${{ vars.GCE_SSH_PASSWORD }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
         script: |
           docker pull $IMAGE_URL:IMAGE_TAG
           docker stop nb-backend || true
