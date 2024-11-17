@@ -7,10 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_call:
-    secrets:
-      GCLOUD_SA_KEY:
-        required: true
 
 env:
   IMAGE_URL: us-central1-docker.pkg.dev/notebook-service-442013/notebook-backend:latest
@@ -66,7 +62,7 @@ jobs:
       uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ secrets.GCLOUD_SA_KEY }}
-    - run: gcloud auth configure-docker --quiet
+    - run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
     - name: Push Docker image to GCR
       run: |
