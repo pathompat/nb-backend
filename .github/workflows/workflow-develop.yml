@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+  workflow_call:
+    secrets:
+      GCLOUD_SA_KEY:
+        required: true
 
 env:
   IMAGE_URL: us-central1-docker.pkg.dev/notebook-service-442013/notebook-backend:latest
