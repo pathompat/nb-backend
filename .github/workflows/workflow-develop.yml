@@ -94,8 +94,8 @@ jobs:
     - name: Deploy Docker container to GCE
       run: |
         gcloud compute ssh $GCE_INSTANCE --zone=$GCE_ZONE --command="
-          docker pull $IMAGE_URL:$IMAGE_TAG &&
-          docker stop nb-backend || true &&
-          docker rm nb-backend || true &&
-          docker run -d --name nb-backend -p 80:8080 $IMAGE_URL:$IMAGE_TAG
+          sudo docker pull $IMAGE_URL:$IMAGE_TAG &&
+          sudo docker stop nb-backend || true &&
+          sudo docker rm nb-backend || true &&
+          sudo docker run -d --name nb-backend -p 80:8080 $IMAGE_URL:$IMAGE_TAG
         "
