@@ -95,7 +95,8 @@ jobs:
       uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ vars.GCE_IP }}
-        username: ${{ vars.GCE_USER }}
+        username: ${{ vars.GCE_SSH_USER }}
+        password: ${{ vars.GCE_SSH_PASSWORD }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           docker pull $IMAGE_URL:IMAGE_TAG
