@@ -98,6 +98,7 @@ jobs:
           sudo docker stop nb-backend || true &&
           sudo docker rm nb-backend || true &&
           sudo docker run -d --name nb-backend -p 8080:8080 \
+            -e GIN_MODE=${{ secrets.GIN_MODE }} \
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
             -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
             -e DB_HOST=${{ secrets.DB_HOST }} \
