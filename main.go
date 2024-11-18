@@ -1,19 +1,32 @@
 package main
 
 import (
-	"net/http"
+	"log"
+	"notebook-backend/config"
+	"notebook-backend/router"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	r := gin.Default()
-	api := r.Group("/api")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	dbUsername := os.Getenv("DB_USERNAME")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
 
-	api.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "ok",
-		})
-	})
+	db := config.InitDB(dbUsername, dbPassword, dbName, dbHost, dbPort)
+
+	r := gin.Default()
+
+	// Setup routes
+	router.SetupRoutes(r, db)
+
 	r.Run()
 }
