@@ -97,5 +97,11 @@ jobs:
           sudo docker pull $IMAGE_URL:$IMAGE_TAG &&
           sudo docker stop nb-backend || true &&
           sudo docker rm nb-backend || true &&
-          sudo docker run -d --name nb-backend -p 8080:8080 $IMAGE_URL:$IMAGE_TAG
+          sudo docker run -d --name nb-backend -p 8080:8080 \
+            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e DB_NAME=${{ secrets.DB_NAME }} \
+            $IMAGE_URL:$IMAGE_TAG
         "
