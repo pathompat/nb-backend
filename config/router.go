@@ -1,4 +1,4 @@
-package router
+package config
 
 import (
 	"notebook-backend/controller"

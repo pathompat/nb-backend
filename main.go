@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"notebook-backend/config"
-	"notebook-backend/router"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -30,7 +29,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(cors.Default())
-	router.SetupRoutes(r, db)
+	config.SetupRoutes(r, db)
 
 	r.Run()
 }

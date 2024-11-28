@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"notebook-backend/domain/dto"
+	"notebook-backend/controller/dto"
 	"notebook-backend/repository"
 )
 
@@ -19,14 +19,14 @@ func NewUserService(repo repository.UserRepository) UserService {
 }
 
 func (s *userService) GetAllUsers() ([]dto.User, error) {
-	resp, err := s.repo.FindAll()
+	users, err := s.repo.FindAll()
 	if err != nil {
 		return nil, errors.New("database error")
 	}
 
-	users := []dto.User{}
-	for _, user := range resp {
-		users = append(users, dto.User{
+	userMap := []dto.User{}
+	for _, user := range users {
+		userMap = append(userMap, dto.User{
 			ID:        int(user.ID),
 			Username:  user.Username,
 			StoreName: user.StoreName,
@@ -34,5 +34,5 @@ func (s *userService) GetAllUsers() ([]dto.User, error) {
 			UpdatedAt: user.UpdatedAt,
 		})
 	}
-	return users, nil
+	return userMap, nil
 }

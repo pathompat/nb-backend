@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"notebook-backend/domain/model"
+	"notebook-backend/repository/model"
 
 	"gorm.io/gorm"
 )
@@ -21,5 +21,8 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 func (r *userRepository) FindAll() ([]model.User, error) {
 	var users []model.User
 	err := r.db.Find(&users).Error
-	return users, err
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
