@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
 
 env:
   IMAGE_URL: us-central1-docker.pkg.dev/notebook-service-442013/notebook-backend/nb-gin
