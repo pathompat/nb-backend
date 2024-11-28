@@ -3,10 +3,10 @@ name: CI/CD for Notebook backend service
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
     branches:
-      - main
+      - develop
 
 env:
   IMAGE_URL: us-central1-docker.pkg.dev/notebook-service-442013/notebook-backend/nb-gin
