@@ -15,7 +15,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userController := controller.NewUserController(userService)
 
 	api := r.Group("/api")
-	userRoutes := api.Group("/users")
+	userRoutes := api.Group("/user")
 	{
 		userRoutes.GET("/", userController.GetAllUsers)
 	}
