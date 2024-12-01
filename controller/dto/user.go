@@ -5,14 +5,14 @@ import "time"
 type CreateUserDTO struct {
 	Username  string `json:"username" binding:"required"`
 	TierID    int    `json:"tierId" binding:"required"`
-	StoreName string `json:"store" binding:"required"`
+	StoreName string `json:"storeName" binding:"required"`
 	Password  string `json:"password" binding:"required"`
 }
 
 type UpdateUserDTO struct {
 	Username  string `json:"username" binding:"required"`
 	TierID    int    `json:"tierId" binding:"required"`
-	StoreName string `json:"store" binding:"required"`
+	StoreName string `json:"storeName" binding:"required"`
 	Password  string `json:"password" binding:"required"`
 }
 

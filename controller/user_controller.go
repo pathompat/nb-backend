@@ -2,8 +2,9 @@ package controller
 
 import (
 	"net/http"
-	"notebook-backend/service"
 	"notebook-backend/controller/dto"
+	"notebook-backend/service"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,4 +40,22 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, user)
+}
+
+func (c *UserController) UpdateUser(ctx *gin.Context) {
+	var userInput dto.UpdateUserDTO
+	if err := ctx.ShouldBindJSON(&userInput); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	userID := ctx.Param("userId")
+
+	user, err := c.service.UpdateUser(userID, userInput)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
 }

@@ -9,6 +9,8 @@ import (
 type UserRepository interface {
 	FindAll() ([]model.User, error)
 	Create(user model.User) (model.User, error)
+	FindByID(userId string) (model.User, error)
+	Update(user model.User) (model.User, error)
 }
 
 type userRepository struct {
@@ -30,6 +32,23 @@ func (r *userRepository) FindAll() ([]model.User, error) {
 
 func (r *userRepository) Create(user model.User) (model.User, error) {
 	err := r.db.Create(&user).Error
+	if err != nil {
+		return model.User{}, err
+	}
+	return user, nil
+}
+
+func (r *userRepository) FindByID(userId string) (model.User, error) {
+	var user model.User
+	err := r.db.First(&user, "id = ?", userId).Error
+	if err != nil {
+		return model.User{}, err
+	}
+	return user, nil
+}
+
+func (r *userRepository) Update(user model.User) (model.User, error) {
+	err := r.db.Save(&user).Error
 	if err != nil {
 		return model.User{}, err
 	}
