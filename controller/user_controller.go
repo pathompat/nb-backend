@@ -59,3 +59,16 @@ func (c *UserController) UpdateUser(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, user)
 }
+
+func (c *UserController) DeleteUser(ctx *gin.Context) {
+
+	userID := ctx.Param("userId")
+
+	err := c.service.DeleteUser(userID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Delete user success"})
+}
