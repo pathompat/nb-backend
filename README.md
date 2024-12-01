@@ -20,7 +20,12 @@ Make sure you have the following installed:
 ```
   go run main.go
 ```
-2. Option 2: hot reload (need install Air first)
+2. Option 2: hot reload (need install [Air](https://github.com/cosmtrek/air) first)
+- install air (macOS)
+```
+  curl -sSfL https://raw.githubusercontent.com/air-verse/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
+```
+- run go with air
 ```
   air -c .air.toml
 ```
