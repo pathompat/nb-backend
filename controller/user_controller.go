@@ -34,7 +34,7 @@ func (c *UserController) CreateUser(ctx *gin.Context) {
 
 	user, err := c.service.CreateUser(userInput)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
