@@ -29,3 +29,9 @@ Make sure you have the following installed:
 ```
   air -c .air.toml
 ```
+## Migrate database
+1. install [go-migrate](https://github.com/golang-migrate/migrate)
+2. run script migrate database
+```
+  migrate -database 'postgres://{{DB_USER}}:{{DB_PASSWORD}}@{{DB_HOST}}:{{DB_PORT}}/{{DB_NAME}}' -path db/migrations up
+```
