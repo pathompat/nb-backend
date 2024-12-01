@@ -66,7 +66,7 @@ func (c *UserController) DeleteUser(ctx *gin.Context) {
 
 	err := c.service.DeleteUser(userID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
