@@ -3,14 +3,15 @@ package service
 import (
 	"errors"
 	"notebook-backend/controller/dto"
-	"notebook-backend/repository/model"
 	"notebook-backend/repository"
+	"notebook-backend/repository/model"
 	"time"
 )
 
 type UserService interface {
 	GetAllUsers() ([]dto.User, error)
 	CreateUser(input dto.CreateUserDTO) (dto.User, error)
+	UpdateUser(userID string, input dto.UpdateUserDTO) (dto.User, error)
 }
 
 type userService struct {
@@ -46,7 +47,7 @@ func (s *userService) CreateUser(input dto.CreateUserDTO) (dto.User, error) {
 		Username:  input.Username,
 		TierID:    input.TierID,
 		StoreName: input.StoreName,
-		Password: input.Password,
+		Password:  input.Password,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -63,5 +64,32 @@ func (s *userService) CreateUser(input dto.CreateUserDTO) (dto.User, error) {
 		StoreName: createdUser.StoreName,
 		CreatedAt: createdUser.CreatedAt,
 		UpdatedAt: createdUser.UpdatedAt,
+	}, nil
+}
+
+func (s *userService) UpdateUser(userID string, input dto.UpdateUserDTO) (dto.User, error) {
+	user, err := s.repo.FindByID(userID)
+	if err != nil {
+		return dto.User{}, errors.New("User not found")
+	}
+
+	user.Username = input.Username
+	user.Password = input.Password
+	user.TierID = input.TierID
+	user.StoreName = input.StoreName
+	user.UpdatedAt = time.Now()
+
+	updateUser, err := s.repo.Update(user)
+	if err != nil {
+		return dto.User{}, errors.New("Failed to update user")
+	}
+
+	return dto.User{
+		ID:        int(updateUser.ID),
+		TierID:    updateUser.TierID,
+		Username:  updateUser.Username,
+		StoreName: updateUser.StoreName,
+		CreatedAt: updateUser.CreatedAt,
+		UpdatedAt: updateUser.UpdatedAt,
 	}, nil
 }

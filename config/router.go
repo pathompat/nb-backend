@@ -19,5 +19,6 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		userRoutes.GET("/", userController.GetAllUsers)
 		userRoutes.POST("/", userController.CreateUser)
+		userRoutes.PUT("/:userId", userController.UpdateUser)
 	}
 }
