@@ -3,14 +3,16 @@ package repository
 import (
 	"notebook-backend/repository/model"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type UserRepository interface {
 	FindAll() ([]model.User, error)
 	Create(user model.User) (model.User, error)
-	FindByID(userId string) (model.User, error)
+	FindByID(userId uuid.UUID) (model.User, error)
 	Update(user model.User) (model.User, error)
+	Delete(userId uuid.UUID) error
 }
 
 type userRepository struct {
@@ -38,9 +40,9 @@ func (r *userRepository) Create(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func (r *userRepository) FindByID(userId string) (model.User, error) {
+func (r *userRepository) FindByID(userId uuid.UUID) (model.User, error) {
 	var user model.User
-	err := r.db.First(&user, "id = ?", userId).Error
+	err := r.db.First(&user, "uuid = ?", userId).Error
 	if err != nil {
 		return model.User{}, err
 	}
@@ -53,4 +55,12 @@ func (r *userRepository) Update(user model.User) (model.User, error) {
 		return model.User{}, err
 	}
 	return user, nil
+}
+
+func (r *userRepository) Delete(userID uuid.UUID) error {
+	err := r.db.Where("uuid = ?", userID).Delete(&model.User{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
