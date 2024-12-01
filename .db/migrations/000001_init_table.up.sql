@@ -1,7 +1,7 @@
 -- create table user
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    uuid uuid NOT NULL DEFAULT uuid_generate_v4 () ,
+    uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
     username VARCHAR(50) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     store_name VARCHAR(100),
