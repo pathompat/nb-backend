@@ -2,7 +2,7 @@ package config
 
 import (
 	"net/http"
-	controller "notebook-backend/handler"
+	"notebook-backend/handler"
 	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"notebook-backend/service"
@@ -22,10 +22,10 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userRepo := repository.NewUserRepository(db)
 
 	loginService := service.NewLoginService(userRepo)
-	loginHandler := controller.NewLoginHandler(loginService)
+	loginHandler := handler.NewLoginHandler(loginService)
 
 	userService := service.NewUserService(userRepo)
-	userHandler := controller.NewUserHandler(userService)
+	userHandler := handler.NewUserHandler(userService)
 
 	api := r.Group("/api")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
