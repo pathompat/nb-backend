@@ -29,9 +29,28 @@ Make sure you have the following installed:
 ```
   air -c .air.toml
 ```
+
+---
+
 ## Migrate database
 1. install [go-migrate](https://github.com/golang-migrate/migrate)
 2. run script migrate database
 ```
   migrate -database 'postgres://{{DB_USER}}:{{DB_PASSWORD}}@{{DB_HOST}}:{{DB_PORT}}/{{DB_NAME}}' -path db/migrations up
 ```
+
+---
+
+## Swagger config
+1. install [swaggo](https://github.com/swaggo/swag)
+2. test swag cli
+3. when api update run
+```
+  swag init --md ./
+```
+4. test by run go
+```
+  go run main.go
+```
+5. go to `http://localhost:8080/api/swagger/index.html#/` and check swagger update
+
