@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"notebook-backend/controller/dto"
+	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
 	"time"
@@ -47,18 +48,23 @@ func (s *userService) GetAllUsers() ([]dto.User, error) {
 }
 
 func (s *userService) CreateUser(input dto.CreateUserDTO) (dto.User, error) {
+	hashPassword, err := helper.HashPassword(input.Password)
+	if err != nil {
+		return dto.User{}, helper.ErrHashPassword
+	}
+
 	newUser := model.User{
 		Username:  input.Username,
 		TierID:    input.TierID,
 		StoreName: input.StoreName,
-		Password:  input.Password,
+		Password:  hashPassword,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
 	createdUser, err := s.repo.Create(newUser)
 	if err != nil {
-		return dto.User{}, errors.New("Failed to create user")
+		return dto.User{}, helper.ErrInsertRecord
 	}
 
 	return dto.User{
@@ -83,8 +89,13 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUserDTO) (dto.Us
 		return dto.User{}, errors.New("User not found")
 	}
 
+	hashPassword, err := helper.HashPassword(input.Password)
+	if err != nil {
+		return dto.User{}, helper.ErrHashPassword
+	}
+
 	user.Username = input.Username
-	user.Password = input.Password
+	user.Password = hashPassword
 	user.TierID = input.TierID
 	user.StoreName = input.StoreName
 	user.UpdatedAt = time.Now()

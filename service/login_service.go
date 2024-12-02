@@ -27,12 +27,17 @@ func NewLoginService(userRepo repository.UserRepository) LoginService {
 }
 
 func (s *loginService) Login(credential dto.Login) (*dto.ResponseWithToken, error) {
-	user, err := s.userRepo.FindByUsernameAndPassword(credential.Username, credential.Password)
+	user, err := s.userRepo.FindByUsername(credential.Username)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, helper.ErrInvalidUserOrPwd
 		}
-		return nil, helper.ErrDatabaseProcess
+		return nil, helper.ErrSelectRecord
+	}
+
+	if !helper.CheckPasswordHash(credential.Password, user.Password) {
+		slog.Error("check password hash error")
+		return nil, helper.ErrUnauthorized
 	}
 
 	expiredIn, err := strconv.Atoi(os.Getenv("JWT_EXPIRED_IN"))
@@ -41,6 +46,7 @@ func (s *loginService) Login(credential dto.Login) (*dto.ResponseWithToken, erro
 		return nil, helper.ErrUnauthorized
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"userId":   user.UserId,
 		"username": user.Username,
 		"role":     user.Role,
 		"exp":      time.Now().Add(time.Second * time.Duration(expiredIn)).Unix(),

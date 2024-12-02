@@ -11,7 +11,7 @@ type UserRepository interface {
 	FindAll() ([]model.User, error)
 	Create(user model.User) (model.User, error)
 	FindByID(userId uuid.UUID) (model.User, error)
-	FindByUsernameAndPassword(username string, password string) (model.User, error)
+	FindByUsername(username string) (model.User, error)
 	Update(user model.User) (model.User, error)
 	Delete(userId uuid.UUID) error
 }
@@ -50,9 +50,9 @@ func (r *userRepository) FindByID(userId uuid.UUID) (model.User, error) {
 	return user, nil
 }
 
-func (r *userRepository) FindByUsernameAndPassword(username string, password string) (model.User, error) {
+func (r *userRepository) FindByUsername(username string) (model.User, error) {
 	var user model.User
-	err := r.db.Where(&model.User{Username: username, Password: password}).First(&user).Error
+	err := r.db.Where(&model.User{Username: username}).First(&user).Error
 	if err != nil {
 		return model.User{}, err
 	}
