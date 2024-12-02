@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"notebook-backend/controller/dto"
+	"notebook-backend/helper"
 	"notebook-backend/service"
 
 	"github.com/gin-gonic/gin"
@@ -19,12 +20,13 @@ func NewLoginController(service service.LoginService) *LoginController {
 func (c *LoginController) Login(ctx *gin.Context) {
 	var credential dto.Login
 	if err := ctx.ShouldBindJSON(&credential); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"code": http.StatusBadRequest, "message": err.Error()})
+		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
 		return
 	}
+
 	token, err := c.service.Login(credential)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"code": http.StatusUnauthorized, "message": err.Error()})
+		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
 		return
 	}
 

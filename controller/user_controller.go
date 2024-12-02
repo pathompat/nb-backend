@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"notebook-backend/controller/dto"
+	"notebook-backend/helper"
 	"notebook-backend/service"
 
 	"github.com/gin-gonic/gin"
@@ -19,33 +20,33 @@ func NewUserController(service service.UserService) *UserController {
 func (c *UserController) GetAllUsers(ctx *gin.Context) {
 	users, err := c.service.GetAllUsers()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, users)
+	helper.SuccessResponse(ctx, http.StatusOK, users)
 }
 
 func (c *UserController) CreateUser(ctx *gin.Context) {
 	var userInput dto.CreateUserDTO
 	if err := ctx.ShouldBindJSON(&userInput); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	user, err := c.service.CreateUser(userInput)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, user)
+	helper.SuccessResponse(ctx, http.StatusCreated, user)
 }
 
 func (c *UserController) UpdateUser(ctx *gin.Context) {
 	var userInput dto.UpdateUserDTO
 	if err := ctx.ShouldBindJSON(&userInput); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
 		return
 	}
 
@@ -53,11 +54,11 @@ func (c *UserController) UpdateUser(ctx *gin.Context) {
 
 	user, err := c.service.UpdateUser(userID, userInput)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user)
+	helper.SuccessResponse(ctx, http.StatusOK, user)
 }
 
 func (c *UserController) DeleteUser(ctx *gin.Context) {
@@ -66,9 +67,9 @@ func (c *UserController) DeleteUser(ctx *gin.Context) {
 
 	err := c.service.DeleteUser(userID)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "Delete user success"})
+	helper.SuccessResponseWithMessage(ctx, http.StatusOK, "Delete user success")
 }
