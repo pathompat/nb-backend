@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"notebook-backend/controller/dto"
+	"notebook-backend/handler/dto"
 	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
@@ -12,9 +12,9 @@ import (
 )
 
 type UserService interface {
-	GetAllUsers() ([]dto.User, error)
-	CreateUser(input dto.CreateUserDTO) (dto.User, error)
-	UpdateUser(userID string, input dto.UpdateUserDTO) (dto.User, error)
+	GetAllUsers() ([]dto.UserResponse, error)
+	CreateUser(input dto.CreateUser) (dto.UserResponse, error)
+	UpdateUser(userID string, input dto.UpdateUser) (dto.UserResponse, error)
 	DeleteUser(userID string) error
 }
 
@@ -26,15 +26,15 @@ func NewUserService(repo repository.UserRepository) UserService {
 	return &userService{repo: repo}
 }
 
-func (s *userService) GetAllUsers() ([]dto.User, error) {
+func (s *userService) GetAllUsers() ([]dto.UserResponse, error) {
 	users, err := s.repo.FindAll()
 	if err != nil {
 		return nil, errors.New("database error")
 	}
 
-	userMap := []dto.User{}
+	userMap := []dto.UserResponse{}
 	for _, user := range users {
-		userMap = append(userMap, dto.User{
+		userMap = append(userMap, dto.UserResponse{
 			UserId:    user.UserId,
 			Username:  user.Username,
 			StoreName: user.StoreName,
@@ -47,10 +47,10 @@ func (s *userService) GetAllUsers() ([]dto.User, error) {
 	return userMap, nil
 }
 
-func (s *userService) CreateUser(input dto.CreateUserDTO) (dto.User, error) {
+func (s *userService) CreateUser(input dto.CreateUser) (dto.UserResponse, error) {
 	hashPassword, err := helper.HashPassword(input.Password)
 	if err != nil {
-		return dto.User{}, helper.ErrHashPassword
+		return dto.UserResponse{}, helper.ErrHashPassword
 	}
 
 	newUser := model.User{
@@ -64,10 +64,10 @@ func (s *userService) CreateUser(input dto.CreateUserDTO) (dto.User, error) {
 
 	createdUser, err := s.repo.Create(newUser)
 	if err != nil {
-		return dto.User{}, helper.ErrInsertRecord
+		return dto.UserResponse{}, helper.ErrInsertRecord
 	}
 
-	return dto.User{
+	return dto.UserResponse{
 		UserId:    createdUser.UserId,
 		TierID:    createdUser.TierID,
 		Username:  createdUser.Username,
@@ -78,20 +78,20 @@ func (s *userService) CreateUser(input dto.CreateUserDTO) (dto.User, error) {
 	}, nil
 }
 
-func (s *userService) UpdateUser(userID string, input dto.UpdateUserDTO) (dto.User, error) {
+func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserResponse, error) {
 	parsedUUID, err := uuid.Parse(userID)
 	if err != nil {
-		return dto.User{}, errors.New("invalid UUID format")
+		return dto.UserResponse{}, errors.New("invalid UUID format")
 	}
 
 	user, err := s.repo.FindByID(parsedUUID)
 	if err != nil {
-		return dto.User{}, errors.New("User not found")
+		return dto.UserResponse{}, errors.New("User not found")
 	}
 
 	hashPassword, err := helper.HashPassword(input.Password)
 	if err != nil {
-		return dto.User{}, helper.ErrHashPassword
+		return dto.UserResponse{}, helper.ErrHashPassword
 	}
 
 	user.Username = input.Username
@@ -102,10 +102,10 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUserDTO) (dto.Us
 
 	updateUser, err := s.repo.Update(user)
 	if err != nil {
-		return dto.User{}, errors.New("Failed to update user")
+		return dto.UserResponse{}, errors.New("Failed to update user")
 	}
 
-	return dto.User{
+	return dto.UserResponse{
 		UserId:    updateUser.UserId,
 		TierID:    updateUser.TierID,
 		Username:  updateUser.Username,

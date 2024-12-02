@@ -10,6 +10,22 @@ import (
 	"github.com/joho/godotenv"
 )
 
+//	@title		Tickbook API
+//	@version	1.0
+// 	@termsOfService http://tickbook.net/
+
+// @contact.name API Support
+// @contact.url http://tickbook.net/support
+// @contact.email support@tickbook.net
+
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+//	@schemes	https http
+
+// @securityDefinitions.apikey	JwtToken
+// @in							header
+// @name						Authorization
 func main() {
 	// setup env
 	err := godotenv.Load()
