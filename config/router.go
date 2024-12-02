@@ -1,9 +1,9 @@
 package config
 
 import (
-	"log/slog"
 	"net/http"
 	"notebook-backend/controller"
+	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"notebook-backend/service"
 	"os"
@@ -51,9 +51,7 @@ func authMiddleware() gin.HandlerFunc {
 		})
 
 		if err != nil || !token.Valid {
-			slog.Error(err.Error())
-			c.JSON(http.StatusUnauthorized, gin.H{"code": http.StatusUnauthorized, "error": "Unauthorized"})
-			c.Abort()
+			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrInvalidToken)
 			return
 		}
 
@@ -61,9 +59,7 @@ func authMiddleware() gin.HandlerFunc {
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("claims", claims)
 		} else {
-			slog.Error("token invalid")
-			c.JSON(http.StatusUnauthorized, gin.H{"code": http.StatusUnauthorized, "error": "Unauthorized"})
-			c.Abort()
+			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrInvalidToken)
 			return
 		}
 
