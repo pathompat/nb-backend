@@ -101,5 +101,7 @@ jobs:
             -e DB_HOST=${{ secrets.DB_HOST }} \
             -e DB_PORT=${{ secrets.DB_PORT }} \
             -e DB_NAME=${{ secrets.DB_NAME }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e JWT_EXPIRED_IN=${{ secrets.JWT_EXPIRED_IN }} \
             $IMAGE_URL:$IMAGE_TAG
         "
