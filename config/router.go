@@ -39,8 +39,16 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 func authMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authorization := c.GetHeader("Authorization")
+		if authorization == "" {
+			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrMissingToken)
+			return
+		}
 		splitToken := strings.Split(authorization, "Bearer ")
 		tokenString := splitToken[1]
+		if len(splitToken) < 2 {
+			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrMissingToken)
+			return
+		}
 
 		// Parse the token
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {

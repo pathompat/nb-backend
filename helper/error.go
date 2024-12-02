@@ -12,4 +12,5 @@ var (
 	ErrInvalidUserOrPwd = errors.New("Invalid username or password")
 	ErrHashPassword     = errors.New("Error hashing password")
 	ErrInvalidToken     = errors.New("Invalid token")
+	ErrMissingToken     = errors.New("Missing authorization")
 )
