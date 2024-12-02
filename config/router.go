@@ -2,15 +2,19 @@ package config
 
 import (
 	"net/http"
-	"notebook-backend/controller"
+	controller "notebook-backend/handler"
 	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"notebook-backend/service"
 	"os"
 	"strings"
 
+	_ "notebook-backend/docs" // Swagger generated files
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"     // Swagger files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 	"gorm.io/gorm"
 )
 
@@ -18,21 +22,22 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userRepo := repository.NewUserRepository(db)
 
 	loginService := service.NewLoginService(userRepo)
-	loginController := controller.NewLoginController(loginService)
+	loginHandler := controller.NewLoginHandler(loginService)
 
 	userService := service.NewUserService(userRepo)
-	userController := controller.NewUserController(userService)
+	userHandler := controller.NewUserHandler(userService)
 
 	api := r.Group("/api")
-	api.POST("/login", loginController.Login)
+	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	api.POST("/login", loginHandler.Login)
 
 	api.Use(authMiddleware())
 	userRoutes := api.Group("/user")
 	{
-		userRoutes.GET("/", userController.GetAllUsers)
-		userRoutes.POST("/", userController.CreateUser)
-		userRoutes.PUT("/:userId", userController.UpdateUser)
-		userRoutes.DELETE("/:userId", userController.DeleteUser)
+		userRoutes.GET("/", userHandler.GetAllUsers)
+		userRoutes.POST("/", userHandler.CreateUser)
+		userRoutes.PUT("/:userId", userHandler.UpdateUser)
+		userRoutes.DELETE("/:userId", userHandler.DeleteUser)
 	}
 }
 

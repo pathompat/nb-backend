@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 	"log/slog"
-	"notebook-backend/controller/dto"
+	"notebook-backend/handler/dto"
 	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"os"
