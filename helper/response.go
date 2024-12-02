@@ -5,13 +5,14 @@ import (
 )
 
 type ApiErrorResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
+	Code    int    `json:"code" example:"400"`            // HTTP status
+	Message string `json:"message" example:"Bad request"` // Error message
 }
 
 type ApiSuccessResponse struct {
-	ApiErrorResponse
-	Data interface{} `json:"data"`
+	Code    int         `json:"code" example:"200"`        // HTTP status
+	Message string      `json:"message" example:"Success"` // Return message
+	Data    interface{} `json:"data"`                      // Returning data
 }
 
 func ErrorResponse(ctx *gin.Context, code int, err error) {
@@ -24,8 +25,9 @@ func ErrorResponse(ctx *gin.Context, code int, err error) {
 
 func SuccessResponse(ctx *gin.Context, code int, data interface{}) {
 	ctx.JSON(code, ApiSuccessResponse{
-		ApiErrorResponse: ApiErrorResponse{Code: code, Message: "Success"},
-		Data:             data,
+		Code:    code,
+		Message: "Success",
+		Data:    data,
 	})
 }
 
