@@ -2,12 +2,20 @@ definitions:
   dto.CreateUser:
     properties:
       password:
+        description: Secure password
+        example: Password@1234
         type: string
       storeName:
+        description: User's shop name
+        example: Example Shop
         type: string
       tierId:
+        description: User tier (1,2,3)
+        example: 1
         type: integer
       username:
+        description: Username
+        example: testuser123
         type: string
     required:
     - password
@@ -37,19 +45,27 @@ definitions:
         example: 3600
         type: integer
       token:
-        description: Jwt Token
+        description: JWT Token
         example: token123
         type: string
     type: object
   dto.UpdateUser:
     properties:
       password:
+        description: Secure password
+        example: Password@1234
         type: string
       storeName:
+        description: User's shop name
+        example: Example Shop
         type: string
       tierId:
+        description: User tier (1,2,3)
+        example: 1
         type: integer
       username:
+        description: Username
+        example: testuser123
         type: string
     required:
     - password
@@ -60,24 +76,31 @@ definitions:
   dto.UserResponse:
     properties:
       createdAt:
+        description: Created user date
         example: "2024-12-02T00:26:21.087061Z"
         type: string
       id:
+        description: UUID generate from database
         example: be40de0f-ba3d-44d8-9c80-023ac23e0b9a
         type: string
       role:
+        description: User role (ADMIN, CUSTOMER)
         example: CUSTOMER
         type: string
       storeName:
+        description: User's shop name
         example: Test Store
         type: string
       tierId:
+        description: User tier (1,2,3)
         example: 1
         type: integer
       updatedAt:
+        description: Latest update user date
         example: "2024-12-02T00:26:21.087061Z"
         type: string
       username:
+        description: Username
         example: testuser1
         type: string
     type: object
@@ -245,6 +268,31 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
+      security:
+      - JWTToken: []
+      tags:
+      - users
+  /user/info:
+    get:
+      consumes:
+      - application/json
+      operationId: GetInfoUser
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
       security:
       - JWTToken: []
       tags:

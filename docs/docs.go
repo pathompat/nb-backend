@@ -172,6 +172,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/info": {
+            "get": {
+                "security": [
+                    {
+                        "JWTToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "operationId": "GetInfoUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/user/{userId}": {
             "put": {
                 "security": [
@@ -281,16 +326,24 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
-                    "type": "string"
+                    "description": "Secure password",
+                    "type": "string",
+                    "example": "Password@1234"
                 },
                 "storeName": {
-                    "type": "string"
+                    "description": "User's shop name",
+                    "type": "string",
+                    "example": "Example Shop"
                 },
                 "tierId": {
-                    "type": "integer"
+                    "description": "User tier (1,2,3)",
+                    "type": "integer",
+                    "example": 1
                 },
                 "username": {
-                    "type": "string"
+                    "description": "Username",
+                    "type": "string",
+                    "example": "testuser123"
                 }
             }
         },
@@ -323,7 +376,7 @@ const docTemplate = `{
                     "example": 3600
                 },
                 "token": {
-                    "description": "Jwt Token",
+                    "description": "JWT Token",
                     "type": "string",
                     "example": "token123"
                 }
@@ -339,16 +392,24 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
-                    "type": "string"
+                    "description": "Secure password",
+                    "type": "string",
+                    "example": "Password@1234"
                 },
                 "storeName": {
-                    "type": "string"
+                    "description": "User's shop name",
+                    "type": "string",
+                    "example": "Example Shop"
                 },
                 "tierId": {
-                    "type": "integer"
+                    "description": "User tier (1,2,3)",
+                    "type": "integer",
+                    "example": 1
                 },
                 "username": {
-                    "type": "string"
+                    "description": "Username",
+                    "type": "string",
+                    "example": "testuser123"
                 }
             }
         },
@@ -356,30 +417,37 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "createdAt": {
+                    "description": "Created user date",
                     "type": "string",
                     "example": "2024-12-02T00:26:21.087061Z"
                 },
                 "id": {
+                    "description": "UUID generate from database",
                     "type": "string",
                     "example": "be40de0f-ba3d-44d8-9c80-023ac23e0b9a"
                 },
                 "role": {
+                    "description": "User role (ADMIN, CUSTOMER)",
                     "type": "string",
                     "example": "CUSTOMER"
                 },
                 "storeName": {
+                    "description": "User's shop name",
                     "type": "string",
                     "example": "Test Store"
                 },
                 "tierId": {
+                    "description": "User tier (1,2,3)",
                     "type": "integer",
                     "example": 1
                 },
                 "updatedAt": {
+                    "description": "Latest update user date",
                     "type": "string",
                     "example": "2024-12-02T00:26:21.087061Z"
                 },
                 "username": {
+                    "description": "Username",
                     "type": "string",
                     "example": "testuser1"
                 }

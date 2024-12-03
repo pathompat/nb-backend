@@ -13,6 +13,7 @@ import (
 
 type UserService interface {
 	GetAllUsers() ([]dto.UserResponse, error)
+	GetInfoUser(userID string) (dto.UserResponse, error)
 	CreateUser(input dto.CreateUser) (dto.UserResponse, error)
 	UpdateUser(userID string, input dto.UpdateUser) (dto.UserResponse, error)
 	DeleteUser(userID string) error
@@ -45,6 +46,28 @@ func (s *userService) GetAllUsers() ([]dto.UserResponse, error) {
 		})
 	}
 	return userMap, nil
+}
+
+func (s *userService) GetInfoUser(userID string) (dto.UserResponse, error) {
+	parsedUUID, err := uuid.Parse(userID)
+	if err != nil {
+		return dto.UserResponse{}, errors.New("invalid UUID format")
+	}
+
+	user, err := s.repo.FindByID(parsedUUID)
+	if err != nil {
+		return dto.UserResponse{}, errors.New("User not found")
+	}
+
+	return dto.UserResponse{
+		UserId:    user.UserId,
+		TierID:    user.TierID,
+		Username:  user.Username,
+		StoreName: user.StoreName,
+		Role:      user.Role,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}, nil
 }
 
 func (s *userService) CreateUser(input dto.CreateUser) (dto.UserResponse, error) {
