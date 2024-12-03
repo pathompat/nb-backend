@@ -6,6 +6,6 @@ type Login struct {
 }
 
 type ResponseWithToken struct {
-	Token     string `json:"token" example:"token123"` // Jwt Token
+	Token     string `json:"token" example:"token123"` // JWT Token
 	ExpiredIn int    `json:"expiredIn" example:"3600"` // Token expired in (second)
 }
