@@ -19,13 +19,13 @@ func NewLoginHandler(service service.LoginService) *LoginHandler {
 
 // LoginHandler godoc
 //
-// @id				LoginHandler
-// @tags login
-// @security JWTToken
+// @id				Login
+// @tags			login
+// @security	JWTToken
 // @accept		json
-// @produce json
+// @produce		json
 //
-// @param loginRequest body dto.Login true "Login request"
+// @param			loginRequest body dto.Login true "Login request"
 //
 // @response 200 {object} dto.ResponseWithToken "OK"
 // @response 400 "Bad request"

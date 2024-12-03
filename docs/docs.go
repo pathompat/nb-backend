@@ -40,7 +40,7 @@ const docTemplate = `{
                 "tags": [
                     "login"
                 ],
-                "operationId": "LoginHandler",
+                "operationId": "Login",
                 "parameters": [
                     {
                         "description": "Login request",

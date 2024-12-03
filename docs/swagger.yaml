@@ -110,7 +110,7 @@ paths:
     post:
       consumes:
       - application/json
-      operationId: LoginHandler
+      operationId: Login
       parameters:
       - description: Login request
         in: body

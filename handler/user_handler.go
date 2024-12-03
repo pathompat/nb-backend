@@ -20,10 +20,10 @@ func NewUserHandler(service service.UserService) *UserHandler {
 // UserHandler godoc
 //
 // @id				GetAllUsers
-// @tags 			users
-// @security 	JWTToken
+// @tags			users
+// @security	JWTToken
 // @accept		json
-// @produce 	json
+// @produce		json
 //
 // @response 200 {object} helper.ApiSuccessResponse{data=[]dto.UserResponse} "OK"
 // @response 400 "Bad request"
@@ -42,13 +42,13 @@ func (c *UserHandler) GetAllUsers(ctx *gin.Context) {
 
 // UserHandler godoc
 //
-// @id			 CreateUser
-// @tags 		 users
-// @security JWTToken
-// @accept	 json
-// @produce  json
+// @id				CreateUser
+// @tags			users
+// @security	JWTToken
+// @accept		json
+// @produce		json
 //
-// @Param    createUserDTO body dto.CreateUser false "Create user request"
+// @Param			createUserDTO body dto.CreateUser false "Create user request"
 //
 // @response 201 {object} helper.ApiSuccessResponse{data=dto.UserResponse} "Created"
 // @response 400 "Bad request"
@@ -74,13 +74,13 @@ func (c *UserHandler) CreateUser(ctx *gin.Context) {
 
 // UserHandler godoc
 //
-// @id			 UpdateUser
-// @tags 		 users
-// @security JWTToken
-// @accept	 json
-// @produce  json
+// @id				UpdateUser
+// @tags			users
+// @security	JWTToken
+// @accept		json
+// @produce		json
 //
-// @Param    updateUserDTO body dto.UpdateUser false "Update user request"
+// @Param			updateUserDTO body dto.UpdateUser false "Update user request"
 //
 // @response 200 {object} helper.ApiSuccessResponse{data=dto.UserResponse} "OK"
 // @response 400 "Bad request"
@@ -108,13 +108,13 @@ func (c *UserHandler) UpdateUser(ctx *gin.Context) {
 
 // UserHandler godoc
 //
-// @id			 DeleteUser
-// @tags 		 users
-// @security JWTToken
-// @accept	 json
-// @produce  json
+// @id				DeleteUser
+// @tags			users
+// @security	JWTToken
+// @accept		json
+// @produce		json
 //
-// @Param    userId path string false "User's UUID"
+// @Param			userId path string false "User's UUID"
 //
 // @response 200 "OK"
 // @response 400 "Bad request"
