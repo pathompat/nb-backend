@@ -6,6 +6,8 @@ import (
 	"notebook-backend/helper"
 	"notebook-backend/service"
 
+	"github.com/dgrijalva/jwt-go"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,6 +34,36 @@ func NewUserHandler(service service.UserService) *UserHandler {
 //	@router			/user [GET]
 func (c *UserHandler) GetAllUsers(ctx *gin.Context) {
 	users, err := c.service.GetAllUsers()
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, users)
+}
+
+// UserHandler godoc
+//
+// @id				GetInfoUser
+// @tags			users
+// @security	JWTToken
+// @accept		json
+// @produce		json
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=dto.UserResponse} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+//	@router			/user/info [GET]
+func (c *UserHandler) GetInfoUser(ctx *gin.Context) {
+	claims, _ := ctx.Get("claims")
+	claimsMap := claims.(jwt.MapClaims)
+	userId, ok := claimsMap["userId"].(string)
+	if !ok {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidToken)
+		return
+	}
+	users, err := c.service.GetInfoUser(userId)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
