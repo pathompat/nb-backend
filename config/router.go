@@ -20,12 +20,16 @@ import (
 
 func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userRepo := repository.NewUserRepository(db)
+	schoolRepo := repository.NewSchoolRepository(db)
 
 	loginService := service.NewLoginService(userRepo)
 	loginHandler := handler.NewLoginHandler(loginService)
 
 	userService := service.NewUserService(userRepo)
 	userHandler := handler.NewUserHandler(userService)
+
+	schoolService := service.NewSchoolService(schoolRepo, userRepo)
+	schoolHandler := handler.NewSchoolHandler(schoolService)
 
 	api := r.Group("/api")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -39,6 +43,10 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 		userRoutes.POST("/", userHandler.CreateUser)
 		userRoutes.PUT("/:userId", userHandler.UpdateUser)
 		userRoutes.DELETE("/:userId", userHandler.DeleteUser)
+	}
+	schoolRoutes := api.Group("/school")
+	{
+		schoolRoutes.GET("/", schoolHandler.GetSchoolByUserId)
 	}
 }
 
