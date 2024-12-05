@@ -26,6 +26,10 @@ import (
 // @securityDefinitions.apikey	JwtToken
 // @in							header
 // @name						Authorization
+// @BasePath 				/api
+
+// @externalDocs.description  OpenAPI
+// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	// setup env
 	err := godotenv.Load()

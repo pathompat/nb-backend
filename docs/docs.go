@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
+        "/api/login": {
             "post": {
                 "security": [
                     {
@@ -57,6 +57,62 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.ResponseWithToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/schools": {
+            "get": {
+                "security": [
+                    {
+                        "JWTToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schools"
+                ],
+                "operationId": "GetSchoolByUserId",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User's UUID",
+                        "name": "userId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/dto.SchoolResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -382,6 +438,36 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SchoolResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "address",
+                    "type": "string",
+                    "example": "22/11 test address"
+                },
+                "createdAt": {
+                    "description": "Created user date",
+                    "type": "string",
+                    "example": "2024-12-02T00:26:21.087061Z"
+                },
+                "name": {
+                    "description": "name",
+                    "type": "string",
+                    "example": "school 1"
+                },
+                "telephone": {
+                    "description": "User tier (1,2,3)",
+                    "type": "string",
+                    "example": "0815231112"
+                },
+                "updatedAt": {
+                    "description": "Latest update user date",
+                    "type": "string",
+                    "example": "2024-12-02T00:26:21.087061Z"
+                }
+            }
+        },
         "dto.UpdateUser": {
             "type": "object",
             "required": [
@@ -478,6 +564,10 @@ const docTemplate = `{
             "name": "Authorization",
             "in": "header"
         }
+    },
+    "externalDocs": {
+        "description": "OpenAPI",
+        "url": "https://swagger.io/resources/open-api/"
     }
 }`
 

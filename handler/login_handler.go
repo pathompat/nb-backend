@@ -31,7 +31,7 @@ func NewLoginHandler(service service.LoginService) *LoginHandler {
 // @response 400 "Bad request"
 // @response 401 "Unauthorized"
 //
-//	@router			/login [POST]
+//	@router			/api/login [POST]
 func (c *LoginHandler) Login(ctx *gin.Context) {
 	var credential dto.Login
 	if err := ctx.ShouldBindJSON(&credential); err != nil {

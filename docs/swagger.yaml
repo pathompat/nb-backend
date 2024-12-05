@@ -49,6 +49,29 @@ definitions:
         example: token123
         type: string
     type: object
+  dto.SchoolResponse:
+    properties:
+      address:
+        description: address
+        example: 22/11 test address
+        type: string
+      createdAt:
+        description: Created user date
+        example: "2024-12-02T00:26:21.087061Z"
+        type: string
+      name:
+        description: name
+        example: school 1
+        type: string
+      telephone:
+        description: User tier (1,2,3)
+        example: "0815231112"
+        type: string
+      updatedAt:
+        description: Latest update user date
+        example: "2024-12-02T00:26:21.087061Z"
+        type: string
+    type: object
   dto.UpdateUser:
     properties:
       password:
@@ -117,6 +140,9 @@ definitions:
         example: Success
         type: string
     type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
 info:
   contact:
     email: support@tickbook.net
@@ -129,7 +155,7 @@ info:
   title: Tickbook API
   version: "1.0"
 paths:
-  /login:
+  /api/login:
     post:
       consumes:
       - application/json
@@ -156,6 +182,38 @@ paths:
       - JWTToken: []
       tags:
       - login
+  /schools:
+    get:
+      consumes:
+      - application/json
+      operationId: GetSchoolByUserId
+      parameters:
+      - description: User's UUID
+        in: query
+        name: userId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.SchoolResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JWTToken: []
+      tags:
+      - schools
   /user:
     get:
       consumes:
