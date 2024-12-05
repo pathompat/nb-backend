@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"notebook-backend/handler/dto"
 	"notebook-backend/helper"
 	"notebook-backend/service"
 
@@ -41,4 +42,36 @@ func (c *SchoolHandler) GetSchoolByUserId(ctx *gin.Context) {
 	}
 
 	helper.SuccessResponse(ctx, http.StatusOK, school)
+}
+
+// SchoolHandler godoc
+//
+// @id				CreateSchool
+// @tags			schools
+// @security	JWTToken
+// @accept		json
+// @produce		json
+//
+// @Param			createSchoolDTO body dto.CreateSchool false "Create school request"
+//
+// @response 201 {object} helper.ApiSuccessResponse{data=dto.SchoolResponse} "Created"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+// @response 500 "Internal Server Error"
+//
+//	@router			/school [POST]
+func (c *SchoolHandler) CreateSchool(ctx *gin.Context) {
+	var schoolInput dto.CreateSchool
+	if err := ctx.ShouldBindJSON(&schoolInput); err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	school, err := c.service.CreateSchool(schoolInput)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusCreated, school)
 }

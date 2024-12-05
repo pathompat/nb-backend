@@ -8,6 +8,7 @@ import (
 
 type SchoolRepository interface {
 	FindByUserId(userId uint) ([]model.School, error)
+	Create(school model.School) (model.School, error)
 }
 
 type schoolRepository struct {
@@ -23,6 +24,14 @@ func (r *schoolRepository) FindByUserId(userId uint) ([]model.School, error) {
 	err := r.db.Unscoped().Where("user_id = ?", userId).Find(&school).Error
 	if err != nil {
 		return []model.School{}, err
+	}
+	return school, nil
+}
+
+func (r *schoolRepository) Create(school model.School) (model.School, error) {
+	err := r.db.Unscoped().Create(&school).Error
+	if err != nil {
+		return model.School{}, err
 	}
 	return school, nil
 }

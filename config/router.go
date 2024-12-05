@@ -47,6 +47,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	schoolRoutes := api.Group("/school")
 	{
 		schoolRoutes.GET("/", schoolHandler.GetSchoolByUserId)
+		schoolRoutes.POST("/", schoolHandler.CreateSchool)
 	}
 }
 
