@@ -68,7 +68,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/schools": {
+        "/school": {
             "get": {
                 "security": [
                     {
@@ -120,6 +120,62 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "schools"
+                ],
+                "operationId": "CreateSchool",
+                "parameters": [
+                    {
+                        "description": "Create school request",
+                        "name": "createSchoolDTO",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateSchool"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.SchoolResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
@@ -372,6 +428,37 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CreateSchool": {
+            "type": "object",
+            "required": [
+                "address",
+                "name",
+                "telephone",
+                "userId"
+            ],
+            "properties": {
+                "address": {
+                    "description": "Address",
+                    "type": "string",
+                    "example": "81 test address"
+                },
+                "name": {
+                    "description": "Name",
+                    "type": "string",
+                    "example": "school 2"
+                },
+                "telephone": {
+                    "description": "Telephone",
+                    "type": "string",
+                    "example": "0815231112"
+                },
+                "userId": {
+                    "description": "UserID",
+                    "type": "string",
+                    "example": "ebf889fd-4f3c-4c15-b44b-1d37cd2ee5e4"
+                }
+            }
+        },
         "dto.CreateUser": {
             "type": "object",
             "required": [

@@ -8,7 +8,7 @@ import (
 
 type School struct {
 	gorm.Model
-	UserId    int       `gorm:"not null"`
+	UserID    uint      `gorm:"not null"`
 	Name      string    `gorm:"not null"`
 	Address   string    `gorm:"not null"`
 	Telephone string    `gorm:"not null"`
