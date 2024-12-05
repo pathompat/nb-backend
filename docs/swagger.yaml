@@ -1,4 +1,28 @@
 definitions:
+  dto.CreateSchool:
+    properties:
+      address:
+        description: Address
+        example: 81 test address
+        type: string
+      name:
+        description: Name
+        example: school 2
+        type: string
+      telephone:
+        description: Telephone
+        example: "0815231112"
+        type: string
+      userId:
+        description: UserID
+        example: ebf889fd-4f3c-4c15-b44b-1d37cd2ee5e4
+        type: string
+    required:
+    - address
+    - name
+    - telephone
+    - userId
+    type: object
   dto.CreateUser:
     properties:
       password:
@@ -182,7 +206,7 @@ paths:
       - JWTToken: []
       tags:
       - login
-  /schools:
+  /school:
     get:
       consumes:
       - application/json
@@ -210,6 +234,38 @@ paths:
           description: Bad request
         "401":
           description: Unauthorized
+      security:
+      - JWTToken: []
+      tags:
+      - schools
+    post:
+      consumes:
+      - application/json
+      operationId: CreateSchool
+      parameters:
+      - description: Create school request
+        in: body
+        name: createSchoolDTO
+        schema:
+          $ref: '#/definitions/dto.CreateSchool'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.SchoolResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
       security:
       - JWTToken: []
       tags:

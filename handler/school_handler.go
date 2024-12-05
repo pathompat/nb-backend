@@ -31,7 +31,7 @@ func NewSchoolHandler(service service.SchoolService) *SchoolHandler {
 // @response 400 "Bad request"
 // @response 401 "Unauthorized"
 //
-// @router			/schools [GET]
+// @router			/school [GET]
 func (c *SchoolHandler) GetSchoolByUserId(ctx *gin.Context) {
 	userID := ctx.Query("userId")
 
