@@ -18,13 +18,13 @@ func NewSchoolHandler(service service.SchoolService) *SchoolHandler {
 
 // SchoolHandler godoc
 //
-// @id				GetAllUsers
-// @tags			users
+// @id				GetSchoolByUserId
+// @tags			schools
 // @security	JWTToken
 // @accept		json
 // @produce		json
 //
-// @query			userId path string false "User's UUID"
+// @Param			userId query string false "User's UUID"
 //
 // @response 200 {object} helper.ApiSuccessResponse{data=[]dto.SchoolResponse} "OK"
 // @response 400 "Bad request"
