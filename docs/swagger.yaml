@@ -136,6 +136,164 @@ definitions:
         example: cut8
         type: string
     type: object
+  dto.ProductionItem:
+    properties:
+      color:
+        description: Color (1,4)
+        example: "1"
+        type: string
+      createdAt:
+        description: Created date
+        example: "2024-12-02T00:26:21.087061Z"
+        type: string
+      gram:
+        description: Notebook grams (40-150)
+        example: 40
+        type: integer
+      hasReference:
+        description: Has reference
+        example: false
+        type: boolean
+      page:
+        description: Page count (30-80)
+        example: 40
+        type: integer
+      pattern:
+        description: Page pattern
+        example: TABLE
+        type: string
+      plate:
+        description: Plate size (LARGE, SMALL)
+        example: LARGE
+        type: string
+      productTitle:
+        description: Product name
+        example: Cut 8
+        type: string
+      quantity:
+        description: Product quantity
+        example: 1000
+        type: integer
+      status:
+        description: Production status
+        example: PRINTING
+        type: string
+      updatedAt:
+        description: Updated date
+        example: "2024-12-02T00:26:21.087061Z"
+        type: string
+    type: object
+  dto.ProductionResponse:
+    properties:
+      id:
+        description: Document id
+        example: 1
+        type: integer
+      items:
+        description: Related items
+        items:
+          $ref: '#/definitions/dto.ProductionItem'
+        type: array
+      remark:
+        description: Document remark
+        example: test 123
+        type: string
+    type: object
+  dto.QuotationItem:
+    properties:
+      color:
+        description: Color (1,4)
+        example: "1"
+        type: string
+      gram:
+        description: Notebook grams (40-150)
+        example: 40
+        type: integer
+      hasReference:
+        description: Has reference
+        example: false
+        type: boolean
+      page:
+        description: Page count (30-80)
+        example: 40
+        type: integer
+      pattern:
+        description: Page pattern
+        example: TABLE
+        type: string
+      plate:
+        description: Plate size (LARGE, SMALL)
+        example: LARGE
+        type: string
+      price:
+        description: Product price
+        example: 5.5
+        type: number
+      productTitle:
+        description: Product name
+        example: Cut 8
+        type: string
+      quantity:
+        description: Product quantity
+        example: 1000
+        type: integer
+    type: object
+  dto.QuotationResponse:
+    properties:
+      appointmentAt:
+        description: Appointment date (null is now)
+        example: "2024-12-02"
+        type: string
+      createdAt:
+        description: Created date
+        example: "2024-12-02T00:26:21.087061Z"
+        type: string
+      dueDateAt:
+        description: Last due date
+        example: "2024-12-02"
+        type: string
+      id:
+        description: Document id
+        example: 1
+        type: integer
+      items:
+        description: Quotation product list
+        items:
+          $ref: '#/definitions/dto.QuotationItem'
+        type: array
+      production:
+        allOf:
+        - $ref: '#/definitions/dto.ProductionResponse'
+        description: Production related
+      schoolAddress:
+        description: School address
+        example: 33/33 Sriratch road
+        type: string
+      schoolName:
+        description: School name
+        example: School 1
+        type: string
+      schoolTelephone:
+        description: School telephone
+        example: "0812232212"
+        type: string
+      status:
+        description: Document status (REVIEWING, APPROVED, CANCELED)
+        example: REVIEWING
+        type: string
+      storeName:
+        description: Store name
+        example: Notebook store
+        type: string
+      updatedAt:
+        description: Latest update date
+        example: "2024-12-02T00:26:21.087061Z"
+        type: string
+      userId:
+        description: Owner uuid
+        example: 78705ee5-25cd-45b5-8cb1-63f1cb94e5c8
+        type: string
+    type: object
   dto.ResponseWithToken:
     properties:
       expiredIn:
@@ -284,6 +442,105 @@ paths:
       - JWTToken: []
       tags:
       - login
+  /priceRef:
+    get:
+      consumes:
+      - application/json
+      operationId: GetPriceRefByUserID
+      parameters:
+      - description: User's UUID
+        in: query
+        name: userId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.PriceRefResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JWTToken: []
+      tags:
+      - priceRef
+    post:
+      consumes:
+      - application/json
+      operationId: CreatePriceRef
+      parameters:
+      - description: Create priceRef request
+        in: body
+        name: createPriceRefDTO
+        schema:
+          items:
+            $ref: '#/definitions/dto.CreatePriceRef'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.PriceRefResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - JWTToken: []
+      tags:
+      - priceRef
+  /quotation:
+    get:
+      consumes:
+      - application/json
+      operationId: GetAllQuotation
+      parameters:
+      - in: query
+        name: includeProduction
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.QuotationResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JWTToken: []
+      tags:
+      - quotations
   /school:
     get:
       consumes:

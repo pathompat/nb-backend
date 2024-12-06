@@ -21,6 +21,7 @@ import (
 func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userRepo := repository.NewUserRepository(db)
 	schoolRepo := repository.NewSchoolRepository(db)
+	quotationRepo := repository.NewQuotationRepository(db)
 	priceRefRepo := repository.NewPriceRefRepository(db)
 
 	loginService := service.NewLoginService(userRepo)
@@ -31,6 +32,9 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 
 	schoolService := service.NewSchoolService(schoolRepo, userRepo)
 	schoolHandler := handler.NewSchoolHandler(schoolService)
+
+	quotationService := service.NewQuotationService(quotationRepo)
+	quotationHandler := handler.NewQuotationHandler(quotationService)
 
 	priceRefService := service.NewPriceRefService(priceRefRepo, userRepo)
 	priceRefHandler := handler.NewPriceRefHandler(priceRefService)
@@ -52,6 +56,10 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		schoolRoutes.GET("/", schoolHandler.GetSchoolByUserId)
 		schoolRoutes.POST("/", schoolHandler.CreateSchool)
+	}
+	quotationRoutes := api.Group("/quotation")
+	{
+		quotationRoutes.GET("/", quotationHandler.GetAllQuotation)
 	}
 	priceRefRoutes := api.Group("/priceRef")
 	{
