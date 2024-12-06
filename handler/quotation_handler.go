@@ -39,11 +39,11 @@ func (c *QuotationHandler) GetAllQuotation(ctx *gin.Context) {
 		return
 	}
 
-	school, err := c.service.GetAllQuotation(filter)
+	quotations, err := c.service.GetAllQuotation(filter)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	helper.SuccessResponse(ctx, http.StatusOK, school)
+	helper.SuccessResponse(ctx, http.StatusOK, quotations)
 }
