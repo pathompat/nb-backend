@@ -46,7 +46,7 @@ func (s *loginService) Login(credential dto.Login) (*dto.ResponseWithToken, erro
 		return nil, helper.ErrUnauthorized
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"userId":   user.UserId,
+		"userId":   user.UserID,
 		"username": user.Username,
 		"role":     user.Role,
 		"exp":      time.Now().Add(time.Second * time.Duration(expiredIn)).Unix(),

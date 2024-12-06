@@ -66,6 +66,7 @@ func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.Qu
 		}
 		quotationMap = append(quotationMap, dto.QuotationResponse{
 			ID:              quotation.ID,
+			UserID:          quotation.User.UserID,
 			StoreName:       quotation.StoreName,
 			SchoolName:      quotation.SchoolName,
 			SchoolAddress:   quotation.SchoolAddress,

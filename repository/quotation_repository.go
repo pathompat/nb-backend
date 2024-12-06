@@ -21,7 +21,7 @@ func NewQuotationRepository(db *gorm.DB) QuotationRepository {
 
 func (r *quotationRepository) FindAll(filter dto.QuotationFilter) ([]model.Quotation, error) {
 	var quotations []model.Quotation
-	db := r.db.Preload("Items")
+	db := r.db.Preload("Items").Preload("User")
 	if filter.IncludeProduction {
 		db.Preload("Production").Preload("Production.Items")
 	}

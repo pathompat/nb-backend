@@ -9,6 +9,7 @@ import (
 type Quotation struct {
 	gorm.Model
 	UserID          uint            `gorm:"not null"`
+	User            User            `gorm:"references:ID"`
 	SchoolID        uint            `gorm:"not null"`
 	StoreName       string          `gorm:"not null"`
 	SchoolName      string          `gorm:"not null"`

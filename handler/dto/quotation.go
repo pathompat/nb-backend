@@ -2,6 +2,8 @@ package dto
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type QuotationFilter struct {
@@ -9,18 +11,19 @@ type QuotationFilter struct {
 }
 
 type QuotationResponse struct {
-	ID              uint                `json:"id" example:"1"`                                  // Document id
-	StoreName       string              `json:"storeName" example:"Notebook store"`              // Store name
-	SchoolName      string              `json:"schoolName" example:"School 1"`                   // School name
-	SchoolAddress   string              `json:"schoolAddress" example:"33/33 Sriratch road"`     // School address
-	SchoolTelephone string              `json:"schoolTelephone" example:"0812232212"`            // School telephone
-	AppointmentAt   *time.Time          `json:"appointmentAt" example:"2024-12-02"`              // Appointment date (null is now)
-	DueDateAt       time.Time           `json:"dueDateAt" example:"2024-12-02"`                  // Last due date
-	Status          string              `json:"status" example:"REVIEWING"`                      // Document status (REVIEWING, APPROVED, CANCELED)
-	Production      *ProductionResponse `json:"production,omitempty"`                            // Production related
-	Items           []QuotationItem     `json:"items"`                                           // Quotation product list
-	CreatedAt       time.Time           `json:"createdAt" example:"2024-12-02T00:26:21.087061Z"` // Created date
-	UpdatedAt       time.Time           `json:"updatedAt" example:"2024-12-02T00:26:21.087061Z"` // Latest update date
+	ID              uint                `json:"id" example:"1"`                                        // Document id
+	UserID          uuid.UUID           `json:"userId" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
+	StoreName       string              `json:"storeName" example:"Notebook store"`                    // Store name
+	SchoolName      string              `json:"schoolName" example:"School 1"`                         // School name
+	SchoolAddress   string              `json:"schoolAddress" example:"33/33 Sriratch road"`           // School address
+	SchoolTelephone string              `json:"schoolTelephone" example:"0812232212"`                  // School telephone
+	AppointmentAt   *time.Time          `json:"appointmentAt" example:"2024-12-02"`                    // Appointment date (null is now)
+	DueDateAt       time.Time           `json:"dueDateAt" example:"2024-12-02"`                        // Last due date
+	Status          string              `json:"status" example:"REVIEWING"`                            // Document status (REVIEWING, APPROVED, CANCELED)
+	Production      *ProductionResponse `json:"production,omitempty"`                                  // Production related
+	Items           []QuotationItem     `json:"items"`                                                 // Quotation product list
+	CreatedAt       time.Time           `json:"createdAt" example:"2024-12-02T00:26:21.087061Z"`       // Created date
+	UpdatedAt       time.Time           `json:"updatedAt" example:"2024-12-02T00:26:21.087061Z"`       // Latest update date
 }
 
 type QuotationItem struct {
