@@ -21,6 +21,7 @@ import (
 func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userRepo := repository.NewUserRepository(db)
 	schoolRepo := repository.NewSchoolRepository(db)
+	quotationRepo := repository.NewQuotationRepository(db)
 
 	loginService := service.NewLoginService(userRepo)
 	loginHandler := handler.NewLoginHandler(loginService)
@@ -30,6 +31,9 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 
 	schoolService := service.NewSchoolService(schoolRepo, userRepo)
 	schoolHandler := handler.NewSchoolHandler(schoolService)
+
+	quotationService := service.NewQuotationService(quotationRepo)
+	quotationHandler := handler.NewQuotationHandler(quotationService)
 
 	api := r.Group("/api")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -48,6 +52,10 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		schoolRoutes.GET("/", schoolHandler.GetSchoolByUserId)
 		schoolRoutes.POST("/", schoolHandler.CreateSchool)
+	}
+	quotationRoutes := api.Group("/quotation")
+	{
+		quotationRoutes.GET("/", quotationHandler.GetAllQuotation)
 	}
 }
 
