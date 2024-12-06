@@ -12,7 +12,7 @@ type CreateSchool struct {
 }
 
 type SchoolResponse struct {
-	ID        uint      `json:"id" example:"1"`                                  // name
+	ID        uint      `json:"id" example:"1"`                                  // id
 	Name      string    `json:"name" example:"school 1"`                         // name
 	Address   string    `json:"address" example:"22/11 test address"`            // address
 	Telephone string    `json:"telephone" example:"0815231112"`                  // User tier (1,2,3)
