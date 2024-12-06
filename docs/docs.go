@@ -68,6 +68,124 @@ const docTemplate = `{
                 }
             }
         },
+        "/priceRef": {
+            "get": {
+                "security": [
+                    {
+                        "JWTToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "priceRef"
+                ],
+                "operationId": "GetPriceRefByUserID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User's UUID",
+                        "name": "userId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/dto.PriceRefResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "priceRef"
+                ],
+                "operationId": "CreatePriceRef",
+                "parameters": [
+                    {
+                        "description": "Create priceRef request",
+                        "name": "createPriceRefDTO",
+                        "in": "body",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CreatePriceRef"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/dto.PriceRefResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/quotation": {
             "get": {
                 "security": [
@@ -657,6 +775,213 @@ const docTemplate = `{
                     "description": "ProductTitle",
                     "type": "string",
                     "example": "cut8"
+                }
+            }
+        },
+        "dto.ProductionItem": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color (1,4)",
+                    "type": "string",
+                    "example": "1"
+                },
+                "createdAt": {
+                    "description": "Created date",
+                    "type": "string",
+                    "example": "2024-12-02T00:26:21.087061Z"
+                },
+                "gram": {
+                    "description": "Notebook grams (40-150)",
+                    "type": "integer",
+                    "example": 40
+                },
+                "hasReference": {
+                    "description": "Has reference",
+                    "type": "boolean",
+                    "example": false
+                },
+                "page": {
+                    "description": "Page count (30-80)",
+                    "type": "integer",
+                    "example": 40
+                },
+                "pattern": {
+                    "description": "Page pattern",
+                    "type": "string",
+                    "example": "TABLE"
+                },
+                "plate": {
+                    "description": "Plate size (LARGE, SMALL)",
+                    "type": "string",
+                    "example": "LARGE"
+                },
+                "productTitle": {
+                    "description": "Product name",
+                    "type": "string",
+                    "example": "Cut 8"
+                },
+                "quantity": {
+                    "description": "Product quantity",
+                    "type": "integer",
+                    "example": 1000
+                },
+                "status": {
+                    "description": "Production status",
+                    "type": "string",
+                    "example": "PRINTING"
+                },
+                "updatedAt": {
+                    "description": "Updated date",
+                    "type": "string",
+                    "example": "2024-12-02T00:26:21.087061Z"
+                }
+            }
+        },
+        "dto.ProductionResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Document id",
+                    "type": "integer",
+                    "example": 1
+                },
+                "items": {
+                    "description": "Related items",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ProductionItem"
+                    }
+                },
+                "remark": {
+                    "description": "Document remark",
+                    "type": "string",
+                    "example": "test 123"
+                }
+            }
+        },
+        "dto.QuotationItem": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color (1,4)",
+                    "type": "string",
+                    "example": "1"
+                },
+                "gram": {
+                    "description": "Notebook grams (40-150)",
+                    "type": "integer",
+                    "example": 40
+                },
+                "hasReference": {
+                    "description": "Has reference",
+                    "type": "boolean",
+                    "example": false
+                },
+                "page": {
+                    "description": "Page count (30-80)",
+                    "type": "integer",
+                    "example": 40
+                },
+                "pattern": {
+                    "description": "Page pattern",
+                    "type": "string",
+                    "example": "TABLE"
+                },
+                "plate": {
+                    "description": "Plate size (LARGE, SMALL)",
+                    "type": "string",
+                    "example": "LARGE"
+                },
+                "price": {
+                    "description": "Product price",
+                    "type": "number",
+                    "example": 5.5
+                },
+                "productTitle": {
+                    "description": "Product name",
+                    "type": "string",
+                    "example": "Cut 8"
+                },
+                "quantity": {
+                    "description": "Product quantity",
+                    "type": "integer",
+                    "example": 1000
+                }
+            }
+        },
+        "dto.QuotationResponse": {
+            "type": "object",
+            "properties": {
+                "appointmentAt": {
+                    "description": "Appointment date (null is now)",
+                    "type": "string",
+                    "example": "2024-12-02"
+                },
+                "createdAt": {
+                    "description": "Created date",
+                    "type": "string",
+                    "example": "2024-12-02T00:26:21.087061Z"
+                },
+                "dueDateAt": {
+                    "description": "Last due date",
+                    "type": "string",
+                    "example": "2024-12-02"
+                },
+                "id": {
+                    "description": "Document id",
+                    "type": "integer",
+                    "example": 1
+                },
+                "items": {
+                    "description": "Quotation product list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationItem"
+                    }
+                },
+                "production": {
+                    "description": "Production related",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.ProductionResponse"
+                        }
+                    ]
+                },
+                "schoolAddress": {
+                    "description": "School address",
+                    "type": "string",
+                    "example": "33/33 Sriratch road"
+                },
+                "schoolName": {
+                    "description": "School name",
+                    "type": "string",
+                    "example": "School 1"
+                },
+                "schoolTelephone": {
+                    "description": "School telephone",
+                    "type": "string",
+                    "example": "0812232212"
+                },
+                "status": {
+                    "description": "Document status (REVIEWING, APPROVED, CANCELED)",
+                    "type": "string",
+                    "example": "REVIEWING"
+                },
+                "storeName": {
+                    "description": "Store name",
+                    "type": "string",
+                    "example": "Notebook store"
+                },
+                "updatedAt": {
+                    "description": "Latest update date",
+                    "type": "string",
+                    "example": "2024-12-02T00:26:21.087061Z"
+                },
+                "userId": {
+                    "description": "Owner uuid",
+                    "type": "string",
+                    "example": "78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"
                 }
             }
         },
