@@ -1,4 +1,43 @@
 definitions:
+  dto.CreatePriceRef:
+    properties:
+      color:
+        description: Color
+        example: "1"
+        type: string
+      gram:
+        description: Gram
+        example: 12
+        type: integer
+      hasReference:
+        description: HasReference
+        example: false
+        type: boolean
+      page:
+        description: Page
+        example: 30
+        type: integer
+      pattern:
+        description: Pattern
+        example: TABLE
+        type: string
+      plate:
+        description: Plate
+        example: LARGE
+        type: string
+      priceRef:
+        description: Price
+        example: 5.5
+        type: number
+      productTitle:
+        description: ProductTitle
+        example: cut8
+        type: string
+      tierId:
+        description: TierID
+        example: 1
+        type: integer
+    type: object
   dto.CreateSchool:
     properties:
       address:
@@ -62,6 +101,41 @@ definitions:
     - password
     - username
     type: object
+  dto.PriceRefResponse:
+    properties:
+      color:
+        description: Color
+        example: "1"
+        type: string
+      gram:
+        description: Gram
+        example: 12
+        type: integer
+      hasReference:
+        description: HasReference
+        example: false
+        type: boolean
+      page:
+        description: Page
+        example: 30
+        type: integer
+      pattern:
+        description: Pattern
+        example: TABLE
+        type: string
+      plate:
+        description: Plate
+        example: LARGE
+        type: string
+      priceRef:
+        description: Price
+        example: 5.5
+        type: number
+      productTitle:
+        description: ProductTitle
+        example: cut8
+        type: string
+    type: object
   dto.ResponseWithToken:
     properties:
       expiredIn:
@@ -83,6 +157,10 @@ definitions:
         description: Created user date
         example: "2024-12-02T00:26:21.087061Z"
         type: string
+      id:
+        description: id
+        example: 1
+        type: integer
       name:
         description: name
         example: school 1
