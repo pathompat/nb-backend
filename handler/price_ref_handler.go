@@ -31,7 +31,7 @@ func NewPriceRefHandler(service service.PriceRefService) *PriceRefHandler {
 // @response 400 "Bad request"
 // @response 401 "Unauthorized"
 //
-// @router			/school [GET]
+// @router			/priceRef [GET]
 func (c *PriceRefHandler) GetPriceRefByUserID(ctx *gin.Context) {
 	userID := ctx.Query("userId")
 
@@ -59,7 +59,7 @@ func (c *PriceRefHandler) GetPriceRefByUserID(ctx *gin.Context) {
 // @response 401 "Unauthorized"
 // @response 500 "Internal Server Error"
 //
-//	@router			/school [POST]
+//	@router			/priceRef [POST]
 func (c *PriceRefHandler) CreatePriceRef(ctx *gin.Context) {
 	var priceRefInput []dto.CreatePriceRef
 	if err := ctx.ShouldBindJSON(&priceRefInput); err != nil {
