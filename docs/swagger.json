@@ -423,6 +423,56 @@
         }
     },
     "definitions": {
+        "dto.CreatePriceRef": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color",
+                    "type": "string",
+                    "example": "1"
+                },
+                "gram": {
+                    "description": "Gram",
+                    "type": "integer",
+                    "example": 12
+                },
+                "hasReference": {
+                    "description": "HasReference",
+                    "type": "boolean",
+                    "example": false
+                },
+                "page": {
+                    "description": "Page",
+                    "type": "integer",
+                    "example": 30
+                },
+                "pattern": {
+                    "description": "Pattern",
+                    "type": "string",
+                    "example": "TABLE"
+                },
+                "plate": {
+                    "description": "Plate",
+                    "type": "string",
+                    "example": "LARGE"
+                },
+                "priceRef": {
+                    "description": "Price",
+                    "type": "number",
+                    "example": 5.5
+                },
+                "productTitle": {
+                    "description": "ProductTitle",
+                    "type": "string",
+                    "example": "cut8"
+                },
+                "tierId": {
+                    "description": "TierID",
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
         "dto.CreateSchool": {
             "type": "object",
             "required": [
@@ -505,6 +555,51 @@
                 }
             }
         },
+        "dto.PriceRefResponse": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color",
+                    "type": "string",
+                    "example": "1"
+                },
+                "gram": {
+                    "description": "Gram",
+                    "type": "integer",
+                    "example": 12
+                },
+                "hasReference": {
+                    "description": "HasReference",
+                    "type": "boolean",
+                    "example": false
+                },
+                "page": {
+                    "description": "Page",
+                    "type": "integer",
+                    "example": 30
+                },
+                "pattern": {
+                    "description": "Pattern",
+                    "type": "string",
+                    "example": "TABLE"
+                },
+                "plate": {
+                    "description": "Plate",
+                    "type": "string",
+                    "example": "LARGE"
+                },
+                "priceRef": {
+                    "description": "Price",
+                    "type": "number",
+                    "example": 5.5
+                },
+                "productTitle": {
+                    "description": "ProductTitle",
+                    "type": "string",
+                    "example": "cut8"
+                }
+            }
+        },
         "dto.ResponseWithToken": {
             "type": "object",
             "properties": {
@@ -532,6 +627,11 @@
                     "description": "Created user date",
                     "type": "string",
                     "example": "2024-12-02T00:26:21.087061Z"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
                     "description": "name",
