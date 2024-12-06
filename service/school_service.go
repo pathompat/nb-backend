@@ -45,6 +45,7 @@ func (s *schoolService) GetSchoolByUserId(userId string) ([]dto.SchoolResponse, 
 	schoolMap := []dto.SchoolResponse{}
 	for _, school := range schools {
 		schoolMap = append(schoolMap, dto.SchoolResponse{
+			ID:        school.ID,
 			Name:      school.Name,
 			Address:   school.Address,
 			Telephone: school.Telephone,
