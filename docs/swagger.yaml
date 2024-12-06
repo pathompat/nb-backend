@@ -1,4 +1,43 @@
 definitions:
+  dto.CreatePriceRef:
+    properties:
+      color:
+        description: Color
+        example: "1"
+        type: string
+      gram:
+        description: Gram
+        example: 12
+        type: integer
+      hasReference:
+        description: HasReference
+        example: false
+        type: boolean
+      page:
+        description: Page
+        example: 30
+        type: integer
+      pattern:
+        description: Pattern
+        example: TABLE
+        type: string
+      plate:
+        description: Plate
+        example: LARGE
+        type: string
+      priceRef:
+        description: Price
+        example: 5.5
+        type: number
+      productTitle:
+        description: ProductTitle
+        example: cut8
+        type: string
+      tierId:
+        description: TierID
+        example: 1
+        type: integer
+    type: object
   dto.CreateSchool:
     properties:
       address:
@@ -62,158 +101,39 @@ definitions:
     - password
     - username
     type: object
-  dto.ProductionItem:
+  dto.PriceRefResponse:
     properties:
       color:
-        description: Color (1,4)
-        example: "1"
-        type: string
-      createdAt:
-        description: Created date
-        example: "2024-12-02T00:26:21.087061Z"
-        type: string
-      gram:
-        description: Notebook grams (40-150)
-        example: 40
-        type: integer
-      hasReference:
-        description: Has reference
-        example: false
-        type: boolean
-      page:
-        description: Page count (30-80)
-        example: 40
-        type: integer
-      pattern:
-        description: Page pattern
-        example: TABLE
-        type: string
-      plate:
-        description: Plate size (LARGE, SMALL)
-        example: LARGE
-        type: string
-      productTitle:
-        description: Product name
-        example: Cut 8
-        type: string
-      quantity:
-        description: Product quantity
-        example: 1000
-        type: integer
-      status:
-        description: Production status
-        example: PRINTING
-        type: string
-      updatedAt:
-        description: Updated date
-        example: "2024-12-02T00:26:21.087061Z"
-        type: string
-    type: object
-  dto.ProductionResponse:
-    properties:
-      id:
-        description: Document id
-        example: 1
-        type: integer
-      items:
-        description: Related items
-        items:
-          $ref: '#/definitions/dto.ProductionItem'
-        type: array
-      remark:
-        description: Document remark
-        example: test 123
-        type: string
-    type: object
-  dto.QuotationItem:
-    properties:
-      color:
-        description: Color (1,4)
+        description: Color
         example: "1"
         type: string
       gram:
-        description: Notebook grams (40-150)
-        example: 40
+        description: Gram
+        example: 12
         type: integer
       hasReference:
-        description: Has reference
+        description: HasReference
         example: false
         type: boolean
       page:
-        description: Page count (30-80)
-        example: 40
+        description: Page
+        example: 30
         type: integer
       pattern:
-        description: Page pattern
+        description: Pattern
         example: TABLE
         type: string
       plate:
-        description: Plate size (LARGE, SMALL)
+        description: Plate
         example: LARGE
         type: string
-      price:
-        description: Product price
+      priceRef:
+        description: Price
         example: 5.5
         type: number
       productTitle:
-        description: Product name
-        example: Cut 8
-        type: string
-      quantity:
-        description: Product quantity
-        example: 1000
-        type: integer
-    type: object
-  dto.QuotationResponse:
-    properties:
-      appointmentAt:
-        description: Appointment date (null is now)
-        example: "2024-12-02"
-        type: string
-      createdAt:
-        description: Created date
-        example: "2024-12-02T00:26:21.087061Z"
-        type: string
-      dueDateAt:
-        description: Last due date
-        example: "2024-12-02"
-        type: string
-      id:
-        description: Document id
-        example: 1
-        type: integer
-      items:
-        description: Quotation product list
-        items:
-          $ref: '#/definitions/dto.QuotationItem'
-        type: array
-      production:
-        allOf:
-        - $ref: '#/definitions/dto.ProductionResponse'
-        description: Production related
-      schoolAddress:
-        description: School address
-        example: 33/33 Sriratch road
-        type: string
-      schoolName:
-        description: School name
-        example: School 1
-        type: string
-      schoolTelephone:
-        description: School telephone
-        example: "0812232212"
-        type: string
-      status:
-        description: Document status (REVIEWING, APPROVED, CANCELED)
-        example: REVIEWING
-        type: string
-      storeName:
-        description: Store name
-        example: Notebook store
-        type: string
-      updatedAt:
-        description: Latest update date
-        example: "2024-12-02T00:26:21.087061Z"
+        description: ProductTitle
+        example: cut8
         type: string
     type: object
   dto.ResponseWithToken:
@@ -237,6 +157,10 @@ definitions:
         description: Created user date
         example: "2024-12-02T00:26:21.087061Z"
         type: string
+      id:
+        description: id
+        example: 1
+        type: integer
       name:
         description: name
         example: school 1

@@ -13,7 +13,7 @@ type User struct {
 	Username  string    `gorm:"not null"`
 	StoreName string    `gorm:"not null"`
 	Password  string    `gorm:"not null"`
-	Role      string    `gorm:"not null;default:COSTOMER"`
+	Role      string    `gorm:"not null;default:CUSTOMER"`
 	TierID    int       `gorm:"not null"`
 	CreatedAt time.Time `gorm:"not null"`
 	UpdatedAt time.Time `gorm:"not null"`
