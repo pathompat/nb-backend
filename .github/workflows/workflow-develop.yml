@@ -74,34 +74,70 @@ jobs:
       run: |
         docker push $IMAGE_URL:$IMAGE_TAG
 
-  deploy-to-staging:
+  # deploy-to-staging:
+  #   runs-on: ubuntu-latest
+  #   needs: image-upload
+  #   environment: develop
+  #   env:
+  #     GCE_INSTANCE: ${{ vars.GCE_INSTANCE }}
+  #     GCE_ZONE: ${{ vars.GCE_ZONE }}
+  #   steps:
+  #   - name: Authenticate with Google Cloud
+  #     uses: google-github-actions/auth@v1
+  #     with:
+  #       credentials_json: ${{ secrets.GCE_SA_KEY }}
+  #   - run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+  #   - name: Deploy Docker container to GCE
+  #     run: |
+  #       gcloud compute ssh $GCE_INSTANCE --zone=$GCE_ZONE --command="
+  #         sudo docker pull $IMAGE_URL:$IMAGE_TAG &&
+  #         sudo docker stop nb-backend || true &&
+  #         sudo docker rm nb-backend || true &&
+  #         sudo docker run -d --name nb-backend -p 8080:8080 \
+  #           -e GIN_MODE=${{ secrets.GIN_MODE }} \
+  #           -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+  #           -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+  #           -e DB_HOST=${{ secrets.DB_HOST }} \
+  #           -e DB_PORT=${{ secrets.DB_PORT }} \
+  #           -e DB_NAME=${{ secrets.DB_NAME }} \
+  #           -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+  #           -e JWT_EXPIRED_IN=${{ secrets.JWT_EXPIRED_IN }} \
+  #           $IMAGE_URL:$IMAGE_TAG
+  #       "
+
+  deploy-to-staging-temp:
     runs-on: ubuntu-latest
     needs: image-upload
     environment: develop
-    env:
-      GCE_INSTANCE: ${{ vars.GCE_INSTANCE }}
-      GCE_ZONE: ${{ vars.GCE_ZONE }}
     steps:
-    - name: Authenticate with Google Cloud
-      uses: google-github-actions/auth@v1
-      with:
-        credentials_json: ${{ secrets.GCE_SA_KEY }}
-    - run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
-
-    - name: Deploy Docker container to GCE
-      run: |
-        gcloud compute ssh $GCE_INSTANCE --zone=$GCE_ZONE --command="
-          sudo docker pull $IMAGE_URL:$IMAGE_TAG &&
-          sudo docker stop nb-backend || true &&
-          sudo docker rm nb-backend || true &&
-          sudo docker run -d --name nb-backend -p 8080:8080 \
-            -e GIN_MODE=${{ secrets.GIN_MODE }} \
-            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-            -e DB_HOST=${{ secrets.DB_HOST }} \
-            -e DB_PORT=${{ secrets.DB_PORT }} \
-            -e DB_NAME=${{ secrets.DB_NAME }} \
-            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -e JWT_EXPIRED_IN=${{ secrets.JWT_EXPIRED_IN }} \
-            $IMAGE_URL:$IMAGE_TAG
-        "
+      - name: executing remote ssh commands using ssh key
+        env:
+          GIN_MODE: ${{ secrets.GIN_MODE }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRED_IN: ${{ secrets.JWT_EXPIRED_IN }}
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.TEMP_SSH_HOST }}
+          username: ${{ secrets.TEMP_SSH_USERNAME }}
+          key: ${{ secrets.TEMP_SSH_KEY }}
+          envs: IMAGE_URL,IMAGE_TAG,GIN_MODE,DB_USERNAME,DB_PASSWORD,DB_HOST,DB_NAME,JWT_SECRET,JWT_EXPIRED_IN
+          script: |
+            echo "update docker image: $IMAGE_URL:$IMAGE_TAG"
+            sudo docker pull $IMAGE_URL:$IMAGE_TAG
+            sudo docker stop nb-backend
+            sudo docker rm nb-backend
+            sudo docker run -d --name nb-backend -p 8080:8080 \
+              -e GIN_MODE=$GIN_MODE \
+              -e DB_USERNAME=$DB_USERNAME \
+              -e DB_PASSWORD=$DB_PASSWORD \
+              -e DB_HOST=$DB_HOST \
+              -e DB_PORT=$DB_PORT \
+              -e DB_NAME=$DB_NAME \
+              -e JWT_SECRET=$JWT_SECRET \
+              -e JWT_EXPIRED_IN=$JWT_EXPIRED_IN \
+              $IMAGE_URL:$IMAGE_TAG
