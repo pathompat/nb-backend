@@ -239,6 +239,59 @@ const docTemplate = `{
                         "description": "Unauthorized"
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JWTToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quotations"
+                ],
+                "operationId": "CreateQuotation",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "createQuotationDTO",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateQuotation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.QuotationResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
             }
         },
         "/school": {
@@ -651,6 +704,49 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.CreateQuotation": {
+            "type": "object",
+            "required": [
+                "dueDateAt",
+                "items",
+                "schoolId",
+                "userId"
+            ],
+            "properties": {
+                "appointmentAt": {
+                    "description": "Appointment date (null is now)",
+                    "type": "string",
+                    "example": "2024-12-00:00:00.0000+07:00"
+                },
+                "dueDateAt": {
+                    "description": "Last due date",
+                    "type": "string",
+                    "example": "2024-12-06"
+                },
+                "items": {
+                    "description": "Quotation product list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationItem"
+                    }
+                },
+                "remark": {
+                    "description": "Any remark",
+                    "type": "string",
+                    "example": "remark test"
+                },
+                "schoolId": {
+                    "description": "School id",
+                    "type": "integer",
+                    "example": 2
+                },
+                "userId": {
+                    "description": "Owner uuid                  // Store name",
+                    "type": "string",
+                    "example": "78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"
+                }
+            }
+        },
         "dto.CreateSchool": {
             "type": "object",
             "required": [
@@ -789,7 +885,7 @@ const docTemplate = `{
                 "createdAt": {
                     "description": "Created date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 },
                 "gram": {
                     "description": "Notebook grams (40-150)",
@@ -834,7 +930,7 @@ const docTemplate = `{
                 "updatedAt": {
                     "description": "Updated date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 }
             }
         },
@@ -862,6 +958,14 @@ const docTemplate = `{
         },
         "dto.QuotationItem": {
             "type": "object",
+            "required": [
+                "color",
+                "hasReference",
+                "pattern",
+                "price",
+                "productTitle",
+                "quantity"
+            ],
             "properties": {
                 "color": {
                     "description": "Color (1,4)",
@@ -906,6 +1010,7 @@ const docTemplate = `{
                 "quantity": {
                     "description": "Product quantity",
                     "type": "integer",
+                    "minimum": 1,
                     "example": 1000
                 }
             }
@@ -921,7 +1026,7 @@ const docTemplate = `{
                 "createdAt": {
                     "description": "Created date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 },
                 "dueDateAt": {
                     "description": "Last due date",
@@ -947,6 +1052,11 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.ProductionResponse"
                         }
                     ]
+                },
+                "remark": {
+                    "description": "Document remark",
+                    "type": "string",
+                    "example": "test remark"
                 },
                 "schoolAddress": {
                     "description": "School address",
@@ -976,7 +1086,7 @@ const docTemplate = `{
                 "updatedAt": {
                     "description": "Latest update date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 },
                 "userId": {
                     "description": "Owner uuid",
@@ -1011,7 +1121,7 @@ const docTemplate = `{
                 "createdAt": {
                     "description": "Created user date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 },
                 "id": {
                     "description": "id",
@@ -1031,7 +1141,7 @@ const docTemplate = `{
                 "updatedAt": {
                     "description": "Latest update user date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 }
             }
         },
@@ -1072,7 +1182,7 @@ const docTemplate = `{
                 "createdAt": {
                     "description": "Created user date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 },
                 "id": {
                     "description": "UUID generate from database",
@@ -1097,7 +1207,7 @@ const docTemplate = `{
                 "updatedAt": {
                     "description": "Latest update user date",
                     "type": "string",
-                    "example": "2024-12-02T00:26:21.087061Z"
+                    "example": "2024-12-07T19:04:39.70268+07:00"
                 },
                 "username": {
                     "description": "Username",
