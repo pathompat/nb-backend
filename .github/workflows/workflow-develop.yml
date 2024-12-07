@@ -48,8 +48,8 @@ jobs:
     needs: test
     environment: develop
     env:
-      GCE_INSTANCE: "nb-service-staging"
-      GCE_ZONE: "us-central1-c"
+      GCE_INSTANCE: ${{ vars.GCE_INSTANCE }}
+      GCE_ZONE: ${{ vars.GCE_ZONE }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
