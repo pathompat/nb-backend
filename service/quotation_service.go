@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	Q_STAT_REVIEWED string = "REVIEWED"
-	Q_STAT_APPROVED string = "APPROVED"
-	Q_STAT_CANCELED string = "CANCELED"
+	Q_STAT_REVIEWING string = "REVIEWING"
+	Q_STAT_APPROVED  string = "APPROVED"
+	Q_STAT_CANCELED  string = "CANCELED"
 )
 
 type QuotationService interface {
@@ -129,7 +129,7 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 		SchoolTelephone: school.Telephone,
 		AppointmentAt:   input.AppointmentAt,
 		DueDateAt:       input.DueDateAt,
-		Status:          Q_STAT_REVIEWED,
+		Status:          Q_STAT_REVIEWING,
 		Remark:          input.Remark,
 		Items:           items,
 	}
