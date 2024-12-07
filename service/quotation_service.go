@@ -3,18 +3,28 @@ package service
 import (
 	"notebook-backend/handler/dto"
 	"notebook-backend/repository"
+	"notebook-backend/repository/model"
+)
+
+const (
+	Q_STAT_REVIEWED string = "REVIEWED"
+	Q_STAT_APPROVED string = "APPROVED"
+	Q_STAT_CANCELED string = "CANCELED"
 )
 
 type QuotationService interface {
 	GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
+	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 }
 
 type quotationService struct {
 	quotationRepo repository.QuotationRepository
+	userRepo      repository.UserRepository
+	schoolRepo    repository.SchoolRepository
 }
 
-func NewQuotationService(quotationRepo repository.QuotationRepository) QuotationService {
-	return &quotationService{quotationRepo: quotationRepo}
+func NewQuotationService(quotationRepo repository.QuotationRepository, userRepo repository.UserRepository, schoolRepo repository.SchoolRepository) QuotationService {
+	return &quotationService{quotationRepo: quotationRepo, userRepo: userRepo, schoolRepo: schoolRepo}
 }
 
 func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
@@ -34,7 +44,7 @@ func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.Qu
 				Color:        item.Color,
 				Page:         item.Page,
 				Pattern:      item.Pattern,
-				HasReference: item.HasReference,
+				HasReference: &item.HasReference,
 				Quantity:     item.Quantity,
 				Price:        item.Price,
 			})
@@ -82,4 +92,65 @@ func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.Qu
 
 	}
 	return quotationMap, nil
+}
+
+func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error) {
+	user, err := s.userRepo.FindByID(input.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	school, err := s.schoolRepo.FindById(input.SchoolID)
+	if err != nil {
+		return nil, err
+	}
+
+	items := []model.QuotationItem{}
+	for _, item := range input.Items {
+		items = append(items, model.QuotationItem{
+			ProductTitle: item.ProductTitle,
+			Plate:        item.Plate,
+			Gram:         item.Gram,
+			Color:        item.Color,
+			Page:         item.Page,
+			Pattern:      item.Pattern,
+			HasReference: *item.HasReference,
+			Quantity:     item.Quantity,
+			Price:        item.Price,
+		})
+	}
+
+	quotationMap := model.Quotation{
+		UserID:          user.ID,
+		StoreName:       user.StoreName,
+		SchoolID:        school.ID,
+		SchoolName:      school.Name,
+		SchoolAddress:   school.Address,
+		SchoolTelephone: school.Telephone,
+		AppointmentAt:   input.AppointmentAt,
+		DueDateAt:       input.DueDateAt,
+		Status:          Q_STAT_REVIEWED,
+		Remark:          input.Remark,
+		Items:           items,
+	}
+
+	createdQuotation, err := s.quotationRepo.Create(quotationMap)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.QuotationResponse{
+		UserID:          user.UserID,
+		StoreName:       user.StoreName,
+		SchoolName:      school.Name,
+		SchoolAddress:   school.Address,
+		SchoolTelephone: school.Telephone,
+		AppointmentAt:   createdQuotation.AppointmentAt,
+		DueDateAt:       createdQuotation.DueDateAt,
+		Status:          createdQuotation.Status,
+		Remark:          createdQuotation.Remark,
+		Items:           input.Items,
+		CreatedAt:       createdQuotation.CreatedAt,
+		UpdatedAt:       createdQuotation.UpdatedAt,
+	}, nil
 }

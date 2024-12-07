@@ -47,3 +47,34 @@ func (c *QuotationHandler) GetAllQuotation(ctx *gin.Context) {
 
 	helper.SuccessResponse(ctx, http.StatusOK, quotations)
 }
+
+// QuotationHandler CreateQuotation
+//
+// @id				CreateQuotation
+// @tags			quotations
+// @security	JWTToken
+// @accept		json
+// @produce		json
+//
+// @Param			createQuotationDTO body dto.CreateQuotation false "Request"
+//
+// @response 201 {object} helper.ApiSuccessResponse{data=dto.QuotationResponse} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+// @router			/quotation [POST]
+func (c *QuotationHandler) CreateQuotation(ctx *gin.Context) {
+	var request dto.CreateQuotation
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	quotation, err := c.service.CreateQuotation(request)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusCreated, quotation)
+}
