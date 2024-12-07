@@ -9,6 +9,7 @@ import (
 
 type QuotationRepository interface {
 	FindAll(filter dto.QuotationFilter) ([]model.Quotation, error)
+	Create(quotation model.Quotation) (*model.Quotation, error)
 }
 
 type quotationRepository struct {
@@ -29,4 +30,12 @@ func (r *quotationRepository) FindAll(filter dto.QuotationFilter) ([]model.Quota
 		return nil, err
 	}
 	return quotations, nil
+}
+
+func (r *quotationRepository) Create(quotation model.Quotation) (*model.Quotation, error) {
+	err := r.db.Create(&quotation).Error
+	if err != nil {
+		return nil, err
+	}
+	return &quotation, nil
 }

@@ -17,11 +17,11 @@ func NewLoginHandler(service service.LoginService) *LoginHandler {
 	return &LoginHandler{service: service}
 }
 
-// LoginHandler godoc
+// LoginHandler Login
 //
 // @id				Login
 // @tags			login
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -31,7 +31,7 @@ func NewLoginHandler(service service.LoginService) *LoginHandler {
 // @response 400 "Bad request"
 // @response 401 "Unauthorized"
 //
-//	@router			/api/login [POST]
+//	@router			/login [POST]
 func (c *LoginHandler) Login(ctx *gin.Context) {
 	var credential dto.Login
 	if err := ctx.ShouldBindJSON(&credential); err != nil {

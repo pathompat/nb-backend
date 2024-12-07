@@ -15,10 +15,10 @@ type Quotation struct {
 	SchoolName      string          `gorm:"not null"`
 	SchoolAddress   string          `gorm:"not null"`
 	SchoolTelephone string          `gorm:"not null"`
-	AppointmentAt   *time.Time      `gorm:"not null"`
-	DueDateAt       time.Time       `gorm:"column:duedate_at, not null"`
-	Status          string          `gorm:"not null"`
-	Remark          string          `gorm:"not null"`
+	AppointmentAt   *time.Time      `gorm:"default:null"`
+	DueDateAt       time.Time       `gorm:"not null;column:duedate_at"`
+	Status          string          `gorm:"not null;default:'REVIEWING'"`
+	Remark          string          `gorm:"default:null"`
 	Production      Production      `gorm:"foreignKey:QuotationID"`
 	Items           []QuotationItem `gorm:"foreignKey:QuotationID"`
 }

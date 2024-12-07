@@ -17,11 +17,11 @@ func NewPriceRefHandler(service service.PriceRefService) *PriceRefHandler {
 	return &PriceRefHandler{service: service}
 }
 
-// PriceRefHandler godoc
+// PriceRefHandler GetPriceRefByUserID
 //
 // @id				GetPriceRefByUserID
-// @tags			priceRef
-// @security	JWTToken
+// @tags			priceReferences
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -44,11 +44,11 @@ func (c *PriceRefHandler) GetPriceRefByUserID(ctx *gin.Context) {
 	helper.SuccessResponse(ctx, http.StatusOK, school)
 }
 
-// PriceRefHandler godoc
+// PriceRefHandler CreatePriceRef
 //
 // @id				CreatePriceRef
-// @tags			priceRef
-// @security	JWTToken
+// @tags			priceReferences
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //

@@ -19,11 +19,11 @@ func NewUserHandler(service service.UserService) *UserHandler {
 	return &UserHandler{service: service}
 }
 
-// UserHandler godoc
+// UserHandler GetAllUsers
 //
 // @id				GetAllUsers
 // @tags			users
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -46,7 +46,7 @@ func (c *UserHandler) GetAllUsers(ctx *gin.Context) {
 //
 // @id				GetInfoUser
 // @tags			users
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -76,7 +76,7 @@ func (c *UserHandler) GetInfoUser(ctx *gin.Context) {
 //
 // @id				CreateUser
 // @tags			users
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -104,11 +104,11 @@ func (c *UserHandler) CreateUser(ctx *gin.Context) {
 	helper.SuccessResponse(ctx, http.StatusCreated, user)
 }
 
-// UserHandler godoc
+// UserHandler UpdateUser
 //
 // @id				UpdateUser
 // @tags			users
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -138,11 +138,11 @@ func (c *UserHandler) UpdateUser(ctx *gin.Context) {
 	helper.SuccessResponse(ctx, http.StatusOK, user)
 }
 
-// UserHandler godoc
+// UserHandler DeleteUser
 //
 // @id				DeleteUser
 // @tags			users
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //

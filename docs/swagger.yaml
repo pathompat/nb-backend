@@ -1,3 +1,4 @@
+basePath: /api
 definitions:
   dto.CreatePriceRef:
     properties:
@@ -37,6 +38,39 @@ definitions:
         description: TierID
         example: 1
         type: integer
+    type: object
+  dto.CreateQuotation:
+    properties:
+      appointmentAt:
+        description: Appointment date (null is now)
+        example: 2024-12-00:00:00.0000+07:00
+        type: string
+      dueDateAt:
+        description: Last due date
+        example: "2024-12-06"
+        type: string
+      items:
+        description: Quotation product list
+        items:
+          $ref: '#/definitions/dto.QuotationItem'
+        type: array
+      remark:
+        description: Any remark
+        example: remark test
+        type: string
+      schoolId:
+        description: School id
+        example: 2
+        type: integer
+      userId:
+        description: Owner uuid
+        example: 78705ee5-25cd-45b5-8cb1-63f1cb94e5c8
+        type: string
+    required:
+    - dueDateAt
+    - items
+    - schoolId
+    - userId
     type: object
   dto.CreateSchool:
     properties:
@@ -144,7 +178,7 @@ definitions:
         type: string
       createdAt:
         description: Created date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
       gram:
         description: Notebook grams (40-150)
@@ -180,7 +214,7 @@ definitions:
         type: string
       updatedAt:
         description: Updated date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
     type: object
   dto.ProductionResponse:
@@ -236,7 +270,15 @@ definitions:
       quantity:
         description: Product quantity
         example: 1000
+        minimum: 1
         type: integer
+    required:
+    - color
+    - hasReference
+    - pattern
+    - price
+    - productTitle
+    - quantity
     type: object
   dto.QuotationResponse:
     properties:
@@ -246,7 +288,7 @@ definitions:
         type: string
       createdAt:
         description: Created date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
       dueDateAt:
         description: Last due date
@@ -265,6 +307,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/dto.ProductionResponse'
         description: Production related
+      remark:
+        description: Document remark
+        example: test remark
+        type: string
       schoolAddress:
         description: School address
         example: 33/33 Sriratch road
@@ -287,7 +333,7 @@ definitions:
         type: string
       updatedAt:
         description: Latest update date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
       userId:
         description: Owner uuid
@@ -313,7 +359,7 @@ definitions:
         type: string
       createdAt:
         description: Created user date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
       id:
         description: id
@@ -329,7 +375,7 @@ definitions:
         type: string
       updatedAt:
         description: Latest update user date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
     type: object
   dto.UpdateUser:
@@ -360,7 +406,7 @@ definitions:
     properties:
       createdAt:
         description: Created user date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
       id:
         description: UUID generate from database
@@ -380,7 +426,7 @@ definitions:
         type: integer
       updatedAt:
         description: Latest update user date
-        example: "2024-12-02T00:26:21.087061Z"
+        example: "2024-12-07T19:04:39.70268+07:00"
         type: string
       username:
         description: Username
@@ -411,11 +457,11 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://tickbook.net/
+  termsOfService: http://tickbook.net/tos
   title: Tickbook API
   version: "1.0"
 paths:
-  /api/login:
+  /login:
     post:
       consumes:
       - application/json
@@ -439,7 +485,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - login
   /priceRef:
@@ -471,9 +517,9 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
-      - priceRef
+      - priceReferences
     post:
       consumes:
       - application/json
@@ -507,9 +553,9 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
-      - priceRef
+      - priceReferences
   /quotation:
     get:
       consumes:
@@ -538,7 +584,37 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
+      tags:
+      - quotations
+    post:
+      consumes:
+      - application/json
+      operationId: CreateQuotation
+      parameters:
+      - description: Request
+        in: body
+        name: createQuotationDTO
+        schema:
+          $ref: '#/definitions/dto.CreateQuotation'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.QuotationResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JwtToken: []
       tags:
       - quotations
   /school:
@@ -570,7 +646,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - schools
     post:
@@ -602,7 +678,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - schools
   /user:
@@ -629,7 +705,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
     post:
@@ -661,7 +737,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
   /user/{userId}:
@@ -686,7 +762,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
     put:
@@ -718,7 +794,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
   /user/info:
@@ -743,7 +819,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
 schemes:
