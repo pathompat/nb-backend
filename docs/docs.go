@@ -9,7 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://tickbook.net/",
+        "termsOfService": "http://tickbook.net/tos",
         "contact": {
             "name": "API Support",
             "url": "http://tickbook.net/support",
@@ -24,11 +24,11 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/login": {
+        "/login": {
             "post": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -72,7 +72,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -82,7 +82,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "priceRef"
+                    "priceReferences"
                 ],
                 "operationId": "GetPriceRefByUserID",
                 "parameters": [
@@ -126,7 +126,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -136,7 +136,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "priceRef"
+                    "priceReferences"
                 ],
                 "operationId": "CreatePriceRef",
                 "parameters": [
@@ -190,7 +190,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -243,7 +243,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -298,7 +298,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -352,7 +352,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -410,7 +410,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -456,7 +456,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -514,7 +514,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -559,7 +559,7 @@ const docTemplate = `{
             "put": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -615,7 +615,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "JWTToken": []
+                        "JwtToken": []
                     }
                 ],
                 "consumes": [
@@ -741,7 +741,7 @@ const docTemplate = `{
                     "example": 2
                 },
                 "userId": {
-                    "description": "Owner uuid                  // Store name",
+                    "description": "Owner uuid",
                     "type": "string",
                     "example": "78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"
                 }
@@ -1252,7 +1252,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/api",
 	Schemes:          []string{"https", "http"},
 	Title:            "Tickbook API",
 	Description:      "",

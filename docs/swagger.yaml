@@ -1,3 +1,4 @@
+basePath: /api
 definitions:
   dto.CreatePriceRef:
     properties:
@@ -62,7 +63,7 @@ definitions:
         example: 2
         type: integer
       userId:
-        description: Owner uuid                  // Store name
+        description: Owner uuid
         example: 78705ee5-25cd-45b5-8cb1-63f1cb94e5c8
         type: string
     required:
@@ -456,11 +457,11 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://tickbook.net/
+  termsOfService: http://tickbook.net/tos
   title: Tickbook API
   version: "1.0"
 paths:
-  /api/login:
+  /login:
     post:
       consumes:
       - application/json
@@ -484,7 +485,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - login
   /priceRef:
@@ -516,9 +517,9 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
-      - priceRef
+      - priceReferences
     post:
       consumes:
       - application/json
@@ -552,9 +553,9 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
-      - priceRef
+      - priceReferences
   /quotation:
     get:
       consumes:
@@ -583,7 +584,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - quotations
     post:
@@ -613,7 +614,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - quotations
   /school:
@@ -645,7 +646,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - schools
     post:
@@ -677,7 +678,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - schools
   /user:
@@ -704,7 +705,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
     post:
@@ -736,7 +737,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
   /user/{userId}:
@@ -761,7 +762,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
     put:
@@ -793,7 +794,7 @@ paths:
         "500":
           description: Internal Server Error
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
   /user/info:
@@ -818,7 +819,7 @@ paths:
         "401":
           description: Unauthorized
       security:
-      - JWTToken: []
+      - JwtToken: []
       tags:
       - users
 schemes:

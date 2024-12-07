@@ -12,7 +12,7 @@ import (
 
 //	@title		Tickbook API
 //	@version	1.0
-// 	@termsOfService http://tickbook.net/
+// 	@termsOfService http://tickbook.net/tos
 
 // @contact.name API Support
 // @contact.url http://tickbook.net/support
@@ -22,11 +22,11 @@ import (
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
 //	@schemes	https http
+//  @BasePath /api
 
 // @securityDefinitions.apikey	JwtToken
 // @in							header
 // @name						Authorization
-// @BasePath 				/api
 
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/

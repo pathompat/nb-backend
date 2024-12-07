@@ -11,7 +11,7 @@ type QuotationFilter struct {
 }
 
 type CreateQuotation struct {
-	UserID        uuid.UUID       `json:"userId" binding:"required,uuid4" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid                  // Store name
+	UserID        uuid.UUID       `json:"userId" binding:"required,uuid4" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
 	SchoolID      uint            `json:"schoolId" binding:"required,gt=0" example:"2"`                                   // School id
 	AppointmentAt *time.Time      `json:"appointmentAt" binding:"-" example:"2024-12-00:00:00.0000+07:00"`                // Appointment date (null is now)
 	DueDateAt     time.Time       `json:"dueDateAt" binding:"required" example:"2024-12-06"`                              // Last due date

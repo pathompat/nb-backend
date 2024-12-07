@@ -17,11 +17,11 @@ func NewQuotationHandler(service service.QuotationService) *QuotationHandler {
 	return &QuotationHandler{service: service}
 }
 
-// QuotationHandler GetAll
+// QuotationHandler GetAllQuotation
 //
 // @id				GetAllQuotation
 // @tags			quotations
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -52,7 +52,7 @@ func (c *QuotationHandler) GetAllQuotation(ctx *gin.Context) {
 //
 // @id				CreateQuotation
 // @tags			quotations
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
