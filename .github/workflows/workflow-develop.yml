@@ -125,7 +125,7 @@ jobs:
           host: ${{ secrets.TEMP_SSH_HOST }}
           username: ${{ secrets.TEMP_SSH_USERNAME }}
           key: ${{ secrets.TEMP_SSH_KEY }}
-          envs: IMAGE_URL,IMAGE_TAG,GIN_MODE,DB_USERNAME,DB_PASSWORD,DB_HOST,DB_NAME,JWT_SECRET,JWT_EXPIRED_IN
+          envs: IMAGE_URL,IMAGE_TAG,GIN_MODE,DB_USERNAME,DB_PASSWORD,DB_HOST,DB_PORT,DB_NAME,JWT_SECRET,JWT_EXPIRED_IN
           script: |
             echo "update docker image: $IMAGE_URL:$IMAGE_TAG"
             sudo docker pull $IMAGE_URL:$IMAGE_TAG
