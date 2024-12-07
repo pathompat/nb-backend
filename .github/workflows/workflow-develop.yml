@@ -128,9 +128,9 @@ jobs:
           envs: IMAGE_URL,IMAGE_TAG,GIN_MODE,DB_USERNAME,DB_PASSWORD,DB_HOST,DB_NAME,JWT_SECRET,JWT_EXPIRED_IN
           script: |
             echo "update docker image: $IMAGE_URL:$IMAGE_TAG"
-            sudo docker pull $IMAGE_URL:$IMAGE_TAG &&
-            sudo docker stop nb-backend || true &&
-            sudo docker rm nb-backend || true &&
+            sudo docker pull $IMAGE_URL:$IMAGE_TAG
+            sudo docker stop nb-backend
+            sudo docker rm nb-backend
             sudo docker run -d --name nb-backend -p 8080:8080 \
               -e GIN_MODE=$GIN_MODE \
               -e DB_USERNAME=$DB_USERNAME \
