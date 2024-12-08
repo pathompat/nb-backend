@@ -91,7 +91,7 @@ func (s *userService) CreateUser(input dto.CreateUser) (dto.UserResponse, error)
 	}
 
 	return dto.UserResponse{
-		UserId:    createdUser.UserID,
+		UserID:    createdUser.UserID,
 		TierID:    createdUser.TierID,
 		Username:  createdUser.Username,
 		StoreName: createdUser.StoreName,
@@ -129,7 +129,7 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserR
 	}
 
 	return dto.UserResponse{
-		UserId:    updateUser.UserID,
+		UserID:    updateUser.UserID,
 		TierID:    updateUser.TierID,
 		Username:  updateUser.Username,
 		StoreName: updateUser.StoreName,
