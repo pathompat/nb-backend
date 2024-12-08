@@ -23,6 +23,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	schoolRepo := repository.NewSchoolRepository(db)
 	quotationRepo := repository.NewQuotationRepository(db)
 	priceRefRepo := repository.NewPriceRefRepository(db)
+	productionRepo := repository.NewProductionRepository(db)
 
 	loginService := service.NewLoginService(userRepo)
 	loginHandler := handler.NewLoginHandler(loginService)
@@ -38,6 +39,9 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 
 	priceRefService := service.NewPriceRefService(priceRefRepo, userRepo)
 	priceRefHandler := handler.NewPriceRefHandler(priceRefService)
+
+	productionService := service.NewProductionService(productionRepo, userRepo, schoolRepo)
+	productionHandler := handler.NewProductionHandler(productionService)
 
 	api := r.Group("/api")
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -66,6 +70,10 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		priceRefRoutes.GET("/", priceRefHandler.GetPriceRefByUserID)
 		priceRefRoutes.POST("/", priceRefHandler.CreatePriceRef)
+	}
+	productionRoutes := api.Group("/production")
+	{
+		productionRoutes.GET("/:productionId", productionHandler.GetProductionByID)
 	}
 }
 

@@ -186,6 +186,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/production/{productionId}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "production"
+                ],
+                "operationId": "GetProductionByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "production ID",
+                        "name": "productionId",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.ProductionResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/quotation": {
             "get": {
                 "security": [
@@ -874,6 +927,28 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.Production": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Document id",
+                    "type": "integer",
+                    "example": 1
+                },
+                "items": {
+                    "description": "Related items",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ProductionItem"
+                    }
+                },
+                "remark": {
+                    "description": "Document remark",
+                    "type": "string",
+                    "example": "test 123"
+                }
+            }
+        },
         "dto.ProductionItem": {
             "type": "object",
             "properties": {
@@ -952,7 +1027,37 @@ const docTemplate = `{
                 "remark": {
                     "description": "Document remark",
                     "type": "string",
-                    "example": "test 123"
+                    "example": "test remark"
+                },
+                "schoolAddress": {
+                    "description": "School address",
+                    "type": "string",
+                    "example": "33/33 Sriratch road"
+                },
+                "schoolName": {
+                    "description": "School name",
+                    "type": "string",
+                    "example": "School 1"
+                },
+                "schoolTelephone": {
+                    "description": "School telephone",
+                    "type": "string",
+                    "example": "0812232212"
+                },
+                "storeName": {
+                    "description": "Store name",
+                    "type": "string",
+                    "example": "Notebook store"
+                },
+                "userId": {
+                    "description": "Owner uuid",
+                    "type": "string",
+                    "example": "78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"
+                },
+                "userName": {
+                    "description": "User name",
+                    "type": "string",
+                    "example": "adminTest"
                 }
             }
         },
@@ -1049,7 +1154,7 @@ const docTemplate = `{
                     "description": "Production related",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/dto.ProductionResponse"
+                            "$ref": "#/definitions/dto.Production"
                         }
                     ]
                 },

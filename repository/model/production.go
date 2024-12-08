@@ -10,6 +10,8 @@ type Production struct {
 	SchoolID    uint             `gorm:"not null"`
 	QuotationID uint             `gorm:"not null"`
 	Remark      string           `gorm:"not null"`
+	School      School           `gorm:"foreignKey:SchoolID"`
+	User        User             `gorm:"references:ID"`
 	Items       []ProductionItem `gorm:"foreignKey:ProductionID"`
 }
 

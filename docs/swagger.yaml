@@ -170,6 +170,22 @@ definitions:
         example: cut8
         type: string
     type: object
+  dto.Production:
+    properties:
+      id:
+        description: Document id
+        example: 1
+        type: integer
+      items:
+        description: Related items
+        items:
+          $ref: '#/definitions/dto.ProductionItem'
+        type: array
+      remark:
+        description: Document remark
+        example: test 123
+        type: string
+    type: object
   dto.ProductionItem:
     properties:
       color:
@@ -230,7 +246,31 @@ definitions:
         type: array
       remark:
         description: Document remark
-        example: test 123
+        example: test remark
+        type: string
+      schoolAddress:
+        description: School address
+        example: 33/33 Sriratch road
+        type: string
+      schoolName:
+        description: School name
+        example: School 1
+        type: string
+      schoolTelephone:
+        description: School telephone
+        example: "0812232212"
+        type: string
+      storeName:
+        description: Store name
+        example: Notebook store
+        type: string
+      userId:
+        description: Owner uuid
+        example: 78705ee5-25cd-45b5-8cb1-63f1cb94e5c8
+        type: string
+      userName:
+        description: User name
+        example: adminTest
         type: string
     type: object
   dto.QuotationItem:
@@ -305,7 +345,7 @@ definitions:
         type: array
       production:
         allOf:
-        - $ref: '#/definitions/dto.ProductionResponse'
+        - $ref: '#/definitions/dto.Production'
         description: Production related
       remark:
         description: Document remark
@@ -556,6 +596,36 @@ paths:
       - JwtToken: []
       tags:
       - priceReferences
+  /production/{productionId}:
+    get:
+      consumes:
+      - application/json
+      operationId: GetProductionByID
+      parameters:
+      - description: production ID
+        in: path
+        name: productionId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.ProductionResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JwtToken: []
+      tags:
+      - production
   /quotation:
     get:
       consumes:
