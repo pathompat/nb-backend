@@ -17,11 +17,11 @@ func NewSchoolHandler(service service.SchoolService) *SchoolHandler {
 	return &SchoolHandler{service: service}
 }
 
-// SchoolHandler godoc
+// SchoolHandler GetSchoolByUserId
 //
 // @id				GetSchoolByUserId
 // @tags			schools
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //
@@ -44,11 +44,11 @@ func (c *SchoolHandler) GetSchoolByUserId(ctx *gin.Context) {
 	helper.SuccessResponse(ctx, http.StatusOK, school)
 }
 
-// SchoolHandler godoc
+// SchoolHandler CreateSchool
 //
 // @id				CreateSchool
 // @tags			schools
-// @security	JWTToken
+// @security	JwtToken
 // @accept		json
 // @produce		json
 //

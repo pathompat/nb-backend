@@ -11,15 +11,15 @@ type ProductionResponse struct {
 }
 
 type ProductionItem struct {
-	ProductTitle string    `json:"productTitle" example:"Cut 8"`                    // Product name
-	Plate        string    `json:"plate" example:"LARGE"`                           // Plate size (LARGE, SMALL)
-	Gram         int       `json:"gram" example:"40"`                               // Notebook grams (40-150)
-	Color        string    `json:"color" example:"1"`                               // Color (1,4)
-	Page         int       `json:"page" example:"40"`                               // Page count (30-80)
-	Pattern      string    `json:"pattern" example:"TABLE"`                         // Page pattern
-	HasReference bool      `json:"hasReference" example:"false"`                    // Has reference
-	Quantity     int       `json:"quantity" example:"1000"`                         // Product quantity
-	Status       string    `json:"status" example:"PRINTING"`                       // Production status
-	CreatedAt    time.Time `json:"createdAt" example:"2024-12-02T00:26:21.087061Z"` // Created date
-	UpdatedAt    time.Time `json:"updatedAt" example:"2024-12-02T00:26:21.087061Z"` // Updated date
+	ProductTitle string    `json:"productTitle" example:"Cut 8"`                        // Product name
+	Plate        string    `json:"plate" example:"LARGE"`                               // Plate size (LARGE, SMALL)
+	Gram         int       `json:"gram" example:"40"`                                   // Notebook grams (40-150)
+	Color        string    `json:"color" example:"1"`                                   // Color (1,4)
+	Page         int       `json:"page" example:"40"`                                   // Page count (30-80)
+	Pattern      string    `json:"pattern" example:"TABLE"`                             // Page pattern
+	HasReference bool      `json:"hasReference" example:"false"`                        // Has reference
+	Quantity     int       `json:"quantity" example:"1000"`                             // Product quantity
+	Status       string    `json:"status" example:"PRINTING"`                           // Production status
+	CreatedAt    time.Time `json:"createdAt" example:"2024-12-07T19:04:39.70268+07:00"` // Created date
+	UpdatedAt    time.Time `json:"updatedAt" example:"2024-12-07T19:04:39.70268+07:00"` // Updated date
 }
