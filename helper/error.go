@@ -13,4 +13,5 @@ var (
 	ErrHashPassword     = errors.New("Error hashing password")
 	ErrInvalidToken     = errors.New("Invalid token")
 	ErrMissingToken     = errors.New("Missing authorization")
+	ErrInvalidPathParam = errors.New("Invalid path param")
 )
