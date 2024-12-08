@@ -19,6 +19,11 @@ type CreateQuotation struct {
 	Remark        string          `json:"remark" example:"remark test"`                                                   // Any remark
 }
 
+type UpdateQuotation struct {
+	Status string          `json:"status" binding:"required" example:"APPROVED"` // Document status
+	Items  []QuotationItem `json:"items" binding:"required,dive"`                // Quotation product list
+}
+
 type QuotationResponse struct {
 	ID              uint            `json:"id" example:"1"`                                        // Document id
 	UserID          uuid.UUID       `json:"userId" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
@@ -30,6 +35,7 @@ type QuotationResponse struct {
 	DueDateAt       time.Time       `json:"dueDateAt" example:"2024-12-02"`                        // Last due date
 	Status          string          `json:"status" example:"REVIEWING"`                            // Document status (REVIEWING, APPROVED, CANCELED)
 	Remark          string          `json:"remark" example:"test remark"`                          // Document remark
+	ProductionID    *uint           `json:"productionId"`                                          // Production id related
 	Production      *Production     `json:"production,omitempty"`                                  // Production related
 	Items           []QuotationItem `json:"items"`                                                 // Quotation product list
 	CreatedAt       time.Time       `json:"createdAt" example:"2024-12-07T19:04:39.70268+07:00"`   // Created date
@@ -37,6 +43,7 @@ type QuotationResponse struct {
 }
 
 type QuotationItem struct {
+	ID           uint    `json:"id" binding:"required" example:"2"`                    // Unique id
 	ProductTitle string  `json:"productTitle" binding:"required" example:"Cut 8"`      // Product name
 	Plate        string  `json:"plate" binding:"-" example:"LARGE"`                    // Plate size (LARGE, SMALL)
 	Gram         int     `json:"gram" binding,gte=5:"required" example:"40"`           // Notebook grams (40-150)

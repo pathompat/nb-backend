@@ -9,7 +9,9 @@ import (
 
 type QuotationRepository interface {
 	FindAll(filter dto.QuotationFilter) ([]model.Quotation, error)
+	FindById(id uint) (*model.Quotation, error)
 	Create(quotation model.Quotation) (*model.Quotation, error)
+	Update(quotation model.Quotation) (*model.Quotation, error)
 }
 
 type quotationRepository struct {
@@ -32,9 +34,24 @@ func (r *quotationRepository) FindAll(filter dto.QuotationFilter) ([]model.Quota
 	return quotations, nil
 }
 
+func (r *quotationRepository) FindById(id uint) (*model.Quotation, error) {
+	var quotation model.Quotation
+	db := r.db.Preload("Items").Preload("User")
+	if err := db.Where("id = ?", id).First(&quotation).Error; err != nil {
+		return nil, err
+	}
+	return &quotation, nil
+}
+
 func (r *quotationRepository) Create(quotation model.Quotation) (*model.Quotation, error) {
-	err := r.db.Create(&quotation).Error
-	if err != nil {
+	if err := r.db.Create(&quotation).Error; err != nil {
+		return nil, err
+	}
+	return &quotation, nil
+}
+
+func (r *quotationRepository) Update(quotation model.Quotation) (*model.Quotation, error) {
+	if err := r.db.Save(&quotation).Error; err != nil {
 		return nil, err
 	}
 	return &quotation, nil

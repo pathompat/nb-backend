@@ -34,7 +34,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	schoolService := service.NewSchoolService(schoolRepo, userRepo)
 	schoolHandler := handler.NewSchoolHandler(schoolService)
 
-	quotationService := service.NewQuotationService(quotationRepo, userRepo, schoolRepo)
+	quotationService := service.NewQuotationService(quotationRepo, userRepo, schoolRepo, productionRepo)
 	quotationHandler := handler.NewQuotationHandler(quotationService)
 
 	priceRefService := service.NewPriceRefService(priceRefRepo, userRepo)
@@ -65,6 +65,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		quotationRoutes.GET("/", quotationHandler.GetAllQuotation)
 		quotationRoutes.POST("/", quotationHandler.CreateQuotation)
+		quotationRoutes.PUT("/:id", quotationHandler.UpdateQuotation)
 	}
 	priceRefRoutes := api.Group("/priceRef")
 	{
