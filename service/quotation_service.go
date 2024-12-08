@@ -66,9 +66,9 @@ func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.Qu
 			})
 		}
 
-		var production *dto.ProductionResponse
+		var production *dto.Production
 		if filter.IncludeProduction {
-			production = &dto.ProductionResponse{
+			production = &dto.Production{
 				ID:     quotation.Production.ID,
 				Remark: quotation.Production.Remark,
 				Items:  productionItemMap,
