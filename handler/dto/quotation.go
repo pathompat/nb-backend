@@ -35,7 +35,7 @@ type QuotationResponse struct {
 	DueDateAt       time.Time       `json:"dueDateAt" example:"2024-12-02"`                        // Last due date
 	Status          string          `json:"status" example:"REVIEWING"`                            // Document status (REVIEWING, APPROVED, CANCELED)
 	Remark          string          `json:"remark" example:"test remark"`                          // Document remark
-	ProductionID    *uint           `json:"productionId"`                                          // Production id related
+	ProductionID    *uint           `json:"productionId" example:"32"`                             // Production id related
 	Production      *Production     `json:"production,omitempty"`                                  // Production related
 	Items           []QuotationItem `json:"items"`                                                 // Quotation product list
 	CreatedAt       time.Time       `json:"createdAt" example:"2024-12-07T19:04:39.70268+07:00"`   // Created date

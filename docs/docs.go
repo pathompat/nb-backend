@@ -347,6 +347,70 @@ const docTemplate = `{
                 }
             }
         },
+        "/quotation/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quotations"
+                ],
+                "operationId": "UpdateQuotation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Quotation id",
+                        "name": "quotationId",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Update quotation request",
+                        "name": "updateQuotationDTO",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateQuotation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.QuotationResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/school": {
             "get": {
                 "security": [
@@ -1066,6 +1130,7 @@ const docTemplate = `{
             "required": [
                 "color",
                 "hasReference",
+                "id",
                 "pattern",
                 "price",
                 "productTitle",
@@ -1086,6 +1151,11 @@ const docTemplate = `{
                     "description": "Has reference",
                     "type": "boolean",
                     "example": false
+                },
+                "id": {
+                    "description": "Unique id",
+                    "type": "integer",
+                    "example": 2
                 },
                 "page": {
                     "description": "Page count (30-80)",
@@ -1157,6 +1227,11 @@ const docTemplate = `{
                             "$ref": "#/definitions/dto.Production"
                         }
                     ]
+                },
+                "productionId": {
+                    "description": "Production id related",
+                    "type": "integer",
+                    "example": 32
                 },
                 "remark": {
                     "description": "Document remark",
@@ -1247,6 +1322,27 @@ const docTemplate = `{
                     "description": "Latest update user date",
                     "type": "string",
                     "example": "2024-12-07T19:04:39.70268+07:00"
+                }
+            }
+        },
+        "dto.UpdateQuotation": {
+            "type": "object",
+            "required": [
+                "items",
+                "status"
+            ],
+            "properties": {
+                "items": {
+                    "description": "Quotation product list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationItem"
+                    }
+                },
+                "status": {
+                    "description": "Document status",
+                    "type": "string",
+                    "example": "APPROVED"
                 }
             }
         },

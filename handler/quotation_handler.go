@@ -83,13 +83,13 @@ func (c *QuotationHandler) CreateQuotation(ctx *gin.Context) {
 // QuotationHandler UpdateQuotation
 //
 // @id				UpdateQuotation
-// @tags			users
+// @tags			quotations
 // @security	JwtToken
 // @accept		json
 // @produce		json
 //
 // @Param			quotationId path int false "Quotation id"
-// @Param			updateQuotationDTO body dto.updateQuotationDTO false "Update quotation request"
+// @Param			updateQuotationDTO body dto.UpdateQuotation false "Update quotation request"
 //
 // @response 200 {object} helper.ApiSuccessResponse{data=dto.QuotationResponse} "OK"
 // @response 400 "Bad request"
