@@ -12,6 +12,10 @@ type Production struct {
 	Items  []ProductionItem `json:"items"`                     // Related items
 }
 
+type UpdateStatusItemProduction struct {
+	Status string `json:"status" example:"DESIGNING"` // Document status
+}
+
 type ProductionResponse struct {
 	ID              uint             `json:"id" example:"1"`                                        // Document id
 	UserID          uuid.UUID        `json:"userId" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
@@ -22,6 +26,12 @@ type ProductionResponse struct {
 	SchoolTelephone string           `json:"schoolTelephone" example:"0812232212"`                  // School telephone
 	Remark          string           `json:"remark" example:"test remark"`                          // Document remark
 	Items           []ProductionItem `json:"items"`                                                 // Related items
+}
+
+type ProductionItemResponse struct {
+	ID     uint   `json:"id" example:"1"`             // Document id
+	ItemID int    `json:"itemId" example:"2"`         // item id of production
+	Status string `json:"status" example:"DESIGNING"` // Document status
 }
 
 type ProductionItem struct {

@@ -233,6 +233,21 @@ definitions:
         example: "2024-12-07T19:04:39.70268+07:00"
         type: string
     type: object
+  dto.ProductionItemResponse:
+    properties:
+      id:
+        description: Document id
+        example: 1
+        type: integer
+      itemId:
+        description: item id of production
+        example: 2
+        type: integer
+      status:
+        description: Document status
+        example: DESIGNING
+        type: string
+    type: object
   dto.ProductionResponse:
     properties:
       id:
@@ -416,6 +431,13 @@ definitions:
       updatedAt:
         description: Latest update user date
         example: "2024-12-07T19:04:39.70268+07:00"
+        type: string
+    type: object
+  dto.UpdateStatusItemProduction:
+    properties:
+      status:
+        description: Document status
+        example: DESIGNING
         type: string
     type: object
   dto.UpdateUser:
@@ -617,6 +639,45 @@ paths:
             - properties:
                 data:
                   $ref: '#/definitions/dto.ProductionResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JwtToken: []
+      tags:
+      - production
+  /production/{productionId}/items/{itemId}:
+    get:
+      consumes:
+      - application/json
+      operationId: UpdateStatusProductionByID
+      parameters:
+      - description: production ID
+        in: path
+        name: productionId
+        type: string
+      - description: item ID
+        in: path
+        name: itemId
+        type: string
+      - description: Update status item production request
+        in: body
+        name: UpdateStatusItemProductionDTO
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusItemProduction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.ProductionItemResponse'
               type: object
         "400":
           description: Bad request
