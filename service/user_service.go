@@ -36,7 +36,7 @@ func (s *userService) GetAllUsers() ([]dto.UserResponse, error) {
 	userMap := []dto.UserResponse{}
 	for _, user := range users {
 		userMap = append(userMap, dto.UserResponse{
-			UserId:    user.UserID,
+			UserID:    user.UserID,
 			Username:  user.Username,
 			StoreName: user.StoreName,
 			TierID:    user.TierID,
@@ -60,7 +60,7 @@ func (s *userService) GetInfoUser(userID string) (dto.UserResponse, error) {
 	}
 
 	return dto.UserResponse{
-		UserId:    user.UserID,
+		UserID:    user.UserID,
 		TierID:    user.TierID,
 		Username:  user.Username,
 		StoreName: user.StoreName,
