@@ -64,6 +64,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	quotationRoutes := api.Group("/quotation")
 	{
 		quotationRoutes.GET("/", quotationHandler.GetAllQuotation)
+		quotationRoutes.GET("/stat", quotationHandler.CountQuotationByStatus)
 		quotationRoutes.GET("/:quotationId", quotationHandler.GetQuotationByID)
 		quotationRoutes.POST("/", quotationHandler.CreateQuotation)
 		quotationRoutes.PUT("/:id", quotationHandler.UpdateQuotation)

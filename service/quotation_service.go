@@ -7,15 +7,18 @@ import (
 )
 
 const (
+	Q_DOC_TYPE       string = "QUOTATION"
 	Q_STAT_REVIEWING string = "REVIEWING"
 	Q_STAT_APPROVED  string = "APPROVED"
 	Q_STAT_CANCELED  string = "CANCELED"
+	P_DOC_TYPE       string = "PRODUCTION"
 	P_STAT_DESIGNING string = "DESIGNING"
 )
 
 type QuotationService interface {
 	GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
 	GetQuotationByID(quotationID uint) (dto.QuotationResponse, error)
+	CountQuotationByStatus() ([]dto.CountByStatus, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
 }
@@ -141,6 +144,37 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 		ProductionID:    nil,
 		Remark:          quotation.Remark,
 	}, nil
+}
+
+func (s *quotationService) CountQuotationByStatus() ([]dto.CountByStatus, error) {
+	statusCount := []dto.CountByStatus{}
+	quotationStat, err := s.quotationRepo.CountByStatus()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range quotationStat {
+		statusCount = append(statusCount, dto.CountByStatus{
+			Status: item.Status,
+			Count:  item.Count,
+			Type:   Q_DOC_TYPE,
+		})
+	}
+
+	productionStat, err := s.productionRepo.CountItemByStatus()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range productionStat {
+		statusCount = append(statusCount, dto.CountByStatus{
+			Status: item.Status,
+			Count:  item.Count,
+			Type:   P_DOC_TYPE,
+		})
+	}
+
+	return statusCount, nil
 }
 
 func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error) {

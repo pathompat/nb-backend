@@ -82,6 +82,29 @@ func (c *QuotationHandler) GetQuotationByID(ctx *gin.Context) {
 	helper.SuccessResponse(ctx, http.StatusOK, quotations)
 }
 
+// QuotationHandler CountQuotationByStatus
+//
+// @id				CountQuotationByStatus
+// @tags			quotations
+// @security	JwtToken
+// @accept		json
+// @produce		json
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=[]dto.CountByStatus} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+// @router			/quotation/stat [GET]
+func (c *QuotationHandler) CountQuotationByStatus(ctx *gin.Context) {
+	countByStatus, err := c.service.CountQuotationByStatus()
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, countByStatus)
+}
+
 // QuotationHandler CreateQuotation
 //
 // @id				CreateQuotation
