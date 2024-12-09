@@ -240,7 +240,7 @@ const docTemplate = `{
             }
         },
         "/production/{productionId}/items/{itemId}": {
-            "get": {
+            "put": {
                 "security": [
                     {
                         "JwtToken": []

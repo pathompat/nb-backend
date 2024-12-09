@@ -673,7 +673,7 @@ paths:
       tags:
       - production
   /production/{productionId}/items/{itemId}:
-    get:
+    put:
       consumes:
       - application/json
       operationId: UpdateStatusProductionByID
