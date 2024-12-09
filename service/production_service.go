@@ -45,7 +45,7 @@ func (s *productionService) GetProductionByID(productionID uint) (dto.Production
 	return dto.ProductionResponse{
 		ID:              production.ID,
 		UserID:          production.User.UserID,
-		UserName:        production.User.Username,
+		Username:        production.User.Username,
 		StoreName:       production.User.StoreName,
 		SchoolName:      production.School.Name,
 		SchoolAddress:   production.School.Address,

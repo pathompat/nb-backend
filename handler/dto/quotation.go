@@ -27,6 +27,7 @@ type UpdateQuotation struct {
 type QuotationResponse struct {
 	ID              uint            `json:"id" example:"1"`                                        // Document id
 	UserID          uuid.UUID       `json:"userId" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
+	Username        string          `json:"userName" example:"munggytest"`                         // User name
 	StoreName       string          `json:"storeName" example:"Notebook store"`                    // Store name
 	SchoolName      string          `json:"schoolName" example:"School 1"`                         // School name
 	SchoolAddress   string          `json:"schoolAddress" example:"33/33 Sriratch road"`           // School address
