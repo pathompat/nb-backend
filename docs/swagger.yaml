@@ -442,7 +442,6 @@ definitions:
         example: "2024-12-07T19:04:39.70268+07:00"
         type: string
     type: object
-<<<<<<< HEAD
   dto.UpdateQuotation:
     properties:
       items:
@@ -457,14 +456,13 @@ definitions:
     required:
     - items
     - status
-=======
+    type: object
   dto.UpdateStatusItemProduction:
     properties:
       status:
         description: Document status
         example: DESIGNING
         type: string
->>>>>>> 03aeaf1104e93d240d7171197980dc093ba21461
     type: object
   dto.UpdateUser:
     properties:

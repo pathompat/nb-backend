@@ -1408,7 +1408,6 @@
                 }
             }
         },
-<<<<<<< HEAD
         "dto.UpdateQuotation": {
             "type": "object",
             "required": [
@@ -1427,7 +1426,9 @@
                     "description": "Document status",
                     "type": "string",
                     "example": "APPROVED"
-=======
+                }
+            }
+        },
         "dto.UpdateStatusItemProduction": {
             "type": "object",
             "properties": {
@@ -1435,7 +1436,6 @@
                     "description": "Document status",
                     "type": "string",
                     "example": "DESIGNING"
->>>>>>> 03aeaf1104e93d240d7171197980dc093ba21461
                 }
             }
         },

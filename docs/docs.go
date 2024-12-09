@@ -1412,6 +1412,27 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.UpdateQuotation": {
+            "type": "object",
+            "required": [
+                "items",
+                "status"
+            ],
+            "properties": {
+                "items": {
+                    "description": "Quotation product list",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationItem"
+                    }
+                },
+                "status": {
+                    "description": "Document status",
+                    "type": "string",
+                    "example": "APPROVED"
+                }
+            }
+        },
         "dto.UpdateStatusItemProduction": {
             "type": "object",
             "properties": {
