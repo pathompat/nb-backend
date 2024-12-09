@@ -49,6 +49,39 @@ func (c *QuotationHandler) GetAllQuotation(ctx *gin.Context) {
 	helper.SuccessResponse(ctx, http.StatusOK, quotations)
 }
 
+// QuotationHandler GetQuotationByID
+//
+// @id				GetQuotationByID
+// @tags			quotations
+// @security	JwtToken
+// @accept		json
+// @produce		json
+//
+// @Param			quotationId path string false "quotation ID"
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=dto.QuotationResponse} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+// @router			/quotation/{quotationId} [GET]
+func (c *QuotationHandler) GetQuotationByID(ctx *gin.Context) {
+	quotationIDParam := ctx.Param("quotationId")
+
+	quotationID, err := strconv.ParseUint(quotationIDParam, 10, 32)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	quotations, err := c.service.GetQuotationByID(uint(quotationID))
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, quotations)
+}
+
 // QuotationHandler CreateQuotation
 //
 // @id				CreateQuotation
@@ -96,7 +129,7 @@ func (c *QuotationHandler) CreateQuotation(ctx *gin.Context) {
 // @response 401 "Unauthorized"
 // @response 500 "Internal Server Error"
 //
-//	@router			/quotation/{id} [PUT]
+//	@router			/quotation/{quotationId} [PUT]
 func (c *QuotationHandler) UpdateQuotation(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {

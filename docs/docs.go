@@ -414,7 +414,58 @@ const docTemplate = `{
                 }
             }
         },
-        "/quotation/{id}": {
+        "/quotation/{quotationId}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quotations"
+                ],
+                "operationId": "GetQuotationByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "quotation ID",
+                        "name": "quotationId",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.QuotationResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
             "put": {
                 "security": [
                     {
@@ -1359,6 +1410,11 @@ const docTemplate = `{
                     "description": "Owner uuid",
                     "type": "string",
                     "example": "78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"
+                },
+                "userName": {
+                    "description": "User name",
+                    "type": "string",
+                    "example": "munggytest"
                 }
             }
         },

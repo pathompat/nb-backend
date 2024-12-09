@@ -15,6 +15,7 @@ const (
 
 type QuotationService interface {
 	GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
+	GetQuotationByID(quotationID uint) (dto.QuotationResponse, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
 }
@@ -101,6 +102,45 @@ func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.Qu
 
 	}
 	return quotationMap, nil
+}
+
+func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResponse, error) {
+	quotation, err := s.quotationRepo.FindById(quotationID)
+	if err != nil {
+		return dto.QuotationResponse{}, err
+	}
+
+	quotationItemMap := []dto.QuotationItem{}
+	for _, item := range quotation.Items {
+		quotationItemMap = append(quotationItemMap, dto.QuotationItem{
+			ProductTitle: item.ProductTitle,
+			Plate:        item.Plate,
+			Gram:         item.Gram,
+			Color:        item.Color,
+			Page:         item.Page,
+			Pattern:      item.Pattern,
+			HasReference: &item.HasReference,
+			Quantity:     item.Quantity,
+			Price:        item.Price,
+		})
+	}
+
+	return dto.QuotationResponse{
+		ID:              quotation.ID,
+		UserID:          quotation.User.UserID,
+		Username:        quotation.User.Username,
+		StoreName:       quotation.User.StoreName,
+		SchoolName:      quotation.SchoolName,
+		SchoolAddress:   quotation.SchoolAddress,
+		SchoolTelephone: quotation.SchoolTelephone,
+		DueDateAt:       quotation.DueDateAt,
+		Status:          quotation.Status,
+		Items:           quotationItemMap,
+		CreatedAt:       quotation.CreatedAt,
+		UpdatedAt:       quotation.UpdatedAt,
+		ProductionID:    nil,
+		Remark:          quotation.Remark,
+	}, nil
 }
 
 func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error) {
