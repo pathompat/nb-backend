@@ -40,7 +40,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	priceRefService := service.NewPriceRefService(priceRefRepo, userRepo)
 	priceRefHandler := handler.NewPriceRefHandler(priceRefService)
 
-	productionService := service.NewProductionService(productionRepo, userRepo, schoolRepo)
+	productionService := service.NewProductionService(productionRepo)
 	productionHandler := handler.NewProductionHandler(productionService)
 
 	api := r.Group("/api")
@@ -74,6 +74,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	productionRoutes := api.Group("/production")
 	{
 		productionRoutes.GET("/:productionId", productionHandler.GetProductionByID)
+		productionRoutes.PUT("/:productionId/items/:itemId", productionHandler.UpdateStatusProductionByID)
 	}
 }
 
