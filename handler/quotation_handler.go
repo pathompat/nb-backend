@@ -129,7 +129,7 @@ func (c *QuotationHandler) CreateQuotation(ctx *gin.Context) {
 // @response 401 "Unauthorized"
 // @response 500 "Internal Server Error"
 //
-//	@router			/quotation/{id} [PUT]
+//	@router			/quotation/{quotationId} [PUT]
 func (c *QuotationHandler) UpdateQuotation(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if id == "" {

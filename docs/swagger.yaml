@@ -403,6 +403,10 @@ definitions:
         description: Owner uuid
         example: 78705ee5-25cd-45b5-8cb1-63f1cb94e5c8
         type: string
+      userName:
+        description: User name
+        example: munggytest
+        type: string
     type: object
   dto.ResponseWithToken:
     properties:
@@ -772,7 +776,36 @@ paths:
       - JwtToken: []
       tags:
       - quotations
-  /quotation/{id}:
+  /quotation/{quotationId}:
+    get:
+      consumes:
+      - application/json
+      operationId: GetQuotationByID
+      parameters:
+      - description: quotation ID
+        in: path
+        name: quotationId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.QuotationResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JwtToken: []
+      tags:
+      - quotations
     put:
       consumes:
       - application/json
