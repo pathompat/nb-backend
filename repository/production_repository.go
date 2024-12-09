@@ -10,7 +10,7 @@ import (
 type ProductionRepository interface {
 	FindProductionByID(productionID uint) (model.Production, error)
 	FindProductionItemByID(productionID uint, itemID uint) (model.ProductionItem, error)
-	Update(productionItem model.ProductionItem) (model.ProductionItem, error)
+	UpdateStatusItem(productionItem model.ProductionItem) (model.ProductionItem, error)
 }
 
 type productionRepository struct {
@@ -42,7 +42,7 @@ func (r *productionRepository) FindProductionItemByID(productionID uint, itemID 
 	return productionItem, nil
 }
 
-func (r *productionRepository) Update(productionItem model.ProductionItem) (model.ProductionItem, error) {
+func (r *productionRepository) UpdateStatusItem(productionItem model.ProductionItem) (model.ProductionItem, error) {
 	err := r.db.Save(&productionItem).Error
 	if err != nil {
 		return model.ProductionItem{}, err

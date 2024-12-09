@@ -64,7 +64,7 @@ func (s *productionService) UpdateStatusProductionByID(productionID uint, itemID
 	production.Status = statusInput.Status
 	production.UpdatedAt = time.Now()
 
-	productionItem, err := s.productionRepo.Update(production)
+	productionItem, err := s.productionRepo.UpdateStatusItem(production)
 	if err != nil {
 		return dto.ProductionItemResponse{}, err
 	}
