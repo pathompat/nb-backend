@@ -1,5 +1,24 @@
 basePath: /api
 definitions:
+  dto.CountByStatus:
+    properties:
+      count:
+        description: Count status
+        example: 12
+        type: integer
+      status:
+        description: Status
+        example: REVIEWING
+        type: string
+      type:
+        description: 'Type: QUOATATION, PRODUCTION'
+        example: QUOTATION
+        type: string
+    required:
+    - count
+    - status
+    - type
+    type: object
   dto.CreatePriceRef:
     properties:
       color:
@@ -838,6 +857,33 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
+      security:
+      - JwtToken: []
+      tags:
+      - quotations
+  /quotation/stat:
+    get:
+      consumes:
+      - application/json
+      operationId: CountQuotationByStatus
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.CountByStatus'
+                  type: array
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
       security:
       - JwtToken: []
       tags:

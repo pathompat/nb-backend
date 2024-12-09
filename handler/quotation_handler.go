@@ -7,7 +7,9 @@ import (
 	"notebook-backend/service"
 	"strconv"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type QuotationHandler struct {
@@ -34,13 +36,22 @@ func NewQuotationHandler(service service.QuotationService) *QuotationHandler {
 //
 // @router			/quotation [GET]
 func (c *QuotationHandler) GetAllQuotation(ctx *gin.Context) {
+	claims, _ := ctx.Get("claims")
+	claimsMap := claims.(jwt.MapClaims)
+	userID, ok := claimsMap["userId"].(string)
+	if !ok {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidToken)
+		return
+	}
+	userUUID, _ := uuid.Parse(userID)
+
 	var filter dto.QuotationFilter
 	if err := ctx.ShouldBindQuery(&filter); err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	quotations, err := c.service.GetAllQuotation(filter)
+	quotations, err := c.service.GetAllQuotation(userUUID, filter)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
@@ -80,6 +91,37 @@ func (c *QuotationHandler) GetQuotationByID(ctx *gin.Context) {
 	}
 
 	helper.SuccessResponse(ctx, http.StatusOK, quotations)
+}
+
+// QuotationHandler CountQuotationByStatus
+//
+// @id				CountQuotationByStatus
+// @tags			quotations
+// @security	JwtToken
+// @accept		json
+// @produce		json
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=[]dto.CountByStatus} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+// @router			/quotation/stat [GET]
+func (c *QuotationHandler) CountQuotationByStatus(ctx *gin.Context) {
+	claims, _ := ctx.Get("claims")
+	claimsMap := claims.(jwt.MapClaims)
+	userID, ok := claimsMap["userId"].(string)
+	if !ok {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidToken)
+		return
+	}
+	userUUID, _ := uuid.Parse(userID)
+	countByStatus, err := c.service.CountQuotationByStatus(userUUID)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, countByStatus)
 }
 
 // QuotationHandler CreateQuotation

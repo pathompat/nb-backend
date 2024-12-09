@@ -414,6 +414,54 @@ const docTemplate = `{
                 }
             }
         },
+        "/quotation/stat": {
+            "get": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quotations"
+                ],
+                "operationId": "CountQuotationByStatus",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/dto.CountByStatus"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/quotation/{quotationId}": {
             "get": {
                 "security": [
@@ -940,6 +988,31 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CountByStatus": {
+            "type": "object",
+            "required": [
+                "count",
+                "status",
+                "type"
+            ],
+            "properties": {
+                "count": {
+                    "description": "Count status",
+                    "type": "integer",
+                    "example": 12
+                },
+                "status": {
+                    "description": "Status",
+                    "type": "string",
+                    "example": "REVIEWING"
+                },
+                "type": {
+                    "description": "Type: QUOATATION, PRODUCTION",
+                    "type": "string",
+                    "example": "QUOTATION"
+                }
+            }
+        },
         "dto.CreatePriceRef": {
             "type": "object",
             "properties": {

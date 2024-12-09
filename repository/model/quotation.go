@@ -36,3 +36,8 @@ type QuotationItem struct {
 	Quantity     int     `gorm:"not null"`
 	Price        float32 `gorm:"not null"`
 }
+
+type StatusCount struct {
+	Status string
+	Count  int
+}

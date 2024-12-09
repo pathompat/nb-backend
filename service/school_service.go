@@ -13,7 +13,7 @@ import (
 )
 
 type SchoolService interface {
-	GetSchoolByUserId(userId string) ([]dto.SchoolResponse, error)
+	GetSchoolByUserId(userID string) ([]dto.SchoolResponse, error)
 	CreateSchool(schoolInput dto.CreateSchool) (dto.SchoolResponse, error)
 }
 
@@ -26,8 +26,8 @@ func NewSchoolService(schoolRepo repository.SchoolRepository, userRepo repositor
 	return &schoolService{schoolRepo: schoolRepo, userRepo: userRepo}
 }
 
-func (s *schoolService) GetSchoolByUserId(userId string) ([]dto.SchoolResponse, error) {
-	parsedUUID, err := uuid.Parse(userId)
+func (s *schoolService) GetSchoolByUserId(userID string) ([]dto.SchoolResponse, error) {
+	parsedUUID, err := uuid.Parse(userID)
 
 	user, err := s.userRepo.FindByID(parsedUUID)
 	if err != nil {

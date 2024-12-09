@@ -84,12 +84,12 @@ func (c *UserHandler) GetUserByID(ctx *gin.Context) {
 func (c *UserHandler) GetInfoUser(ctx *gin.Context) {
 	claims, _ := ctx.Get("claims")
 	claimsMap := claims.(jwt.MapClaims)
-	userId, ok := claimsMap["userId"].(string)
+	userID, ok := claimsMap["userId"].(string)
 	if !ok {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidToken)
 		return
 	}
-	users, err := c.service.GetInfoUser(userId)
+	users, err := c.service.GetInfoUser(userID)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return

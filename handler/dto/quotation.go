@@ -55,3 +55,9 @@ type QuotationItem struct {
 	Quantity     int     `json:"quantity" binding:"required,gte=1" example:"1000"`     // Product quantity
 	Price        float32 `json:"price" binding:"required,gt=0" example:"5.5"`          // Product price
 }
+
+type CountByStatus struct {
+	Status string `json:"status" binding:"required" example:"REVIEWING"` // Status
+	Count  int    `json:"count" binding:"required" example:"12"`         // Count status
+	Type   string `json:"type" binding:"required" example:"QUOTATION"`   // Type: QUOATATION, PRODUCTION
+}

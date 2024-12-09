@@ -1,21 +1,31 @@
 package service
 
 import (
+	"fmt"
 	"notebook-backend/handler/dto"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
+
+	"log/slog"
+
+	"github.com/google/uuid"
 )
 
 const (
+	Q_DOC_TYPE       string = "QUOTATION"
 	Q_STAT_REVIEWING string = "REVIEWING"
 	Q_STAT_APPROVED  string = "APPROVED"
 	Q_STAT_CANCELED  string = "CANCELED"
+	P_DOC_TYPE       string = "PRODUCTION"
 	P_STAT_DESIGNING string = "DESIGNING"
+	U_ROLE_ADMIN     string = "ADMIN"
+	U_ROLE_CUSTOMER  string = "CUSTOMER"
 )
 
 type QuotationService interface {
-	GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
+	GetAllQuotation(userID uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
 	GetQuotationByID(quotationID uint) (dto.QuotationResponse, error)
+	CountQuotationByStatus(userID uuid.UUID) ([]dto.CountByStatus, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
 }
@@ -31,8 +41,18 @@ func NewQuotationService(quotationRepo repository.QuotationRepository, userRepo 
 	return &quotationService{quotationRepo: quotationRepo, userRepo: userRepo, schoolRepo: schoolRepo, productionRepo: productionRepo}
 }
 
-func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
-	quotations, err := s.quotationRepo.FindAll(filter)
+func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
+	user, err := s.userRepo.FindByID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var filterID *uint
+	if user.Role == U_ROLE_CUSTOMER {
+		filterID = &user.ID
+	}
+
+	quotations, err := s.quotationRepo.FindAll(filterID, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -141,6 +161,49 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 		ProductionID:    nil,
 		Remark:          quotation.Remark,
 	}, nil
+}
+
+func (s *quotationService) CountQuotationByStatus(userID uuid.UUID) ([]dto.CountByStatus, error) {
+	user, err := s.userRepo.FindByID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var filterID *uint
+	if user.Role == U_ROLE_CUSTOMER {
+		filterID = &user.ID
+	}
+
+	slog.Info(fmt.Sprintf("Count status: %s, userID: %d", user.Role, filterID))
+
+	statusCount := []dto.CountByStatus{}
+	quotationStat, err := s.quotationRepo.CountByStatus(filterID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range quotationStat {
+		statusCount = append(statusCount, dto.CountByStatus{
+			Status: item.Status,
+			Count:  item.Count,
+			Type:   Q_DOC_TYPE,
+		})
+	}
+
+	productionStat, err := s.productionRepo.CountItemByStatus(filterID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range productionStat {
+		statusCount = append(statusCount, dto.CountByStatus{
+			Status: item.Status,
+			Count:  item.Count,
+			Type:   P_DOC_TYPE,
+		})
+	}
+
+	return statusCount, nil
 }
 
 func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error) {
