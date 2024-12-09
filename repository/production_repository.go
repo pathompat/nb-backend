@@ -9,6 +9,7 @@ import (
 
 type ProductionRepository interface {
 	FindProductionByID(productionID uint) (model.Production, error)
+	Create(production model.Production) (*model.Production, error)
 	FindProductionItemByID(productionID uint, itemID uint) (model.ProductionItem, error)
 	UpdateStatusItem(productionItem model.ProductionItem) (model.ProductionItem, error)
 }
@@ -28,6 +29,13 @@ func (r *productionRepository) FindProductionByID(productionID uint) (model.Prod
 		return model.Production{}, err
 	}
 	return production, nil
+}
+
+func (r *productionRepository) Create(production model.Production) (*model.Production, error) {
+	if err := r.db.Create(&production).Error; err != nil {
+		return nil, err
+	}
+	return &production, nil
 }
 
 func (r *productionRepository) FindProductionItemByID(productionID uint, itemID uint) (model.ProductionItem, error) {

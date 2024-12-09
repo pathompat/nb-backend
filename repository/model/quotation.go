@@ -19,7 +19,7 @@ type Quotation struct {
 	DueDateAt       time.Time       `gorm:"not null;column:duedate_at"`
 	Status          string          `gorm:"not null;default:'REVIEWING'"`
 	Remark          string          `gorm:"default:null"`
-	Production      Production      `gorm:"foreignKey:QuotationID"`
+	Production      *Production     `gorm:"foreignKey:QuotationID"`
 	Items           []QuotationItem `gorm:"foreignKey:QuotationID"`
 }
 

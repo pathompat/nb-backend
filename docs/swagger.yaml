@@ -302,6 +302,10 @@ definitions:
         description: Has reference
         example: false
         type: boolean
+      id:
+        description: Unique id
+        example: 2
+        type: integer
       page:
         description: Page count (30-80)
         example: 40
@@ -330,6 +334,7 @@ definitions:
     required:
     - color
     - hasReference
+    - id
     - pattern
     - price
     - productTitle
@@ -362,6 +367,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/dto.Production'
         description: Production related
+      productionId:
+        description: Production id related
+        example: 32
+        type: integer
       remark:
         description: Document remark
         example: test remark
@@ -432,6 +441,21 @@ definitions:
         description: Latest update user date
         example: "2024-12-07T19:04:39.70268+07:00"
         type: string
+    type: object
+  dto.UpdateQuotation:
+    properties:
+      items:
+        description: Quotation product list
+        items:
+          $ref: '#/definitions/dto.QuotationItem'
+        type: array
+      status:
+        description: Document status
+        example: APPROVED
+        type: string
+    required:
+    - items
+    - status
     type: object
   dto.UpdateStatusItemProduction:
     properties:
@@ -649,7 +673,7 @@ paths:
       tags:
       - production
   /production/{productionId}/items/{itemId}:
-    get:
+    put:
       consumes:
       - application/json
       operationId: UpdateStatusProductionByID
@@ -744,6 +768,43 @@ paths:
           description: Bad request
         "401":
           description: Unauthorized
+      security:
+      - JwtToken: []
+      tags:
+      - quotations
+  /quotation/{id}:
+    put:
+      consumes:
+      - application/json
+      operationId: UpdateQuotation
+      parameters:
+      - description: Quotation id
+        in: path
+        name: quotationId
+        type: integer
+      - description: Update quotation request
+        in: body
+        name: updateQuotationDTO
+        schema:
+          $ref: '#/definitions/dto.UpdateQuotation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.QuotationResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
       security:
       - JwtToken: []
       tags:
