@@ -10,10 +10,10 @@ import (
 type UserRepository interface {
 	FindAll() ([]model.User, error)
 	Create(user model.User) (model.User, error)
-	FindByID(userId uuid.UUID) (model.User, error)
+	FindByID(userID uuid.UUID) (model.User, error)
 	FindByUsername(username string) (model.User, error)
 	Update(user model.User) (model.User, error)
-	Delete(userId uuid.UUID) error
+	Delete(userID uuid.UUID) error
 }
 
 type userRepository struct {
@@ -41,9 +41,9 @@ func (r *userRepository) Create(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func (r *userRepository) FindByID(userId uuid.UUID) (model.User, error) {
+func (r *userRepository) FindByID(userID uuid.UUID) (model.User, error) {
 	var user model.User
-	err := r.db.First(&user, "uuid = ?", userId).Error
+	err := r.db.First(&user, "uuid = ?", userID).Error
 	if err != nil {
 		return model.User{}, err
 	}

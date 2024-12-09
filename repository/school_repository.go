@@ -8,7 +8,7 @@ import (
 
 type SchoolRepository interface {
 	FindById(id uint) (*model.School, error)
-	FindByUserId(userId uint) ([]model.School, error)
+	FindByUserId(userID uint) ([]model.School, error)
 	Create(school model.School) (model.School, error)
 }
 
@@ -29,9 +29,9 @@ func (r *schoolRepository) FindById(id uint) (*model.School, error) {
 	return &school, nil
 }
 
-func (r *schoolRepository) FindByUserId(userId uint) ([]model.School, error) {
+func (r *schoolRepository) FindByUserId(userID uint) ([]model.School, error) {
 	var school []model.School
-	err := r.db.Where("user_id = ?", userId).Find(&school).Error
+	err := r.db.Where("user_id = ?", userID).Find(&school).Error
 	if err != nil {
 		return []model.School{}, err
 	}

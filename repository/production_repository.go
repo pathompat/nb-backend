@@ -11,7 +11,7 @@ type ProductionRepository interface {
 	FindProductionByID(productionID uint) (model.Production, error)
 	Create(production model.Production) (*model.Production, error)
 	FindProductionItemByID(productionID uint, itemID uint) (model.ProductionItem, error)
-	CountItemByStatus(userId *uint) ([]model.StatusCount, error)
+	CountItemByStatus(userID *uint) ([]model.StatusCount, error)
 	UpdateStatusItem(productionItem model.ProductionItem) (model.ProductionItem, error)
 }
 
@@ -51,14 +51,14 @@ func (r *productionRepository) FindProductionItemByID(productionID uint, itemID 
 	return productionItem, nil
 }
 
-func (r *productionRepository) CountItemByStatus(userId *uint) ([]model.StatusCount, error) {
+func (r *productionRepository) CountItemByStatus(userID *uint) ([]model.StatusCount, error) {
 	var results []model.StatusCount
 	db := r.db.Model(&model.ProductionItem{}).
 		Select("status", "COUNT(*) as count")
 
-	if userId != nil {
+	if userID != nil {
 		db.Joins("JOIN productions ON productions.id = production_items.production_id").
-			Where("user_id = ?", userId)
+			Where("user_id = ?", userID)
 	}
 	if err := db.Group("status").Scan(&results).Error; err != nil {
 		return nil, err

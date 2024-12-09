@@ -23,9 +23,9 @@ const (
 )
 
 type QuotationService interface {
-	GetAllQuotation(userId uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
+	GetAllQuotation(userID uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
 	GetQuotationByID(quotationID uint) (dto.QuotationResponse, error)
-	CountQuotationByStatus(userId uuid.UUID) ([]dto.CountByStatus, error)
+	CountQuotationByStatus(userID uuid.UUID) ([]dto.CountByStatus, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
 }
@@ -41,8 +41,8 @@ func NewQuotationService(quotationRepo repository.QuotationRepository, userRepo 
 	return &quotationService{quotationRepo: quotationRepo, userRepo: userRepo, schoolRepo: schoolRepo, productionRepo: productionRepo}
 }
 
-func (s *quotationService) GetAllQuotation(userId uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
-	user, err := s.userRepo.FindByID(userId)
+func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
+	user, err := s.userRepo.FindByID(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +163,8 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 	}, nil
 }
 
-func (s *quotationService) CountQuotationByStatus(userId uuid.UUID) ([]dto.CountByStatus, error) {
-	user, err := s.userRepo.FindByID(userId)
+func (s *quotationService) CountQuotationByStatus(userID uuid.UUID) ([]dto.CountByStatus, error) {
+	user, err := s.userRepo.FindByID(userID)
 	if err != nil {
 		return nil, err
 	}

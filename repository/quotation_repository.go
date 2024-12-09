@@ -8,9 +8,9 @@ import (
 )
 
 type QuotationRepository interface {
-	FindAll(userId *uint, filter dto.QuotationFilter) ([]model.Quotation, error)
+	FindAll(userID *uint, filter dto.QuotationFilter) ([]model.Quotation, error)
 	FindById(id uint) (*model.Quotation, error)
-	CountByStatus(userId *uint) ([]model.StatusCount, error)
+	CountByStatus(userID *uint) ([]model.StatusCount, error)
 	Create(quotation model.Quotation) (*model.Quotation, error)
 	Update(quotation model.Quotation) (*model.Quotation, error)
 }
@@ -23,7 +23,7 @@ func NewQuotationRepository(db *gorm.DB) QuotationRepository {
 	return &quotationRepository{db: db}
 }
 
-func (r *quotationRepository) FindAll(userId *uint, filter dto.QuotationFilter) ([]model.Quotation, error) {
+func (r *quotationRepository) FindAll(userID *uint, filter dto.QuotationFilter) ([]model.Quotation, error) {
 	var quotations []model.Quotation
 	db := r.db.Preload("Items").Preload("User")
 
@@ -31,8 +31,8 @@ func (r *quotationRepository) FindAll(userId *uint, filter dto.QuotationFilter) 
 		db.Preload("Production").Preload("Production.Items")
 	}
 
-	if userId != nil {
-		db.Where("user_id = ?", userId)
+	if userID != nil {
+		db.Where("user_id = ?", userID)
 	}
 
 	if err := db.Find(&quotations).Error; err != nil {
@@ -50,12 +50,12 @@ func (r *quotationRepository) FindById(id uint) (*model.Quotation, error) {
 	return &quotation, nil
 }
 
-func (r *quotationRepository) CountByStatus(userId *uint) ([]model.StatusCount, error) {
+func (r *quotationRepository) CountByStatus(userID *uint) ([]model.StatusCount, error) {
 	var results []model.StatusCount
 
 	db := r.db.Model(&model.Quotation{}).Select("status", "COUNT(*) as count")
-	if userId != nil {
-		db.Where("user_id = ?", userId)
+	if userID != nil {
+		db.Where("user_id = ?", userID)
 	}
 
 	if err := db.Group("status").Scan(&results).Error; err != nil {
