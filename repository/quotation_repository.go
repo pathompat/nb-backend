@@ -10,7 +10,7 @@ import (
 type QuotationRepository interface {
 	FindAll(filter dto.QuotationFilter) ([]model.Quotation, error)
 	FindById(id uint) (*model.Quotation, error)
-	CountByStatus() ([]model.StatusCount, error)
+	CountByStatus(userId *uint) ([]model.StatusCount, error)
 	Create(quotation model.Quotation) (*model.Quotation, error)
 	Update(quotation model.Quotation) (*model.Quotation, error)
 }
@@ -44,11 +44,15 @@ func (r *quotationRepository) FindById(id uint) (*model.Quotation, error) {
 	return &quotation, nil
 }
 
-func (r *quotationRepository) CountByStatus() ([]model.StatusCount, error) {
+func (r *quotationRepository) CountByStatus(userId *uint) ([]model.StatusCount, error) {
 	var results []model.StatusCount
-	if err := r.db.Model(&model.Quotation{}).Select("status, COUNT(*) as count").
-		Group("status").
-		Scan(&results).Error; err != nil {
+
+	db := r.db.Model(&model.Quotation{}).Select("status", "COUNT(*) as count")
+	if userId != nil {
+		db.Where("user_id = ?", userId)
+	}
+
+	if err := db.Group("status").Scan(&results).Error; err != nil {
 		return nil, err
 	}
 	return results, nil

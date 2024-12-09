@@ -1,9 +1,14 @@
 package service
 
 import (
+	"fmt"
 	"notebook-backend/handler/dto"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
+
+	"log/slog"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -13,12 +18,14 @@ const (
 	Q_STAT_CANCELED  string = "CANCELED"
 	P_DOC_TYPE       string = "PRODUCTION"
 	P_STAT_DESIGNING string = "DESIGNING"
+	U_ROLE_ADMIN     string = "ADMIN"
+	U_ROLE_CUSTOMER  string = "CUSTOMER"
 )
 
 type QuotationService interface {
 	GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
 	GetQuotationByID(quotationID uint) (dto.QuotationResponse, error)
-	CountQuotationByStatus() ([]dto.CountByStatus, error)
+	CountQuotationByStatus(userId uuid.UUID) ([]dto.CountByStatus, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
 }
@@ -146,9 +153,21 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 	}, nil
 }
 
-func (s *quotationService) CountQuotationByStatus() ([]dto.CountByStatus, error) {
+func (s *quotationService) CountQuotationByStatus(userId uuid.UUID) ([]dto.CountByStatus, error) {
+	user, err := s.userRepo.FindByID(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	var filterId *uint
+	if user.Role == U_ROLE_CUSTOMER {
+		filterId = &user.ID
+	}
+
+	slog.Info(fmt.Sprintf("Count status: %s, userID: %d", user.Role, filterId))
+
 	statusCount := []dto.CountByStatus{}
-	quotationStat, err := s.quotationRepo.CountByStatus()
+	quotationStat, err := s.quotationRepo.CountByStatus(filterId)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +180,7 @@ func (s *quotationService) CountQuotationByStatus() ([]dto.CountByStatus, error)
 		})
 	}
 
-	productionStat, err := s.productionRepo.CountItemByStatus()
+	productionStat, err := s.productionRepo.CountItemByStatus(filterId)
 	if err != nil {
 		return nil, err
 	}

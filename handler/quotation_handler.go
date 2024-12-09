@@ -7,7 +7,9 @@ import (
 	"notebook-backend/service"
 	"strconv"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type QuotationHandler struct {
@@ -96,7 +98,15 @@ func (c *QuotationHandler) GetQuotationByID(ctx *gin.Context) {
 //
 // @router			/quotation/stat [GET]
 func (c *QuotationHandler) CountQuotationByStatus(ctx *gin.Context) {
-	countByStatus, err := c.service.CountQuotationByStatus()
+	claims, _ := ctx.Get("claims")
+	claimsMap := claims.(jwt.MapClaims)
+	userId, ok := claimsMap["userId"].(string)
+	if !ok {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidToken)
+		return
+	}
+	userUUID, _ := uuid.Parse(userId)
+	countByStatus, err := c.service.CountQuotationByStatus(userUUID)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
