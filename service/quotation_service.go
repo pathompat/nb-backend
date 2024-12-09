@@ -47,12 +47,12 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		return nil, err
 	}
 
-	var filterId *uint
+	var filterID *uint
 	if user.Role == U_ROLE_CUSTOMER {
-		filterId = &user.ID
+		filterID = &user.ID
 	}
 
-	quotations, err := s.quotationRepo.FindAll(filterId, filter)
+	quotations, err := s.quotationRepo.FindAll(filterID, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -169,15 +169,15 @@ func (s *quotationService) CountQuotationByStatus(userID uuid.UUID) ([]dto.Count
 		return nil, err
 	}
 
-	var filterId *uint
+	var filterID *uint
 	if user.Role == U_ROLE_CUSTOMER {
-		filterId = &user.ID
+		filterID = &user.ID
 	}
 
-	slog.Info(fmt.Sprintf("Count status: %s, userID: %d", user.Role, filterId))
+	slog.Info(fmt.Sprintf("Count status: %s, userID: %d", user.Role, filterID))
 
 	statusCount := []dto.CountByStatus{}
-	quotationStat, err := s.quotationRepo.CountByStatus(filterId)
+	quotationStat, err := s.quotationRepo.CountByStatus(filterID)
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +190,7 @@ func (s *quotationService) CountQuotationByStatus(userID uuid.UUID) ([]dto.Count
 		})
 	}
 
-	productionStat, err := s.productionRepo.CountItemByStatus(filterId)
+	productionStat, err := s.productionRepo.CountItemByStatus(filterID)
 	if err != nil {
 		return nil, err
 	}
