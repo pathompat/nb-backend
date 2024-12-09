@@ -990,6 +990,35 @@ paths:
       - JwtToken: []
       tags:
       - users
+    get:
+      consumes:
+      - application/json
+      operationId: GetUserByID
+      parameters:
+      - description: user ID
+        in: path
+        name: userId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+      security:
+      - JwtToken: []
+      tags:
+      - users
     put:
       consumes:
       - application/json
