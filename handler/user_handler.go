@@ -44,6 +44,32 @@ func (c *UserHandler) GetAllUsers(ctx *gin.Context) {
 
 // UserHandler godoc
 //
+// @id				GetUserByID
+// @tags			users
+// @security	JwtToken
+// @accept		json
+// @produce		json
+//
+// @Param			userId path string false "user ID"
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=dto.UserResponse} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+//	@router			/user/{userId} [GET]
+func (c *UserHandler) GetUserByID(ctx *gin.Context) {
+	userID := ctx.Param("userId")
+	user, err := c.service.GetUserByID(userID)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, user)
+}
+
+// UserHandler godoc
+//
 // @id				GetInfoUser
 // @tags			users
 // @security	JwtToken

@@ -51,6 +51,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	userRoutes := api.Group("/user")
 	{
 		userRoutes.GET("/", userHandler.GetAllUsers)
+		userRoutes.GET("/:userId", userHandler.GetUserByID)
 		userRoutes.GET("/info", userHandler.GetInfoUser)
 		userRoutes.POST("/", userHandler.CreateUser)
 		userRoutes.PUT("/:userId", userHandler.UpdateUser)

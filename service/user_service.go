@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"notebook-backend/handler/dto"
 	"notebook-backend/helper"
 	"notebook-backend/repository"
@@ -13,6 +12,7 @@ import (
 
 type UserService interface {
 	GetAllUsers() ([]dto.UserResponse, error)
+	GetUserByID(userID string) (dto.UserResponse, error)
 	GetInfoUser(userID string) (dto.UserResponse, error)
 	CreateUser(input dto.CreateUser) (dto.UserResponse, error)
 	UpdateUser(userID string, input dto.UpdateUser) (dto.UserResponse, error)
@@ -30,7 +30,7 @@ func NewUserService(repo repository.UserRepository) UserService {
 func (s *userService) GetAllUsers() ([]dto.UserResponse, error) {
 	users, err := s.repo.FindAll()
 	if err != nil {
-		return nil, errors.New("database error")
+		return nil, err
 	}
 
 	userMap := []dto.UserResponse{}
@@ -48,15 +48,37 @@ func (s *userService) GetAllUsers() ([]dto.UserResponse, error) {
 	return userMap, nil
 }
 
-func (s *userService) GetInfoUser(userID string) (dto.UserResponse, error) {
+func (s *userService) GetUserByID(userID string) (dto.UserResponse, error) {
 	parsedUUID, err := uuid.Parse(userID)
 	if err != nil {
-		return dto.UserResponse{}, errors.New("invalid UUID format")
+		return dto.UserResponse{}, err
 	}
 
 	user, err := s.repo.FindByID(parsedUUID)
 	if err != nil {
-		return dto.UserResponse{}, errors.New("User not found")
+		return dto.UserResponse{}, err
+	}
+
+	return dto.UserResponse{
+		UserID:    user.UserID,
+		TierID:    user.TierID,
+		Username:  user.Username,
+		StoreName: user.StoreName,
+		Role:      user.Role,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}, nil
+}
+
+func (s *userService) GetInfoUser(userID string) (dto.UserResponse, error) {
+	parsedUUID, err := uuid.Parse(userID)
+	if err != nil {
+		return dto.UserResponse{}, err
+	}
+
+	user, err := s.repo.FindByID(parsedUUID)
+	if err != nil {
+		return dto.UserResponse{}, err
 	}
 
 	return dto.UserResponse{
@@ -104,12 +126,12 @@ func (s *userService) CreateUser(input dto.CreateUser) (dto.UserResponse, error)
 func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserResponse, error) {
 	parsedUUID, err := uuid.Parse(userID)
 	if err != nil {
-		return dto.UserResponse{}, errors.New("invalid UUID format")
+		return dto.UserResponse{}, err
 	}
 
 	user, err := s.repo.FindByID(parsedUUID)
 	if err != nil {
-		return dto.UserResponse{}, errors.New("User not found")
+		return dto.UserResponse{}, err
 	}
 
 	hashPassword, err := helper.HashPassword(input.Password)
@@ -125,7 +147,7 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserR
 
 	updateUser, err := s.repo.Update(user)
 	if err != nil {
-		return dto.UserResponse{}, errors.New("Failed to update user")
+		return dto.UserResponse{}, err
 	}
 
 	return dto.UserResponse{
@@ -142,12 +164,12 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserR
 func (s *userService) DeleteUser(userID string) error {
 	parsedUUID, err := uuid.Parse(userID)
 	if err != nil {
-		return errors.New("invalid UUID format")
+		return err
 	}
 
 	err = s.repo.Delete(parsedUUID)
 	if err != nil {
-		return errors.New("Failed to delete user")
+		return err
 	}
 
 	return nil
