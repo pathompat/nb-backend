@@ -239,6 +239,73 @@ const docTemplate = `{
                 }
             }
         },
+        "/production/{productionId}/items/{itemId}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "production"
+                ],
+                "operationId": "UpdateStatusProductionByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "production ID",
+                        "name": "productionId",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "item ID",
+                        "name": "itemId",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Update status item production request",
+                        "name": "UpdateStatusItemProductionDTO",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateStatusItemProduction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.ProductionItemResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/quotation": {
             "get": {
                 "security": [
@@ -1073,6 +1140,26 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.ProductionItemResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Document id",
+                    "type": "integer",
+                    "example": 1
+                },
+                "itemId": {
+                    "description": "item id of production",
+                    "type": "integer",
+                    "example": 2
+                },
+                "status": {
+                    "description": "Document status",
+                    "type": "string",
+                    "example": "DESIGNING"
+                }
+            }
+        },
         "dto.ProductionResponse": {
             "type": "object",
             "properties": {
@@ -1325,24 +1412,13 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.UpdateQuotation": {
+        "dto.UpdateStatusItemProduction": {
             "type": "object",
-            "required": [
-                "items",
-                "status"
-            ],
             "properties": {
-                "items": {
-                    "description": "Quotation product list",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.QuotationItem"
-                    }
-                },
                 "status": {
                     "description": "Document status",
                     "type": "string",
-                    "example": "APPROVED"
+                    "example": "DESIGNING"
                 }
             }
         },

@@ -3,21 +3,20 @@ package service
 import (
 	"notebook-backend/handler/dto"
 	"notebook-backend/repository"
+	"time"
 )
 
 type ProductionService interface {
 	GetProductionByID(productionID uint) (dto.ProductionResponse, error)
-	// CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
+	UpdateStatusProductionByID(productionID uint, itemID uint, statusInput dto.UpdateStatusItemProduction) (dto.ProductionItemResponse, error)
 }
 
 type productionService struct {
 	productionRepo repository.ProductionRepository
-	userRepo       repository.UserRepository
-	schoolRepo     repository.SchoolRepository
 }
 
-func NewProductionService(productionRepo repository.ProductionRepository, userRepo repository.UserRepository, schoolRepo repository.SchoolRepository) ProductionService {
-	return &productionService{productionRepo: productionRepo, userRepo: userRepo, schoolRepo: schoolRepo}
+func NewProductionService(productionRepo repository.ProductionRepository) ProductionService {
+	return &productionService{productionRepo: productionRepo}
 }
 
 func (s *productionService) GetProductionByID(productionID uint) (dto.ProductionResponse, error) {
@@ -53,5 +52,26 @@ func (s *productionService) GetProductionByID(productionID uint) (dto.Production
 		SchoolTelephone: production.School.Telephone,
 		Remark:          production.Remark,
 		Items:           productionItemMap,
+	}, nil
+}
+
+func (s *productionService) UpdateStatusProductionByID(productionID uint, itemID uint, statusInput dto.UpdateStatusItemProduction) (dto.ProductionItemResponse, error) {
+	production, err := s.productionRepo.FindProductionItemByID(productionID, itemID)
+	if err != nil {
+		return dto.ProductionItemResponse{}, err
+	}
+
+	production.Status = statusInput.Status
+	production.UpdatedAt = time.Now()
+
+	productionItem, err := s.productionRepo.UpdateStatusItem(production)
+	if err != nil {
+		return dto.ProductionItemResponse{}, err
+	}
+
+	return dto.ProductionItemResponse{
+		ID:     productionID,
+		ItemID: int(itemID),
+		Status: productionItem.Status,
 	}, nil
 }
