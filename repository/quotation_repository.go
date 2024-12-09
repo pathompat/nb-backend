@@ -8,7 +8,7 @@ import (
 )
 
 type QuotationRepository interface {
-	FindAll(filter dto.QuotationFilter) ([]model.Quotation, error)
+	FindAll(userId *uint, filter dto.QuotationFilter) ([]model.Quotation, error)
 	FindById(id uint) (*model.Quotation, error)
 	CountByStatus(userId *uint) ([]model.StatusCount, error)
 	Create(quotation model.Quotation) (*model.Quotation, error)
@@ -23,12 +23,18 @@ func NewQuotationRepository(db *gorm.DB) QuotationRepository {
 	return &quotationRepository{db: db}
 }
 
-func (r *quotationRepository) FindAll(filter dto.QuotationFilter) ([]model.Quotation, error) {
+func (r *quotationRepository) FindAll(userId *uint, filter dto.QuotationFilter) ([]model.Quotation, error) {
 	var quotations []model.Quotation
 	db := r.db.Preload("Items").Preload("User")
+
 	if filter.IncludeProduction {
 		db.Preload("Production").Preload("Production.Items")
 	}
+
+	if userId != nil {
+		db.Where("user_id = ?", userId)
+	}
+
 	if err := db.Find(&quotations).Error; err != nil {
 		return nil, err
 	}

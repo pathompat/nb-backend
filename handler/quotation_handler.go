@@ -36,13 +36,22 @@ func NewQuotationHandler(service service.QuotationService) *QuotationHandler {
 //
 // @router			/quotation [GET]
 func (c *QuotationHandler) GetAllQuotation(ctx *gin.Context) {
+	claims, _ := ctx.Get("claims")
+	claimsMap := claims.(jwt.MapClaims)
+	userId, ok := claimsMap["userId"].(string)
+	if !ok {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidToken)
+		return
+	}
+	userUUID, _ := uuid.Parse(userId)
+
 	var filter dto.QuotationFilter
 	if err := ctx.ShouldBindQuery(&filter); err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	quotations, err := c.service.GetAllQuotation(filter)
+	quotations, err := c.service.GetAllQuotation(userUUID, filter)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return

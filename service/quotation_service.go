@@ -23,7 +23,7 @@ const (
 )
 
 type QuotationService interface {
-	GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
+	GetAllQuotation(userId uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error)
 	GetQuotationByID(quotationID uint) (dto.QuotationResponse, error)
 	CountQuotationByStatus(userId uuid.UUID) ([]dto.CountByStatus, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
@@ -41,8 +41,18 @@ func NewQuotationService(quotationRepo repository.QuotationRepository, userRepo 
 	return &quotationService{quotationRepo: quotationRepo, userRepo: userRepo, schoolRepo: schoolRepo, productionRepo: productionRepo}
 }
 
-func (s *quotationService) GetAllQuotation(filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
-	quotations, err := s.quotationRepo.FindAll(filter)
+func (s *quotationService) GetAllQuotation(userId uuid.UUID, filter dto.QuotationFilter) ([]dto.QuotationResponse, error) {
+	user, err := s.userRepo.FindByID(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	var filterId *uint
+	if user.Role == U_ROLE_CUSTOMER {
+		filterId = &user.ID
+	}
+
+	quotations, err := s.quotationRepo.FindAll(filterId, filter)
 	if err != nil {
 		return nil, err
 	}
