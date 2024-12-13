@@ -309,6 +309,7 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 
 	// create production if status = APPROVED
 	var createdProduction *model.Production
+	var createdProductionID *uint
 	if updatedQuotation.Status == Q_STAT_APPROVED {
 		production := model.Production{
 			UserID:      quotation.User.ID,
@@ -321,11 +322,12 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 		if err != nil {
 			return nil, err
 		}
+		createdProductionID = &createdProduction.ID
 	}
 
 	return &dto.QuotationResponse{
 		ID:              updatedQuotation.ID,
-		ProductionID:    &createdProduction.ID,
+		ProductionID:    createdProductionID,
 		UserID:          quotation.User.UserID,
 		StoreName:       updatedQuotation.StoreName,
 		SchoolName:      updatedQuotation.SchoolName,
