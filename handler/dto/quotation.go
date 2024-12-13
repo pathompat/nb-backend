@@ -56,7 +56,7 @@ type QuotationItem struct {
 	Pattern      string  `json:"pattern" binding:"required,uppercase" example:"TABLE"` // Page pattern
 	HasReference *bool   `json:"hasReference" binding:"required" example:"false"`      // Has reference
 	Quantity     int     `json:"quantity" binding:"required,gte=1" example:"1000"`     // Product quantity
-	Price        float32 `json:"price" binding:"required,gt=0" example:"5.5"`          // Product price
+	Price        float32 `json:"price" binding:"required,gte=0" example:"5.5"`         // Product price
 }
 
 type CountByStatus struct {
