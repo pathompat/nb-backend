@@ -67,7 +67,7 @@ func (c *ProductionHandler) GetProductionByID(ctx *gin.Context) {
 // @response 400 "Bad request"
 // @response 401 "Unauthorized"
 //
-// @router			/production/{productionId}/items/{itemId} [PUT]
+// @router			/production/{productionId}/item/{itemId} [PUT]
 func (c *ProductionHandler) UpdateStatusProductionByID(ctx *gin.Context) {
 	var statusInput dto.UpdateStatusItemProduction
 	if err := ctx.ShouldBindJSON(&statusInput); err != nil {

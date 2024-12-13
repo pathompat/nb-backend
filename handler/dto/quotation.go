@@ -13,7 +13,7 @@ type QuotationFilter struct {
 type CreateQuotation struct {
 	UserID          uuid.UUID       `json:"userId" binding:"required,uuid4" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
 	SchoolID        uint            `json:"schoolId" binding:"required,gt=0" example:"2"`                                   // School id
-	SchoolName      string          `json:"schoolName" binding:"required" example:"School test"`                            // School name
+	SchoolName      string          `json:"schoolName" binding:"-" example:"School test"`                                   // School name
 	SchoolAddress   string          `json:"schoolAddress" binding:"required" example:"Address test"`                        // School address
 	SchoolTelephone string          `json:"schoolTelephone" binding:"required,min=9,max=11" example:"0812322212"`           // School telephone
 	AppointmentAt   *time.Time      `json:"appointmentAt" binding:"-" example:"2024-12-00:00:00.0000+07:00"`                // Appointment date (null is now)
@@ -56,11 +56,23 @@ type QuotationItem struct {
 	Pattern      string  `json:"pattern" binding:"required,uppercase" example:"TABLE"` // Page pattern
 	HasReference *bool   `json:"hasReference" binding:"required" example:"false"`      // Has reference
 	Quantity     int     `json:"quantity" binding:"required,gte=1" example:"1000"`     // Product quantity
-	Price        float32 `json:"price" binding:"required,gt=0" example:"5.5"`          // Product price
+	Price        float32 `json:"price" binding:"required,gte=0" example:"5.5"`         // Product price
 }
 
 type CountByStatus struct {
 	Status string `json:"status" binding:"required" example:"REVIEWING"` // Status
 	Count  int    `json:"count" binding:"required" example:"12"`         // Count status
 	Type   string `json:"type" binding:"required" example:"QUOTATION"`   // Type: QUOATATION, PRODUCTION
+}
+
+type UpdateQuotationItemRequest struct {
+	Plate string  `json:"plate" binding:"required" example:"LARGE"`    // Plate size (LARGE, SMALL)
+	Price float32 `json:"price" binding:"required,gt=0" example:"5.5"` // Product price
+}
+
+type UpdateQuotationItemResponse struct {
+	ID          uint    `json:"id" example:"2"`          // Item id
+	QuotationID uint    `json:"quotationId" example:"2"` // Quotation id
+	Plate       string  `json:"plate" example:"LARGE"`   // Plate size (LARGE, SMALL)
+	Price       float32 `json:"price" example:"5.5"`     // Product price
 }

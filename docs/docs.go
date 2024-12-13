@@ -239,7 +239,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/production/{productionId}/items/{itemId}": {
+        "/production/{productionId}/item/{itemId}": {
             "put": {
                 "security": [
                     {
@@ -559,6 +559,76 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/dto.QuotationResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/quotation/{quotationId}/item/{itemId}": {
+            "put": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quotations"
+                ],
+                "operationId": "UpdateQuotationItemByID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Quotation id",
+                        "name": "quotationId",
+                        "in": "path"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Item id",
+                        "name": "itemId",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Update quotation item request",
+                        "name": "updateQuotationItemDTO",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateQuotationItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.UpdateQuotationItemResponse"
                                         }
                                     }
                                 }
@@ -1068,7 +1138,10 @@ const docTemplate = `{
             "required": [
                 "dueDateAt",
                 "items",
+                "schoolAddress",
                 "schoolId",
+                "schoolName",
+                "schoolTelephone",
                 "userId"
             ],
             "properties": {
@@ -1094,10 +1167,27 @@ const docTemplate = `{
                     "type": "string",
                     "example": "remark test"
                 },
+                "schoolAddress": {
+                    "description": "School address",
+                    "type": "string",
+                    "example": "Address test"
+                },
                 "schoolId": {
                     "description": "School id",
                     "type": "integer",
                     "example": 2
+                },
+                "schoolName": {
+                    "description": "School name",
+                    "type": "string",
+                    "example": "School test"
+                },
+                "schoolTelephone": {
+                    "description": "School telephone",
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 9,
+                    "example": "0812322212"
                 },
                 "userId": {
                     "description": "Owner uuid",
@@ -1283,6 +1373,11 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": false
                 },
+                "id": {
+                    "description": "Item id",
+                    "type": "integer",
+                    "example": 1
+                },
                 "page": {
                     "description": "Page count (30-80)",
                     "type": "integer",
@@ -1349,6 +1444,11 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/dto.ProductionItem"
                     }
+                },
+                "quotationId": {
+                    "description": "Quotation id",
+                    "type": "integer",
+                    "example": 1
                 },
                 "remark": {
                     "description": "Document remark",
@@ -1609,6 +1709,50 @@ const docTemplate = `{
                     "description": "Document status",
                     "type": "string",
                     "example": "APPROVED"
+                }
+            }
+        },
+        "dto.UpdateQuotationItemRequest": {
+            "type": "object",
+            "required": [
+                "plate",
+                "price"
+            ],
+            "properties": {
+                "plate": {
+                    "description": "Plate size (LARGE, SMALL)",
+                    "type": "string",
+                    "example": "LARGE"
+                },
+                "price": {
+                    "description": "Product price",
+                    "type": "number",
+                    "example": 5.5
+                }
+            }
+        },
+        "dto.UpdateQuotationItemResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Item id",
+                    "type": "integer",
+                    "example": 2
+                },
+                "plate": {
+                    "description": "Plate size (LARGE, SMALL)",
+                    "type": "string",
+                    "example": "LARGE"
+                },
+                "price": {
+                    "description": "Product price",
+                    "type": "number",
+                    "example": 5.5
+                },
+                "quotationId": {
+                    "description": "Quotation id",
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },

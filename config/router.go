@@ -68,7 +68,8 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 		quotationRoutes.GET("/stat", quotationHandler.CountQuotationByStatus)
 		quotationRoutes.GET("/:quotationId", quotationHandler.GetQuotationByID)
 		quotationRoutes.POST("/", quotationHandler.CreateQuotation)
-		quotationRoutes.PUT("/:id", quotationHandler.UpdateQuotation)
+		quotationRoutes.PUT("/:quotationId", quotationHandler.UpdateQuotation)
+		quotationRoutes.PUT("/:quotationId/item/:itemId", quotationHandler.UpdateQuotationItemByID)
 	}
 	priceRefRoutes := api.Group("/priceRef")
 	{
@@ -78,7 +79,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	productionRoutes := api.Group("/production")
 	{
 		productionRoutes.GET("/:productionId", productionHandler.GetProductionByID)
-		productionRoutes.PUT("/:productionId/items/:itemId", productionHandler.UpdateStatusProductionByID)
+		productionRoutes.PUT("/:productionId/item/:itemId", productionHandler.UpdateStatusProductionByID)
 	}
 }
 

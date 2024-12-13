@@ -173,7 +173,7 @@ func (c *QuotationHandler) CreateQuotation(ctx *gin.Context) {
 //
 //	@router			/quotation/{quotationId} [PUT]
 func (c *QuotationHandler) UpdateQuotation(ctx *gin.Context) {
-	id := ctx.Param("id")
+	id := ctx.Param("quotationId")
 	if id == "" {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidPathParam)
 		return
@@ -192,6 +192,64 @@ func (c *QuotationHandler) UpdateQuotation(ctx *gin.Context) {
 	}
 
 	user, err := c.service.UpdateQuotation(uint(idInt), request)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, user)
+}
+
+// QuotationHandler UpdateQuotationItemByID
+//
+// @id				UpdateQuotationItemByID
+// @tags			quotations
+// @security	JwtToken
+// @accept		json
+// @produce		json
+//
+// @Param			quotationId path int false "Quotation id"
+// @Param			itemId path int false "Item id"
+// @Param			updateQuotationItemDTO body dto.UpdateQuotationItemRequest false "Update quotation item request"
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=dto.UpdateQuotationItemResponse} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+// @response 500 "Internal Server Error"
+//
+//	@router			/quotation/{quotationId}/item/{itemId} [PUT]
+func (c *QuotationHandler) UpdateQuotationItemByID(ctx *gin.Context) {
+	id := ctx.Param("quotationId")
+	if id == "" {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidPathParam)
+		return
+	}
+
+	idInt, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	itemID := ctx.Param("itemId")
+	if id == "" {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, helper.ErrInvalidPathParam)
+		return
+	}
+
+	itemIDInt, err := strconv.ParseUint(itemID, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	var request dto.UpdateQuotationItemRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	user, err := c.service.UpdateQuotationItemByID(uint(idInt), uint(itemIDInt), request)
 	if err != nil {
 		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
