@@ -21,6 +21,10 @@ definitions:
     type: object
   dto.CreatePriceRef:
     properties:
+      category:
+        description: Category
+        example: cut8
+        type: string
       color:
         description: Color
         example: "1"
@@ -49,10 +53,6 @@ definitions:
         description: Price
         example: 5.5
         type: number
-      productTitle:
-        description: ProductTitle
-        example: cut8
-        type: string
       tierId:
         description: TierID
         example: 1
@@ -156,6 +156,10 @@ definitions:
     type: object
   dto.PriceRefResponse:
     properties:
+      category:
+        description: Category
+        example: cut8
+        type: string
       color:
         description: Color
         example: "1"
@@ -184,10 +188,6 @@ definitions:
         description: Price
         example: 5.5
         type: number
-      productTitle:
-        description: ProductTitle
-        example: cut8
-        type: string
     type: object
   dto.Production:
     properties:
@@ -207,6 +207,10 @@ definitions:
     type: object
   dto.ProductionItem:
     properties:
+      category:
+        description: Product name
+        example: Cut 8
+        type: string
       color:
         description: Color (1,4)
         example: "1"
@@ -234,10 +238,6 @@ definitions:
       plate:
         description: Plate size (LARGE, SMALL)
         example: LARGE
-        type: string
-      productTitle:
-        description: Product name
-        example: Cut 8
         type: string
       quantity:
         description: Product quantity
@@ -309,6 +309,10 @@ definitions:
     type: object
   dto.QuotationItem:
     properties:
+      category:
+        description: Product name
+        example: Cut 8
+        type: string
       color:
         description: Color (1,4)
         example: "1"
@@ -341,22 +345,17 @@ definitions:
         description: Product price
         example: 5.5
         type: number
-      productTitle:
-        description: Product name
-        example: Cut 8
-        type: string
       quantity:
         description: Product quantity
         example: 1000
         minimum: 1
         type: integer
     required:
+    - category
     - color
     - hasReference
-    - id
     - pattern
     - price
-    - productTitle
     - quantity
     type: object
   dto.QuotationResponse:

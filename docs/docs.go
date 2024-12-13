@@ -1016,6 +1016,11 @@ const docTemplate = `{
         "dto.CreatePriceRef": {
             "type": "object",
             "properties": {
+                "category": {
+                    "description": "Category",
+                    "type": "string",
+                    "example": "cut8"
+                },
                 "color": {
                     "description": "Color",
                     "type": "string",
@@ -1050,11 +1055,6 @@ const docTemplate = `{
                     "description": "Price",
                     "type": "number",
                     "example": 5.5
-                },
-                "productTitle": {
-                    "description": "ProductTitle",
-                    "type": "string",
-                    "example": "cut8"
                 },
                 "tierId": {
                     "description": "TierID",
@@ -1191,6 +1191,11 @@ const docTemplate = `{
         "dto.PriceRefResponse": {
             "type": "object",
             "properties": {
+                "category": {
+                    "description": "Category",
+                    "type": "string",
+                    "example": "cut8"
+                },
                 "color": {
                     "description": "Color",
                     "type": "string",
@@ -1225,11 +1230,6 @@ const docTemplate = `{
                     "description": "Price",
                     "type": "number",
                     "example": 5.5
-                },
-                "productTitle": {
-                    "description": "ProductTitle",
-                    "type": "string",
-                    "example": "cut8"
                 }
             }
         },
@@ -1258,6 +1258,11 @@ const docTemplate = `{
         "dto.ProductionItem": {
             "type": "object",
             "properties": {
+                "category": {
+                    "description": "Product name",
+                    "type": "string",
+                    "example": "Cut 8"
+                },
                 "color": {
                     "description": "Color (1,4)",
                     "type": "string",
@@ -1292,11 +1297,6 @@ const docTemplate = `{
                     "description": "Plate size (LARGE, SMALL)",
                     "type": "string",
                     "example": "LARGE"
-                },
-                "productTitle": {
-                    "description": "Product name",
-                    "type": "string",
-                    "example": "Cut 8"
                 },
                 "quantity": {
                     "description": "Product quantity",
@@ -1390,15 +1390,19 @@ const docTemplate = `{
         "dto.QuotationItem": {
             "type": "object",
             "required": [
+                "category",
                 "color",
                 "hasReference",
-                "id",
                 "pattern",
                 "price",
-                "productTitle",
                 "quantity"
             ],
             "properties": {
+                "category": {
+                    "description": "Product name",
+                    "type": "string",
+                    "example": "Cut 8"
+                },
                 "color": {
                     "description": "Color (1,4)",
                     "type": "string",
@@ -1438,11 +1442,6 @@ const docTemplate = `{
                     "description": "Product price",
                     "type": "number",
                     "example": 5.5
-                },
-                "productTitle": {
-                    "description": "Product name",
-                    "type": "string",
-                    "example": "Cut 8"
                 },
                 "quantity": {
                     "description": "Product quantity",
