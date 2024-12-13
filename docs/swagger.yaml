@@ -77,10 +77,24 @@ definitions:
         description: Any remark
         example: remark test
         type: string
+      schoolAddress:
+        description: School address
+        example: Address test
+        type: string
       schoolId:
         description: School id
         example: 2
         type: integer
+      schoolName:
+        description: School name
+        example: School test
+        type: string
+      schoolTelephone:
+        description: School telephone
+        example: "0812322212"
+        maxLength: 11
+        minLength: 9
+        type: string
       userId:
         description: Owner uuid
         example: 78705ee5-25cd-45b5-8cb1-63f1cb94e5c8
@@ -88,7 +102,10 @@ definitions:
     required:
     - dueDateAt
     - items
+    - schoolAddress
     - schoolId
+    - schoolName
+    - schoolTelephone
     - userId
     type: object
   dto.CreateSchool:
@@ -227,6 +244,10 @@ definitions:
         description: Has reference
         example: false
         type: boolean
+      id:
+        description: Item id
+        example: 1
+        type: integer
       page:
         description: Page count (30-80)
         example: 40
@@ -278,6 +299,10 @@ definitions:
         items:
           $ref: '#/definitions/dto.ProductionItem'
         type: array
+      quotationId:
+        description: Quotation id
+        example: 1
+        type: integer
       remark:
         description: Document remark
         example: test remark
@@ -478,6 +503,39 @@ definitions:
     required:
     - items
     - status
+    type: object
+  dto.UpdateQuotationItemRequest:
+    properties:
+      plate:
+        description: Plate size (LARGE, SMALL)
+        example: LARGE
+        type: string
+      price:
+        description: Product price
+        example: 5.5
+        type: number
+    required:
+    - plate
+    - price
+    type: object
+  dto.UpdateQuotationItemResponse:
+    properties:
+      id:
+        description: Item id
+        example: 2
+        type: integer
+      plate:
+        description: Plate size (LARGE, SMALL)
+        example: LARGE
+        type: string
+      price:
+        description: Product price
+        example: 5.5
+        type: number
+      quotationId:
+        description: Quotation id
+        example: 2
+        type: integer
     type: object
   dto.UpdateStatusItemProduction:
     properties:
@@ -694,7 +752,7 @@ paths:
       - JwtToken: []
       tags:
       - production
-  /production/{productionId}/items/{itemId}:
+  /production/{productionId}/item/{itemId}:
     put:
       consumes:
       - application/json
@@ -849,6 +907,47 @@ paths:
             - properties:
                 data:
                   $ref: '#/definitions/dto.QuotationResponse'
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - JwtToken: []
+      tags:
+      - quotations
+  /quotation/{quotationId}/item/{itemId}:
+    put:
+      consumes:
+      - application/json
+      operationId: UpdateQuotationItemByID
+      parameters:
+      - description: Quotation id
+        in: path
+        name: quotationId
+        type: integer
+      - description: Item id
+        in: path
+        name: itemId
+        type: integer
+      - description: Update quotation item request
+        in: body
+        name: updateQuotationItemDTO
+        schema:
+          $ref: '#/definitions/dto.UpdateQuotationItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UpdateQuotationItemResponse'
               type: object
         "400":
           description: Bad request
