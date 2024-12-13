@@ -64,3 +64,15 @@ type CountByStatus struct {
 	Count  int    `json:"count" binding:"required" example:"12"`         // Count status
 	Type   string `json:"type" binding:"required" example:"QUOTATION"`   // Type: QUOATATION, PRODUCTION
 }
+
+type UpdateQuotationItemRequest struct {
+	Plate string  `json:"plate" binding:"required" example:"LARGE"`    // Plate size (LARGE, SMALL)
+	Price float32 `json:"price" binding:"required,gt=0" example:"5.5"` // Product price
+}
+
+type UpdateQuotationItemResponse struct {
+	ID          uint    `json:"id" example:"2"`          // Item id
+	QuotationID uint    `json:"quotationId" example:"2"` // Quotation id
+	Plate       string  `json:"plate" example:"LARGE"`   // Plate size (LARGE, SMALL)
+	Price       float32 `json:"price" example:"5.5"`     // Product price
+}

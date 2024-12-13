@@ -28,6 +28,7 @@ type QuotationService interface {
 	CountQuotationByStatus(userID uuid.UUID) ([]dto.CountByStatus, error)
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
+	UpdateQuotationItemByID(quotationID uint, itemID uint, input dto.UpdateQuotationItemRequest) (*dto.UpdateQuotationItemResponse, error)
 }
 
 type quotationService struct {
@@ -337,5 +338,27 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 		Items:           input.Items,
 		CreatedAt:       updatedQuotation.CreatedAt,
 		UpdatedAt:       updatedQuotation.UpdatedAt,
+	}, nil
+}
+
+func (s *quotationService) UpdateQuotationItemByID(quotationID uint, itemID uint, input dto.UpdateQuotationItemRequest) (*dto.UpdateQuotationItemResponse, error) {
+	item, err := s.quotationRepo.FindItemByIDAndItemID(quotationID, itemID)
+	if err != nil {
+		return nil, err
+	}
+
+	item.Plate = input.Plate
+	item.Price = input.Price
+
+	updatedItem, err := s.quotationRepo.UpdateItem(*item)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.UpdateQuotationItemResponse{
+		QuotationID: item.QuotationID,
+		ID:          item.ID,
+		Plate:       updatedItem.Plate,
+		Price:       updatedItem.Price,
 	}, nil
 }

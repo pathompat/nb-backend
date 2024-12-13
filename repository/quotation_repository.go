@@ -10,9 +10,11 @@ import (
 type QuotationRepository interface {
 	FindAll(userID *uint, filter dto.QuotationFilter) ([]model.Quotation, error)
 	FindById(id uint) (*model.Quotation, error)
+	FindItemByIDAndItemID(id uint, itemID uint) (*model.QuotationItem, error)
 	CountByStatus(userID *uint) ([]model.StatusCount, error)
 	Create(quotation model.Quotation) (*model.Quotation, error)
 	Update(quotation model.Quotation) (*model.Quotation, error)
+	UpdateItem(item model.QuotationItem) (*model.QuotationItem, error)
 }
 
 type quotationRepository struct {
@@ -50,6 +52,15 @@ func (r *quotationRepository) FindById(id uint) (*model.Quotation, error) {
 	return &quotation, nil
 }
 
+func (r *quotationRepository) FindItemByIDAndItemID(id uint, itemID uint) (*model.QuotationItem, error) {
+	var item model.QuotationItem
+	err := r.db.Where("quotation_id = ?", id).Where("id = ?", itemID).First(&item).Error
+	if err != nil {
+		return nil, err
+	}
+	return &item, nil
+}
+
 func (r *quotationRepository) CountByStatus(userID *uint) ([]model.StatusCount, error) {
 	var results []model.StatusCount
 
@@ -76,4 +87,12 @@ func (r *quotationRepository) Update(quotation model.Quotation) (*model.Quotatio
 		return nil, err
 	}
 	return &quotation, nil
+}
+
+func (r *quotationRepository) UpdateItem(item model.QuotationItem) (*model.QuotationItem, error) {
+	err := r.db.Save(&item).Error
+	if err != nil {
+		return nil, err
+	}
+	return &item, nil
 }
