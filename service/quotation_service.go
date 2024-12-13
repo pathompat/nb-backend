@@ -62,6 +62,7 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		quotationItemMap := []dto.QuotationItem{}
 		for _, item := range quotation.Items {
 			quotationItemMap = append(quotationItemMap, dto.QuotationItem{
+				ID:           item.ID,
 				Category:     item.Category,
 				Plate:        item.Plate,
 				Gram:         item.Gram,
@@ -78,6 +79,7 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		if quotation.Production != nil {
 			for _, item := range quotation.Production.Items {
 				productionItemMap = append(productionItemMap, dto.ProductionItem{
+					ID:           item.ID,
 					Category:     item.Category,
 					Plate:        item.Plate,
 					Gram:         item.Gram,
@@ -133,6 +135,7 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 	quotationItemMap := []dto.QuotationItem{}
 	for _, item := range quotation.Items {
 		quotationItemMap = append(quotationItemMap, dto.QuotationItem{
+			ID:           item.ID,
 			Category:     item.Category,
 			Plate:        item.Plate,
 			Gram:         item.Gram,
@@ -235,10 +238,10 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 	quotationMap := model.Quotation{
 		UserID:          user.ID,
 		StoreName:       user.StoreName,
-		SchoolID:        school.ID,
+		SchoolID:        input.SchoolID,
 		SchoolName:      school.Name,
-		SchoolAddress:   school.Address,
-		SchoolTelephone: school.Telephone,
+		SchoolAddress:   input.SchoolAddress,
+		SchoolTelephone: input.SchoolTelephone,
 		AppointmentAt:   input.AppointmentAt,
 		DueDateAt:       input.DueDateAt,
 		Status:          Q_STAT_REVIEWING,
@@ -252,6 +255,7 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 	}
 
 	return &dto.QuotationResponse{
+		ID:              createdQuotation.ID,
 		UserID:          user.UserID,
 		StoreName:       user.StoreName,
 		SchoolName:      school.Name,

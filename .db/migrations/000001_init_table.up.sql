@@ -1,6 +1,6 @@
 -- create table user
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
     username VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE users (
 
 -- create table schools
 CREATE TABLE schools (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     user_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     address VARCHAR(255) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE schools (
 
 -- create table quotations
 CREATE TABLE quotations (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     user_id INT NOT NULL,
     school_id INT NOT NULL,
     store_name VARCHAR(100) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE quotations (
 
 -- create table quotation_items
 CREATE TABLE quotation_items (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL  PRIMARY KEY,
     quotation_id INT NOT NULL,
     category VARCHAR(100) NOT NULL,
     plate VARCHAR(20),
@@ -63,7 +63,7 @@ CREATE TABLE quotation_items (
 
 -- create table productions
 CREATE TABLE productions (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     user_id INT NOT NULL,
     school_id INT NOT NULL,
     quotation_id INT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE productions (
 
 -- create table production_items
 CREATE TABLE production_items (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     production_id INT NOT NULL,
     category VARCHAR(100) NOT NULL,
     plate VARCHAR(20) NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE production_items (
 
 -- create table price references
 CREATE TABLE price_references (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     tier_id SMALLINT NOT NULL,
     category VARCHAR(100) NOT NULL,
     plate VARCHAR(20) NOT NULL,

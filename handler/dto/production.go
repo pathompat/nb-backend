@@ -18,6 +18,7 @@ type UpdateStatusItemProduction struct {
 
 type ProductionResponse struct {
 	ID              uint             `json:"id" example:"1"`                                        // Document id
+	QuotationID     uint             `json:"quotationId" example:"1"`                               // Quotation id
 	UserID          uuid.UUID        `json:"userId" example:"78705ee5-25cd-45b5-8cb1-63f1cb94e5c8"` // Owner uuid
 	Username        string           `json:"userName" example:"adminTest"`                          // User name
 	StoreName       string           `json:"storeName" example:"Notebook store"`                    // Store name
@@ -35,6 +36,7 @@ type ProductionItemResponse struct {
 }
 
 type ProductionItem struct {
+	ID           uint      `json:"id" example:"1"`                                      // Item id
 	Category     string    `json:"category" example:"Cut 8"`                            // Product name
 	Plate        string    `json:"plate" example:"LARGE"`                               // Plate size (LARGE, SMALL)
 	Gram         int       `json:"gram" example:"40"`                                   // Notebook grams (40-150)
