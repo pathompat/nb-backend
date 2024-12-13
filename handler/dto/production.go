@@ -35,7 +35,7 @@ type ProductionItemResponse struct {
 }
 
 type ProductionItem struct {
-	ProductTitle string    `json:"productTitle" example:"Cut 8"`                        // Product name
+	Category     string    `json:"category" example:"Cut 8"`                            // Product name
 	Plate        string    `json:"plate" example:"LARGE"`                               // Plate size (LARGE, SMALL)
 	Gram         int       `json:"gram" example:"40"`                                   // Notebook grams (40-150)
 	Color        string    `json:"color" example:"1"`                                   // Color (1,4)

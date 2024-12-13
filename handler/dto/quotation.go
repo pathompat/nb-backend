@@ -44,8 +44,8 @@ type QuotationResponse struct {
 }
 
 type QuotationItem struct {
-	ID           uint    `json:"id" binding:"required" example:"2"`                    // Unique id
-	ProductTitle string  `json:"productTitle" binding:"required" example:"Cut 8"`      // Product name
+	ID           uint    `json:"id" example:"2"`                                       // Unique id
+	Category     string  `json:"category" binding:"required" example:"Cut 8"`          // Product name
 	Plate        string  `json:"plate" binding:"-" example:"LARGE"`                    // Plate size (LARGE, SMALL)
 	Gram         int     `json:"gram" binding,gte=5:"required" example:"40"`           // Notebook grams (40-150)
 	Color        string  `json:"color" binding:"required" example:"1"`                 // Color (1,4)

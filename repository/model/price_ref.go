@@ -7,7 +7,7 @@ import (
 type PriceReference struct {
 	gorm.Model
 	TierID       int     `gorm:"not null"`
-	ProductTitle string  `gorm:"not null"`
+	Category     string  `gorm:"not null"`
 	Plate        string  `gorm:"not null"`
 	Gram         int     `gorm:"not null"`
 	Color        string  `gorm:"not null"`

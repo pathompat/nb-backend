@@ -2,7 +2,7 @@ package dto
 
 type CreatePriceRef struct {
 	TierID       int     `json:"tierId" example:"1"`           // TierID
-	ProductTitle string  `json:"productTitle" example:"cut8"`  // ProductTitle
+	Category     string  `json:"category" example:"cut8"`      // Category
 	Plate        string  `json:"plate" example:"LARGE"`        // Plate
 	Gram         int     `json:"gram" example:"12"`            // Gram
 	Color        string  `json:"color" example:"1"`            // Color
@@ -13,7 +13,7 @@ type CreatePriceRef struct {
 }
 
 type PriceRefResponse struct {
-	ProductTitle string  `json:"productTitle" example:"cut8"`  // ProductTitle
+	Category     string  `json:"category" example:"cut8"`      // Category
 	Plate        string  `json:"plate" example:"LARGE"`        // Plate
 	Gram         int     `json:"gram" example:"12"`            // Gram
 	Color        string  `json:"color" example:"1"`            // Color

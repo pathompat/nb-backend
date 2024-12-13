@@ -49,7 +49,7 @@ CREATE TABLE quotations (
 CREATE TABLE quotation_items (
     id SERIAL PRIMARY KEY,
     quotation_id INT NOT NULL,
-    product_title VARCHAR(100) NOT NULL,
+    category VARCHAR(100) NOT NULL,
     plate VARCHAR(20),
     gram INT NOT NULL,
     color VARCHAR(20) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE productions (
 CREATE TABLE production_items (
     id SERIAL PRIMARY KEY,
     production_id INT NOT NULL,
-    product_title VARCHAR(100) NOT NULL,
+    category VARCHAR(100) NOT NULL,
     plate VARCHAR(20) NOT NULL,
     gram INT NOT NULL,
     color VARCHAR(20) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE production_items (
 CREATE TABLE price_references (
     id SERIAL PRIMARY KEY,
     tier_id SMALLINT NOT NULL,
-    product_title VARCHAR(100) NOT NULL,
+    category VARCHAR(100) NOT NULL,
     plate VARCHAR(20) NOT NULL,
     gram INT NOT NULL,
     color VARCHAR(20) NOT NULL,

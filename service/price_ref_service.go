@@ -43,7 +43,7 @@ func (s *priceRefService) GetPriceRefByUserID(userID string) ([]dto.PriceRefResp
 	priceRefMap := []dto.PriceRefResponse{}
 	for _, priceRef := range priceRefs {
 		priceRefMap = append(priceRefMap, dto.PriceRefResponse{
-			ProductTitle: priceRef.ProductTitle,
+			Category:     priceRef.Category,
 			Plate:        priceRef.Plate,
 			Gram:         priceRef.Gram,
 			Color:        priceRef.Color,
@@ -61,7 +61,7 @@ func (s *priceRefService) CreatePriceRef(priceRefInput []dto.CreatePriceRef) ([]
 	for _, input := range priceRefInput {
 		priceRefs = append(priceRefs, model.PriceReference{
 			TierID:       input.TierID,
-			ProductTitle: input.ProductTitle,
+			Category:     input.Category,
 			Plate:        input.Plate,
 			Gram:         input.Gram,
 			Color:        input.Color,
@@ -80,7 +80,7 @@ func (s *priceRefService) CreatePriceRef(priceRefInput []dto.CreatePriceRef) ([]
 	var responsePriceRefs []dto.PriceRefResponse
 	for _, ref := range createdPriceRefs {
 		responsePriceRefs = append(responsePriceRefs, dto.PriceRefResponse{
-			ProductTitle: ref.ProductTitle,
+			Category:     ref.Category,
 			Plate:        ref.Plate,
 			Gram:         ref.Gram,
 			Color:        ref.Color,

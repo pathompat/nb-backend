@@ -26,7 +26,7 @@ type Quotation struct {
 type QuotationItem struct {
 	ID           uint   `gorm:"primaryKey"`
 	QuotationID  uint   `gorm:"not null"`
-	ProductTitle string `gorm:"not null"`
+	Category     string `gorm:"not null"`
 	Plate        string
 	Gram         int     `gorm:"not null"`
 	Color        string  `gorm:"not null"`
