@@ -53,9 +53,9 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 		userRoutes.GET("/", userHandler.GetAllUsers)
 		userRoutes.GET("/:userId", userHandler.GetUserByID)
 		userRoutes.GET("/info", userHandler.GetInfoUser)
-		userRoutes.POST("/", userHandler.CreateUser)
-		userRoutes.PUT("/:userId", userHandler.UpdateUser)
-		userRoutes.DELETE("/:userId", userHandler.DeleteUser)
+		userRoutes.POST("/", roleMiddleware("ADMIN"), userHandler.CreateUser)
+		userRoutes.PUT("/:userId", roleMiddleware("ADMIN"), userHandler.UpdateUser)
+		userRoutes.DELETE("/:userId", roleMiddleware("ADMIN"), userHandler.DeleteUser)
 	}
 	schoolRoutes := api.Group("/school")
 	{
@@ -68,18 +68,18 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 		quotationRoutes.GET("/stat", quotationHandler.CountQuotationByStatus)
 		quotationRoutes.GET("/:quotationId", quotationHandler.GetQuotationByID)
 		quotationRoutes.POST("/", quotationHandler.CreateQuotation)
-		quotationRoutes.PUT("/:quotationId", quotationHandler.UpdateQuotation)
-		quotationRoutes.PUT("/:quotationId/item/:itemId", quotationHandler.UpdateQuotationItemByID)
+		quotationRoutes.PUT("/:quotationId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotation)
+		quotationRoutes.PUT("/:quotationId/item/:itemId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotationItemByID)
 	}
 	priceRefRoutes := api.Group("/priceRef")
 	{
 		priceRefRoutes.GET("/", priceRefHandler.GetPriceRefByUserID)
-		priceRefRoutes.POST("/", priceRefHandler.CreatePriceRef)
+		priceRefRoutes.POST("/", roleMiddleware("ADMIN"), priceRefHandler.CreatePriceRef)
 	}
 	productionRoutes := api.Group("/production")
 	{
 		productionRoutes.GET("/:productionId", productionHandler.GetProductionByID)
-		productionRoutes.PUT("/:productionId/item/:itemId", productionHandler.UpdateStatusProductionByID)
+		productionRoutes.PUT("/:productionId/item/:itemId", roleMiddleware("ADMIN"), productionHandler.UpdateStatusProductionByID)
 	}
 }
 
@@ -119,5 +119,33 @@ func authMiddleware() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func roleMiddleware(allowedRoles ...string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role, exists := c.Get("role")
+		if !exists {
+			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrForbidden)
+			c.Abort()
+			return
+		}
+
+		roleStr, ok := role.(string)
+		if !ok {
+			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrForbidden)
+			c.Abort()
+			return
+		}
+
+		for _, allowedRole := range allowedRoles {
+			if roleStr == allowedRole {
+				c.Next()
+				return
+			}
+		}
+
+		helper.ErrorResponse(c, http.StatusForbidden, helper.ErrNoPermission)
+		c.Abort()
 	}
 }

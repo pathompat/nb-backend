@@ -5,6 +5,7 @@ import (
 	"notebook-backend/handler/dto"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
+	"strings"
 
 	"log/slog"
 
@@ -242,7 +243,7 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 		SchoolID:        input.SchoolID,
 		SchoolName:      school.Name,
 		SchoolAddress:   input.SchoolAddress,
-		SchoolTelephone: input.SchoolTelephone,
+		SchoolTelephone: strings.Trim(input.SchoolTelephone, " "),
 		AppointmentAt:   input.AppointmentAt,
 		DueDateAt:       input.DueDateAt,
 		Status:          Q_STAT_REVIEWING,
@@ -260,8 +261,8 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 		UserID:          user.UserID,
 		StoreName:       user.StoreName,
 		SchoolName:      school.Name,
-		SchoolAddress:   school.Address,
-		SchoolTelephone: school.Telephone,
+		SchoolAddress:   createdQuotation.SchoolAddress,
+		SchoolTelephone: createdQuotation.SchoolTelephone,
 		AppointmentAt:   createdQuotation.AppointmentAt,
 		DueDateAt:       createdQuotation.DueDateAt,
 		Status:          createdQuotation.Status,
