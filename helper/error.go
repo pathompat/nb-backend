@@ -15,6 +15,6 @@ var (
 	ErrMissingToken     = errors.New("Missing authorization")
 	ErrInvalidPathParam = errors.New("Invalid path param")
 
-	ErrForbidden    = errors.New("Forbidden")
 	ErrNoPermission = errors.New("Permission denied")
+	ErrRoleNotFound = errors.New("Role not found")
 )
