@@ -145,7 +145,7 @@ func roleMiddleware(allowedRoles ...string) gin.HandlerFunc {
 			}
 		}
 
-		helper.ErrorResponse(c, http.StatusForbidden, helper.ErrForbidden)
+		helper.ErrorResponse(c, http.StatusForbidden, helper.ErrNoPermission)
 		c.Abort()
 	}
 }
