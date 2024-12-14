@@ -47,7 +47,7 @@ type QuotationResponse struct {
 }
 
 type QuotationItem struct {
-	ID           uint    `json:"id" example:"2"`                                       // Unique id
+	ID           uint    `json:"id,omitempty" example:"2"`                             // Unique id
 	Category     string  `json:"category" binding:"required" example:"Cut 8"`          // Product name
 	Plate        string  `json:"plate" binding:"-" example:"LARGE"`                    // Plate size (LARGE, SMALL)
 	Gram         int     `json:"gram" binding,gte=5:"required" example:"40"`           // Notebook grams (40-150)
@@ -56,7 +56,7 @@ type QuotationItem struct {
 	Pattern      string  `json:"pattern" binding:"required,uppercase" example:"TABLE"` // Page pattern
 	HasReference *bool   `json:"hasReference" binding:"required" example:"false"`      // Has reference
 	Quantity     int     `json:"quantity" binding:"required,gte=1" example:"1000"`     // Product quantity
-	Price        float32 `json:"price" binding:"required,gte=0" example:"5.5"`         // Product price
+	Price        float32 `json:"price" binding:"gte=0" example:"5.5"`                  // Product price
 }
 
 type CountByStatus struct {
