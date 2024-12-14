@@ -9,7 +9,8 @@ CREATE TABLE users (
     role VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP
+    deleted_at TIMESTAMP,
+    UNIQUE(username)
 );
 
 -- create table schools

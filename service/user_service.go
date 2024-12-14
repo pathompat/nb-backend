@@ -14,7 +14,7 @@ type UserService interface {
 	GetAllUsers() ([]dto.UserResponse, error)
 	GetUserByID(userID string) (dto.UserResponse, error)
 	GetInfoUser(userID string) (dto.UserResponse, error)
-	CreateUser(input dto.CreateUser) (dto.UserResponse, error)
+	CreateUser(input dto.CreateUser) (*dto.UserResponse, error)
 	UpdateUser(userID string, input dto.UpdateUser) (dto.UserResponse, error)
 	DeleteUser(userID string) error
 }
@@ -92,10 +92,10 @@ func (s *userService) GetInfoUser(userID string) (dto.UserResponse, error) {
 	}, nil
 }
 
-func (s *userService) CreateUser(input dto.CreateUser) (dto.UserResponse, error) {
+func (s *userService) CreateUser(input dto.CreateUser) (*dto.UserResponse, error) {
 	hashPassword, err := helper.HashPassword(input.Password)
 	if err != nil {
-		return dto.UserResponse{}, helper.ErrHashPassword
+		return nil, err
 	}
 
 	newUser := model.User{
@@ -109,10 +109,10 @@ func (s *userService) CreateUser(input dto.CreateUser) (dto.UserResponse, error)
 
 	createdUser, err := s.repo.Create(newUser)
 	if err != nil {
-		return dto.UserResponse{}, helper.ErrInsertRecord
+		return nil, err
 	}
 
-	return dto.UserResponse{
+	return &dto.UserResponse{
 		UserID:    createdUser.UserID,
 		TierID:    createdUser.TierID,
 		Username:  createdUser.Username,
