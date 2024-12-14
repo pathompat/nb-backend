@@ -14,4 +14,6 @@ var (
 	ErrInvalidToken     = errors.New("Invalid token")
 	ErrMissingToken     = errors.New("Missing authorization")
 	ErrInvalidPathParam = errors.New("Invalid path param")
+
+	ErrForbidden = errors.New("Forbidden")
 )
