@@ -50,36 +50,36 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	api.Use(authMiddleware())
 	userRoutes := api.Group("/user")
 	{
-		userRoutes.GET("/", userHandler.GetAllUsers)
-		userRoutes.GET("/:userId", userHandler.GetUserByID)
-		userRoutes.GET("/info", userHandler.GetInfoUser)
-		userRoutes.POST("/", roleMiddleware("ADMIN"), userHandler.CreateUser)
-		userRoutes.PUT("/:userId", roleMiddleware("ADMIN"), userHandler.UpdateUser)
-		userRoutes.DELETE("/:userId", roleMiddleware("ADMIN"), userHandler.DeleteUser)
+		userRoutes.GET("", userHandler.GetAllUsers)
+		userRoutes.GET(":userId", userHandler.GetUserByID)
+		userRoutes.GET("info", userHandler.GetInfoUser)
+		userRoutes.POST("", roleMiddleware("ADMIN"), userHandler.CreateUser)
+		userRoutes.PUT(":userId", roleMiddleware("ADMIN"), userHandler.UpdateUser)
+		userRoutes.DELETE(":userId", roleMiddleware("ADMIN"), userHandler.DeleteUser)
 	}
 	schoolRoutes := api.Group("/school")
 	{
-		schoolRoutes.GET("/", schoolHandler.GetSchoolByUserId)
-		schoolRoutes.POST("/", schoolHandler.CreateSchool)
+		schoolRoutes.GET("", schoolHandler.GetSchoolByUserId)
+		schoolRoutes.POST("", schoolHandler.CreateSchool)
 	}
 	quotationRoutes := api.Group("/quotation")
 	{
-		quotationRoutes.GET("/", quotationHandler.GetAllQuotation)
-		quotationRoutes.GET("/stat", quotationHandler.CountQuotationByStatus)
-		quotationRoutes.GET("/:quotationId", quotationHandler.GetQuotationByID)
-		quotationRoutes.POST("/", quotationHandler.CreateQuotation)
-		quotationRoutes.PUT("/:quotationId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotation)
-		quotationRoutes.PUT("/:quotationId/item/:itemId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotationItemByID)
+		quotationRoutes.GET("", quotationHandler.GetAllQuotation)
+		quotationRoutes.GET("stat", quotationHandler.CountQuotationByStatus)
+		quotationRoutes.GET(":quotationId", quotationHandler.GetQuotationByID)
+		quotationRoutes.POST("", quotationHandler.CreateQuotation)
+		quotationRoutes.PUT(":quotationId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotation)
+		quotationRoutes.PUT(":quotationId/item/:itemId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotationItemByID)
 	}
 	priceRefRoutes := api.Group("/priceRef")
 	{
-		priceRefRoutes.GET("/", priceRefHandler.GetPriceRefByUserID)
-		priceRefRoutes.POST("/", roleMiddleware("ADMIN"), priceRefHandler.CreatePriceRef)
+		priceRefRoutes.GET("", priceRefHandler.GetPriceRefByUserID)
+		priceRefRoutes.POST("", roleMiddleware("ADMIN"), priceRefHandler.CreatePriceRef)
 	}
 	productionRoutes := api.Group("/production")
 	{
-		productionRoutes.GET("/:productionId", productionHandler.GetProductionByID)
-		productionRoutes.PUT("/:productionId/item/:itemId", roleMiddleware("ADMIN"), productionHandler.UpdateStatusProductionByID)
+		productionRoutes.GET(":productionId", productionHandler.GetProductionByID)
+		productionRoutes.PUT(":productionId/item/:itemId", roleMiddleware("ADMIN"), productionHandler.UpdateStatusProductionByID)
 	}
 }
 
@@ -113,6 +113,12 @@ func authMiddleware() gin.HandlerFunc {
 		// Set the token claims to the context
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("claims", claims)
+			if role, exists := claims["role"]; exists {
+				c.Set("role", role)
+			} else {
+				helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrRoleNotFound)
+				return
+			}
 		} else {
 			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrInvalidToken)
 			return
@@ -124,16 +130,17 @@ func authMiddleware() gin.HandlerFunc {
 
 func roleMiddleware(allowedRoles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		role, exists := c.Get("role")
 		if !exists {
-			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrForbidden)
+			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrRoleNotFound)
 			c.Abort()
 			return
 		}
 
 		roleStr, ok := role.(string)
 		if !ok {
-			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrForbidden)
+			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrRoleNotFound)
 			c.Abort()
 			return
 		}
