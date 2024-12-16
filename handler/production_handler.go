@@ -71,7 +71,7 @@ func (c *ProductionHandler) GetProductionByID(ctx *gin.Context) {
 func (c *ProductionHandler) UpdateStatusProductionByID(ctx *gin.Context) {
 	var statusInput dto.UpdateStatusItemProduction
 	if err := ctx.ShouldBindJSON(&statusInput); err != nil {
-		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 

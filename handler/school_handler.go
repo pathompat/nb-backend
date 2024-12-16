@@ -37,7 +37,7 @@ func (c *SchoolHandler) GetSchoolByUserId(ctx *gin.Context) {
 
 	school, err := c.service.GetSchoolByUserId(userID)
 	if err != nil {
-		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
