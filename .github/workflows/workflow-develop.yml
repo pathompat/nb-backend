@@ -142,3 +142,4 @@ jobs:
               -e JWT_SECRET=$JWT_SECRET \
               -e JWT_EXPIRED_IN=$JWT_EXPIRED_IN \
               $IMAGE_URL:$IMAGE_TAG
+            sudo docker image prune -af
