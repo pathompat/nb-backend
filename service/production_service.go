@@ -13,14 +13,20 @@ type ProductionService interface {
 
 type productionService struct {
 	productionRepo repository.ProductionRepository
+	quotationRepo  repository.QuotationRepository
 }
 
-func NewProductionService(productionRepo repository.ProductionRepository) ProductionService {
-	return &productionService{productionRepo: productionRepo}
+func NewProductionService(productionRepo repository.ProductionRepository, quotationRepo repository.QuotationRepository) ProductionService {
+	return &productionService{productionRepo: productionRepo, quotationRepo: quotationRepo}
 }
 
 func (s *productionService) GetProductionByID(productionID uint) (dto.ProductionResponse, error) {
 	production, err := s.productionRepo.FindProductionByID(productionID)
+	if err != nil {
+		return dto.ProductionResponse{}, err
+	}
+
+	quotation, err := s.quotationRepo.FindById(production.QuotationID)
 	if err != nil {
 		return dto.ProductionResponse{}, err
 	}
@@ -52,6 +58,8 @@ func (s *productionService) GetProductionByID(productionID uint) (dto.Production
 		SchoolName:      production.School.Name,
 		SchoolAddress:   production.School.Address,
 		SchoolTelephone: production.School.Telephone,
+		AppointmentAt:   quotation.AppointmentAt,
+		DueDateAt:       quotation.DueDateAt,
 		Remark:          production.Remark,
 		Items:           productionItemMap,
 	}, nil
