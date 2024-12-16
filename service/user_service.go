@@ -134,13 +134,17 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserR
 		return dto.UserResponse{}, err
 	}
 
-	hashPassword, err := helper.HashPassword(input.Password)
-	if err != nil {
-		return dto.UserResponse{}, helper.ErrHashPassword
+	if input.Password != nil {
+		if *input.Password != "" {
+			hashPassword, err := helper.HashPassword(*input.Password)
+			if err != nil {
+				return dto.UserResponse{}, helper.ErrHashPassword
+			}
+			user.Password = hashPassword
+		}
 	}
 
 	user.Username = input.Username
-	user.Password = hashPassword
 	user.TierID = input.TierID
 	user.StoreName = input.StoreName
 	user.UpdatedAt = time.Now()

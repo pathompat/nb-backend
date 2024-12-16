@@ -14,10 +14,10 @@ type CreateUser struct {
 }
 
 type UpdateUser struct {
-	Username  string `json:"username" binding:"required" example:"testuser123"`   // Username
-	TierID    int    `json:"tierId" binding:"required" example:"1"`               // User tier (1,2,3)
-	StoreName string `json:"storeName" binding:"required" example:"Example Shop"` // User's shop name
-	Password  string `json:"password" binding:"required" example:"Password@1234"` // Secure password
+	Username  string  `json:"username" binding:"required" example:"testuser123"`   // Username
+	TierID    int     `json:"tierId" binding:"required" example:"1"`               // User tier (1,2,3)
+	StoreName string  `json:"storeName" binding:"required" example:"Example Shop"` // User's shop name
+	Password  *string `json:"password" example:"Password@1234"`                    // Secure password
 }
 
 type UserResponse struct {

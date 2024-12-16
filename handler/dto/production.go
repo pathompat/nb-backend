@@ -25,6 +25,8 @@ type ProductionResponse struct {
 	SchoolName      string           `json:"schoolName" example:"School 1"`                         // School name
 	SchoolAddress   string           `json:"schoolAddress" example:"33/33 Sriratch road"`           // School address
 	SchoolTelephone string           `json:"schoolTelephone" example:"0812232212"`                  // School telephone
+	AppointmentAt   *time.Time       `json:"appointmentAt" example:"2024-12-02"`                    // Appointment date (null is now)
+	DueDateAt       time.Time        `json:"dueDateAt" example:"2024-12-02"`                        // Last due date
 	Remark          string           `json:"remark" example:"test remark"`                          // Document remark
 	Items           []ProductionItem `json:"items"`                                                 // Related items
 }
