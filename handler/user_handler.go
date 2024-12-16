@@ -149,7 +149,7 @@ func (c *UserHandler) CreateUser(ctx *gin.Context) {
 func (c *UserHandler) UpdateUser(ctx *gin.Context) {
 	var userInput dto.UpdateUser
 	if err := ctx.ShouldBindJSON(&userInput); err != nil {
-		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
@@ -157,7 +157,7 @@ func (c *UserHandler) UpdateUser(ctx *gin.Context) {
 
 	user, err := c.service.UpdateUser(userID, userInput)
 	if err != nil {
-		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
@@ -186,7 +186,7 @@ func (c *UserHandler) DeleteUser(ctx *gin.Context) {
 
 	err := c.service.DeleteUser(userID)
 	if err != nil {
-		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 

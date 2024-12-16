@@ -37,7 +37,7 @@ func (c *PriceRefHandler) GetPriceRefByUserID(ctx *gin.Context) {
 
 	school, err := c.service.GetPriceRefByUserID(userID)
 	if err != nil {
-		helper.ErrorResponse(ctx, http.StatusUnauthorized, err)
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
 		return
 	}
 
