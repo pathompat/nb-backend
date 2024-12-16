@@ -71,7 +71,8 @@ CREATE TABLE productions (
     remark TEXT,
     CONSTRAINT fk_user_production FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_school_production FOREIGN KEY (school_id) REFERENCES schools(id),
-    CONSTRAINT fk_quotation_production FOREIGN KEY (quotation_id) REFERENCES quotations(id)
+    CONSTRAINT fk_quotation_production FOREIGN KEY (quotation_id) REFERENCES quotations(id),
+    UNIQUE(quotation_id)
 );
 
 -- create table production_items
