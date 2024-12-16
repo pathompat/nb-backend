@@ -134,14 +134,12 @@ func (s *userService) UpdateUser(userID string, input dto.UpdateUser) (dto.UserR
 		return dto.UserResponse{}, err
 	}
 
-	if input.Password != nil {
-		if *input.Password != "" {
-			hashPassword, err := helper.HashPassword(*input.Password)
-			if err != nil {
-				return dto.UserResponse{}, helper.ErrHashPassword
-			}
-			user.Password = hashPassword
+	if input.Password != nil && *input.Password != "" {
+		hashPassword, err := helper.HashPassword(*input.Password)
+		if err != nil {
+			return dto.UserResponse{}, helper.ErrHashPassword
 		}
+		user.Password = hashPassword
 	}
 
 	user.Username = input.Username
