@@ -158,6 +158,7 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 		SchoolName:      quotation.SchoolName,
 		SchoolAddress:   quotation.SchoolAddress,
 		SchoolTelephone: quotation.SchoolTelephone,
+		AppointmentAt:   quotation.AppointmentAt,
 		DueDateAt:       quotation.DueDateAt,
 		Status:          quotation.Status,
 		Items:           quotationItemMap,
