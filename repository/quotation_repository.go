@@ -30,11 +30,7 @@ func (r *quotationRepository) FindAll(userID *uint, filter dto.QuotationFilter) 
 	db := r.db.Preload("Items").Preload("User")
 
 	if filter.IncludeProduction {
-		db = db.Preload("Production", func(db *gorm.DB) *gorm.DB {
-			return db.Preload("Items", func(db *gorm.DB) *gorm.DB {
-				return db.Where("status != ?", "DONE")
-			})
-		})
+		db.Preload("Production").Preload("Production.Items")
 	}
 
 	if userID != nil {
