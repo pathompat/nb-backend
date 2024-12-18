@@ -17,6 +17,7 @@ const (
 	Q_STAT_REVIEWING string = "REVIEWING"
 	Q_STAT_APPROVED  string = "APPROVED"
 	Q_STAT_CANCELED  string = "CANCELED"
+	P_STAT_DONE      string = "DONE"
 	P_DOC_TYPE       string = "PRODUCTION"
 	P_STAT_DESIGNING string = "DESIGNING"
 	U_ROLE_ADMIN     string = "ADMIN"

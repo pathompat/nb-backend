@@ -37,6 +37,8 @@ func (r *quotationRepository) FindAll(userID *uint, filter dto.QuotationFilter) 
 		db.Where("user_id = ?", userID)
 	}
 
+	db = db.Where("status != ?", "CANCELED")
+
 	if err := db.Find(&quotations).Error; err != nil {
 		return nil, err
 	}
