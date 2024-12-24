@@ -27,7 +27,9 @@ func NewQuotationRepository(db *gorm.DB) QuotationRepository {
 
 func (r *quotationRepository) FindAll(userID *uint, filter dto.QuotationFilter) ([]model.Quotation, error) {
 	var quotations []model.Quotation
-	db := r.db.Preload("Items").Preload("User")
+	db := r.db.Preload("Items").Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Unscoped()
+	})
 
 	if filter.IncludeProduction {
 		db.Preload("Production").Preload("Production.Items")
@@ -47,7 +49,9 @@ func (r *quotationRepository) FindAll(userID *uint, filter dto.QuotationFilter) 
 
 func (r *quotationRepository) FindById(id uint) (*model.Quotation, error) {
 	var quotation model.Quotation
-	db := r.db.Preload("Items").Preload("User")
+	db := r.db.Preload("Items").Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Unscoped()
+	})
 	if err := db.Where("id = ?", id).First(&quotation).Error; err != nil {
 		return nil, err
 	}
