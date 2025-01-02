@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"notebook-backend/handler/dto"
-	"notebook-backend/helper"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
 	"time"
@@ -28,10 +27,13 @@ func NewSchoolService(schoolRepo repository.SchoolRepository, userRepo repositor
 
 func (s *schoolService) GetSchoolByUserId(userID string) ([]dto.SchoolResponse, error) {
 	parsedUUID, err := uuid.Parse(userID)
+	if err != nil {
+		return []dto.SchoolResponse{}, err
+	}
 
 	user, err := s.userRepo.FindByID(parsedUUID)
 	if err != nil {
-		return []dto.SchoolResponse{}, errors.New("User not found")
+		return []dto.SchoolResponse{}, err
 	}
 
 	schools, err := s.schoolRepo.FindByUserId(user.ID)
@@ -39,18 +41,19 @@ func (s *schoolService) GetSchoolByUserId(userID string) ([]dto.SchoolResponse, 
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return []dto.SchoolResponse{}, nil
 		}
-		return nil, errors.New("database error")
+		return nil, err
 	}
 
 	schoolMap := []dto.SchoolResponse{}
 	for _, school := range schools {
 		schoolMap = append(schoolMap, dto.SchoolResponse{
-			ID:        school.ID,
-			Name:      school.Name,
-			Address:   school.Address,
-			Telephone: school.Telephone,
-			CreatedAt: user.CreatedAt,
-			UpdatedAt: user.UpdatedAt,
+			ID:          school.ID,
+			Name:        school.Name,
+			ContactName: school.ContactName,
+			Address:     school.Address,
+			Telephone:   school.Telephone,
+			CreatedAt:   user.CreatedAt,
+			UpdatedAt:   user.UpdatedAt,
 		})
 	}
 	return schoolMap, nil
@@ -61,7 +64,7 @@ func (s *schoolService) CreateSchool(schoolInput dto.CreateSchool) (dto.SchoolRe
 
 	user, err := s.userRepo.FindByID(parsedUUID)
 	if err != nil {
-		return dto.SchoolResponse{}, errors.New("User not found")
+		return dto.SchoolResponse{}, err
 	}
 
 	schools, err := s.schoolRepo.FindByUserId(user.ID)
@@ -72,25 +75,28 @@ func (s *schoolService) CreateSchool(schoolInput dto.CreateSchool) (dto.SchoolRe
 	if errors.Is(err, gorm.ErrRecordNotFound) || !hasDuplicateSchool(schools, schoolInput.Name) {
 
 		newSchool := model.School{
-			UserID:    user.ID,
-			Name:      schoolInput.Name,
-			Address:   schoolInput.Address,
-			Telephone: schoolInput.Telephone,
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			UserID:      user.ID,
+			Name:        schoolInput.Name,
+			ContactName: schoolInput.ContactName,
+			Address:     schoolInput.Address,
+			Telephone:   schoolInput.Telephone,
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		}
 
 		createdSchool, err := s.schoolRepo.Create(newSchool)
 		if err != nil {
-			return dto.SchoolResponse{}, helper.ErrInsertRecord
+			return dto.SchoolResponse{}, err
 		}
 
 		return dto.SchoolResponse{
-			Name:      createdSchool.Name,
-			Address:   createdSchool.Address,
-			Telephone: createdSchool.Telephone,
-			CreatedAt: createdSchool.CreatedAt,
-			UpdatedAt: createdSchool.UpdatedAt,
+			ID:          createdSchool.ID,
+			Name:        createdSchool.Name,
+			ContactName: createdSchool.ContactName,
+			Address:     createdSchool.Address,
+			Telephone:   createdSchool.Telephone,
+			CreatedAt:   createdSchool.CreatedAt,
+			UpdatedAt:   createdSchool.UpdatedAt,
 		}, nil
 	}
 	return dto.SchoolResponse{}, errors.New("duplicate school name")
