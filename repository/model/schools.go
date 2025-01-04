@@ -12,7 +12,7 @@ type School struct {
 	Name        string    `gorm:"not null"`
 	ContactName string    `gorm:"-"`
 	Address     string    `gorm:"-"`
-	Telephone   string    `gorm:"not null"`
+	Telephone   string    `gorm:"-"`
 	CreatedAt   time.Time `gorm:"not null"`
 	UpdatedAt   time.Time `gorm:"not null"`
 }

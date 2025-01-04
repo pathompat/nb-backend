@@ -65,16 +65,17 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		quotationItemMap := []dto.QuotationItem{}
 		for _, item := range quotation.Items {
 			quotationItemMap = append(quotationItemMap, dto.QuotationItem{
-				ID:           item.ID,
-				Category:     item.Category,
-				Plate:        item.Plate,
-				Gram:         item.Gram,
-				Color:        item.Color,
-				Page:         item.Page,
-				Pattern:      item.Pattern,
-				HasReference: &item.HasReference,
-				Quantity:     item.Quantity,
-				Price:        item.Price,
+				ID:             item.ID,
+				Category:       item.Category,
+				Plate:          item.Plate,
+				Gram:           item.Gram,
+				Color:          item.Color,
+				Page:           item.Page,
+				Pattern:        item.Pattern,
+				PrintedContent: item.PrintedContent,
+				HasReference:   &item.HasReference,
+				Quantity:       item.Quantity,
+				Price:          item.Price,
 			})
 		}
 
@@ -82,18 +83,19 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		if quotation.Production != nil {
 			for _, item := range quotation.Production.Items {
 				productionItemMap = append(productionItemMap, dto.ProductionItem{
-					ID:           item.ID,
-					Category:     item.Category,
-					Plate:        item.Plate,
-					Gram:         item.Gram,
-					Color:        item.Color,
-					Page:         item.Page,
-					Pattern:      item.Pattern,
-					HasReference: item.HasReference,
-					Quantity:     item.Quantity,
-					Status:       item.Status,
-					CreatedAt:    item.CreatedAt,
-					UpdatedAt:    item.UpdatedAt,
+					ID:             item.ID,
+					Category:       item.Category,
+					Plate:          item.Plate,
+					Gram:           item.Gram,
+					Color:          item.Color,
+					Page:           item.Page,
+					Pattern:        item.Pattern,
+					PrintedContent: item.PrintedContent,
+					HasReference:   item.HasReference,
+					Quantity:       item.Quantity,
+					Status:         item.Status,
+					CreatedAt:      item.CreatedAt,
+					UpdatedAt:      item.UpdatedAt,
 				})
 			}
 		}
@@ -109,20 +111,21 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 			}
 		}
 		quotationMap = append(quotationMap, dto.QuotationResponse{
-			ID:              quotation.ID,
-			UserID:          quotation.User.UserID,
-			StoreName:       quotation.StoreName,
-			SchoolName:      quotation.SchoolName,
-			SchoolAddress:   quotation.SchoolAddress,
-			SchoolTelephone: quotation.SchoolTelephone,
-			AppointmentAt:   quotation.AppointmentAt,
-			DueDateAt:       quotation.DueDateAt,
-			Status:          quotation.Status,
-			Items:           quotationItemMap,
-			CreatedAt:       quotation.CreatedAt,
-			UpdatedAt:       quotation.UpdatedAt,
-			ProductionID:    productionId,
-			Production:      production,
+			ID:                quotation.ID,
+			UserID:            quotation.User.UserID,
+			StoreName:         quotation.StoreName,
+			SchoolName:        quotation.SchoolName,
+			SchoolAddress:     quotation.SchoolAddress,
+			SchoolTelephone:   quotation.SchoolTelephone,
+			SchoolContactName: quotation.SchoolContactName,
+			AppointmentAt:     quotation.AppointmentAt,
+			DueDateAt:         quotation.DueDateAt,
+			Status:            quotation.Status,
+			Items:             quotationItemMap,
+			CreatedAt:         quotation.CreatedAt,
+			UpdatedAt:         quotation.UpdatedAt,
+			ProductionID:      productionId,
+			Production:        production,
 		})
 
 	}
@@ -138,35 +141,37 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 	quotationItemMap := []dto.QuotationItem{}
 	for _, item := range quotation.Items {
 		quotationItemMap = append(quotationItemMap, dto.QuotationItem{
-			ID:           item.ID,
-			Category:     item.Category,
-			Plate:        item.Plate,
-			Gram:         item.Gram,
-			Color:        item.Color,
-			Page:         item.Page,
-			Pattern:      item.Pattern,
-			HasReference: &item.HasReference,
-			Quantity:     item.Quantity,
-			Price:        item.Price,
+			ID:             item.ID,
+			Category:       item.Category,
+			Plate:          item.Plate,
+			Gram:           item.Gram,
+			Color:          item.Color,
+			Page:           item.Page,
+			Pattern:        item.Pattern,
+			PrintedContent: item.PrintedContent,
+			HasReference:   &item.HasReference,
+			Quantity:       item.Quantity,
+			Price:          item.Price,
 		})
 	}
 
 	return dto.QuotationResponse{
-		ID:              quotation.ID,
-		UserID:          quotation.User.UserID,
-		Username:        quotation.User.Username,
-		StoreName:       quotation.User.StoreName,
-		SchoolName:      quotation.SchoolName,
-		SchoolAddress:   quotation.SchoolAddress,
-		SchoolTelephone: quotation.SchoolTelephone,
-		AppointmentAt:   quotation.AppointmentAt,
-		DueDateAt:       quotation.DueDateAt,
-		Status:          quotation.Status,
-		Items:           quotationItemMap,
-		CreatedAt:       quotation.CreatedAt,
-		UpdatedAt:       quotation.UpdatedAt,
-		ProductionID:    nil,
-		Remark:          quotation.Remark,
+		ID:                quotation.ID,
+		UserID:            quotation.User.UserID,
+		Username:          quotation.User.Username,
+		StoreName:         quotation.User.StoreName,
+		SchoolName:        quotation.SchoolName,
+		SchoolAddress:     quotation.SchoolAddress,
+		SchoolTelephone:   quotation.SchoolTelephone,
+		SchoolContactName: quotation.SchoolContactName,
+		AppointmentAt:     quotation.AppointmentAt,
+		DueDateAt:         quotation.DueDateAt,
+		Status:            quotation.Status,
+		Items:             quotationItemMap,
+		CreatedAt:         quotation.CreatedAt,
+		UpdatedAt:         quotation.UpdatedAt,
+		ProductionID:      nil,
+		Remark:            quotation.Remark,
 	}, nil
 }
 
@@ -227,30 +232,34 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 	items := []model.QuotationItem{}
 	for _, item := range input.Items {
 		items = append(items, model.QuotationItem{
-			Category:     item.Category,
-			Plate:        item.Plate,
-			Gram:         item.Gram,
-			Color:        item.Color,
-			Page:         item.Page,
-			Pattern:      item.Pattern,
-			HasReference: *item.HasReference,
-			Quantity:     item.Quantity,
-			Price:        item.Price,
+			Category:       item.Category,
+			Plate:          item.Plate,
+			Gram:           item.Gram,
+			Color:          item.Color,
+			Page:           item.Page,
+			Pattern:        item.Pattern,
+			PrintedContent: item.PrintedContent,
+			HasReference:   *item.HasReference,
+			Quantity:       item.Quantity,
+			Price:          item.Price,
 		})
 	}
 
+	trimSchoolTelephone := strings.Trim(*input.SchoolTelephone, " ")
+
 	quotationMap := model.Quotation{
-		UserID:          user.ID,
-		StoreName:       user.StoreName,
-		SchoolID:        input.SchoolID,
-		SchoolName:      school.Name,
-		SchoolAddress:   input.SchoolAddress,
-		SchoolTelephone: strings.Trim(input.SchoolTelephone, " "),
-		AppointmentAt:   input.AppointmentAt,
-		DueDateAt:       input.DueDateAt,
-		Status:          Q_STAT_REVIEWING,
-		Remark:          input.Remark,
-		Items:           items,
+		UserID:            user.ID,
+		StoreName:         user.StoreName,
+		SchoolID:          input.SchoolID,
+		SchoolName:        school.Name,
+		SchoolAddress:     input.SchoolAddress,
+		SchoolTelephone:   &trimSchoolTelephone,
+		SchoolContactName: input.SchoolContactName,
+		AppointmentAt:     input.AppointmentAt,
+		DueDateAt:         input.DueDateAt,
+		Status:            Q_STAT_REVIEWING,
+		Remark:            input.Remark,
+		Items:             items,
 	}
 
 	createdQuotation, err := s.quotationRepo.Create(quotationMap)
@@ -259,19 +268,20 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 	}
 
 	return &dto.QuotationResponse{
-		ID:              createdQuotation.ID,
-		UserID:          user.UserID,
-		StoreName:       user.StoreName,
-		SchoolName:      school.Name,
-		SchoolAddress:   createdQuotation.SchoolAddress,
-		SchoolTelephone: createdQuotation.SchoolTelephone,
-		AppointmentAt:   createdQuotation.AppointmentAt,
-		DueDateAt:       createdQuotation.DueDateAt,
-		Status:          createdQuotation.Status,
-		Remark:          createdQuotation.Remark,
-		Items:           input.Items,
-		CreatedAt:       createdQuotation.CreatedAt,
-		UpdatedAt:       createdQuotation.UpdatedAt,
+		ID:                createdQuotation.ID,
+		UserID:            user.UserID,
+		StoreName:         user.StoreName,
+		SchoolName:        school.Name,
+		SchoolAddress:     createdQuotation.SchoolAddress,
+		SchoolTelephone:   createdQuotation.SchoolTelephone,
+		SchoolContactName: createdQuotation.SchoolContactName,
+		AppointmentAt:     createdQuotation.AppointmentAt,
+		DueDateAt:         createdQuotation.DueDateAt,
+		Status:            createdQuotation.Status,
+		Remark:            createdQuotation.Remark,
+		Items:             input.Items,
+		CreatedAt:         createdQuotation.CreatedAt,
+		UpdatedAt:         createdQuotation.UpdatedAt,
 	}, nil
 }
 
@@ -291,15 +301,16 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 				input.Items[i].Plate, quotation.Items[j].Plate = request.Plate, request.Plate
 				input.Items[i].Price, quotation.Items[j].Price = request.Price, request.Price
 				productionItem = append(productionItem, model.ProductionItem{
-					Category:     item.Category,
-					Plate:        request.Plate,
-					Gram:         item.Gram,
-					Color:        item.Color,
-					Page:         item.Page,
-					Pattern:      item.Pattern,
-					HasReference: item.HasReference,
-					Quantity:     item.Quantity,
-					Status:       P_STAT_DESIGNING,
+					Category:       item.Category,
+					Plate:          request.Plate,
+					Gram:           item.Gram,
+					Color:          item.Color,
+					Page:           item.Page,
+					Pattern:        item.Pattern,
+					PrintedContent: item.PrintedContent,
+					HasReference:   item.HasReference,
+					Quantity:       item.Quantity,
+					Status:         P_STAT_DESIGNING,
 				})
 			}
 		}
@@ -329,20 +340,21 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 	}
 
 	return &dto.QuotationResponse{
-		ID:              updatedQuotation.ID,
-		ProductionID:    createdProductionID,
-		UserID:          quotation.User.UserID,
-		StoreName:       updatedQuotation.StoreName,
-		SchoolName:      updatedQuotation.SchoolName,
-		SchoolAddress:   updatedQuotation.SchoolAddress,
-		SchoolTelephone: updatedQuotation.SchoolTelephone,
-		AppointmentAt:   updatedQuotation.AppointmentAt,
-		DueDateAt:       updatedQuotation.DueDateAt,
-		Status:          updatedQuotation.Status,
-		Remark:          updatedQuotation.Remark,
-		Items:           input.Items,
-		CreatedAt:       updatedQuotation.CreatedAt,
-		UpdatedAt:       updatedQuotation.UpdatedAt,
+		ID:                updatedQuotation.ID,
+		ProductionID:      createdProductionID,
+		UserID:            quotation.User.UserID,
+		StoreName:         updatedQuotation.StoreName,
+		SchoolName:        updatedQuotation.SchoolName,
+		SchoolAddress:     updatedQuotation.SchoolAddress,
+		SchoolTelephone:   updatedQuotation.SchoolTelephone,
+		SchoolContactName: updatedQuotation.SchoolContactName,
+		AppointmentAt:     updatedQuotation.AppointmentAt,
+		DueDateAt:         updatedQuotation.DueDateAt,
+		Status:            updatedQuotation.Status,
+		Remark:            updatedQuotation.Remark,
+		Items:             input.Items,
+		CreatedAt:         updatedQuotation.CreatedAt,
+		UpdatedAt:         updatedQuotation.UpdatedAt,
 	}, nil
 }
 

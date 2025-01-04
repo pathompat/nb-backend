@@ -61,6 +61,9 @@ func (s *schoolService) GetSchoolByUserId(userID string) ([]dto.SchoolResponse, 
 
 func (s *schoolService) CreateSchool(schoolInput dto.CreateSchool) (dto.SchoolResponse, error) {
 	parsedUUID, err := uuid.Parse(schoolInput.UserID)
+	if err != nil {
+		return dto.SchoolResponse{}, err
+	}
 
 	user, err := s.userRepo.FindByID(parsedUUID)
 	if err != nil {

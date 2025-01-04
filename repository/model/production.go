@@ -17,14 +17,15 @@ type Production struct {
 
 type ProductionItem struct {
 	gorm.Model
-	ProductionID uint   `gorm:"not null"`
-	Category     string `gorm:"not null"`
-	Plate        string `gorm:"not null"`
-	Gram         int    `gorm:"not null"`
-	Color        string `gorm:"not null"`
-	Page         int    `gorm:"not null"`
-	Pattern      string `gorm:"not null"`
-	HasReference bool   `gorm:"not null"`
-	Quantity     int    `gorm:"not null"`
-	Status       string `gorm:"not null"`
+	ProductionID   uint   `gorm:"not null"`
+	Category       string `gorm:"not null"`
+	Plate          string `gorm:"not null"`
+	Gram           int    `gorm:"not null"`
+	Color          string `gorm:"not null"`
+	Page           int    `gorm:"not null"`
+	Pattern        string `gorm:"not null"`
+	PrintedContent string `gorm:"default:null"`
+	HasReference   bool   `gorm:"not null"`
+	Quantity       int    `gorm:"not null"`
+	Status         string `gorm:"not null"`
 }
