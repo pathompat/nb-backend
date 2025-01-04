@@ -9,7 +9,7 @@ type CreateSchool struct {
 	Name        string `json:"name" binding:"required" example:"school 2"`                               // Name
 	ContactName string `json:"contactName" example:"John Doe"`                                           // contact person name
 	Address     string `json:"address" example:"81 test address"`                                        // Address
-	Telephone   string `json:"telephone" example:"0815231112"`                                           // Telephone
+	Telephone   string `json:"telephone" binding:"omitempty,min=9,max=11" example:"0815231112"`          // Telephone
 }
 
 type SchoolResponse struct {
@@ -17,7 +17,7 @@ type SchoolResponse struct {
 	Name        string    `json:"name" example:"school 1"`                             // school name
 	ContactName *string   `json:"contactName" example:"John Doe"`                      // contact person name
 	Address     *string   `json:"address" example:"22/11 test address"`                // address
-	Telephone   *string   `json:"telephone" example:"0815231112"`                      // User tier (1,2,3)
+	Telephone   *string   `json:"telephone" example:"0815231112"`                      // Telephone
 	CreatedAt   time.Time `json:"createdAt" example:"2024-12-07T19:04:39.70268+07:00"` // Created user date
 	UpdatedAt   time.Time `json:"updatedAt" example:"2024-12-07T19:04:39.70268+07:00"` // Latest update user date
 }
