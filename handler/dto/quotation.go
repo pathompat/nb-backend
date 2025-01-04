@@ -15,7 +15,7 @@ type CreateQuotation struct {
 	SchoolID          uint            `json:"schoolId" binding:"required,gt=0" example:"2"`                                   // School id
 	SchoolName        string          `json:"schoolName" binding:"required" example:"School test"`                            // School name
 	SchoolAddress     *string         `json:"schoolAddress" binding:"-" example:"Address test"`                               // School address
-	SchoolTelephone   *string         `json:"schoolTelephone" binding:"min=9,max=11" example:"0812322212"`                    // School telephone
+	SchoolTelephone   *string         `json:"schoolTelephone" binding:"omitempty,min=9,max=11" example:"0812322212"`          // School telephone
 	SchoolContactName *string         `json:"schoolContactName" binding:"-" example:"Sriratch"`                               // School contact name
 	AppointmentAt     *time.Time      `json:"appointmentAt" binding:"-" example:"2024-12-00:00:00.0000+07:00"`                // Appointment date (null is now)
 	DueDateAt         time.Time       `json:"dueDateAt" binding:"required" example:"2024-12-06"`                              // Last due date
