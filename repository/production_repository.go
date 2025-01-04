@@ -25,7 +25,9 @@ func NewProductionRepository(db *gorm.DB) ProductionRepository {
 
 func (r *productionRepository) FindProductionByID(productionID uint) (model.Production, error) {
 	var production model.Production
-	err := r.db.Preload("User").Preload("School").Preload("Items").First(&production, "id = ?", productionID).Error
+	err := r.db.Preload("User", func(db *gorm.DB) *gorm.DB {
+		return db.Unscoped()
+	}).Preload("School").Preload("Items").First(&production, "id = ?", productionID).Error
 	if err != nil {
 		return model.Production{}, err
 	}
