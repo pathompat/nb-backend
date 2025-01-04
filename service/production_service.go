@@ -59,7 +59,7 @@ func (s *productionService) GetProductionByID(productionID uint) (dto.Production
 		SchoolName:        production.School.Name,
 		SchoolAddress:     production.School.Address,
 		SchoolTelephone:   production.School.Telephone,
-		SchoolContactName: &production.School.ContactName,
+		SchoolContactName: production.School.ContactName,
 		AppointmentAt:     quotation.AppointmentAt,
 		DueDateAt:         quotation.DueDateAt,
 		Remark:            production.Remark,

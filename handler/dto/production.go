@@ -23,8 +23,8 @@ type ProductionResponse struct {
 	Username          string           `json:"userName" example:"adminTest"`                          // User name
 	StoreName         string           `json:"storeName" example:"Notebook store"`                    // Store name
 	SchoolName        string           `json:"schoolName" example:"School 1"`                         // School name
-	SchoolAddress     string           `json:"schoolAddress" example:"33/33 Sriratch road"`           // School address
-	SchoolTelephone   string           `json:"schoolTelephone" example:"0812232212"`                  // School telephone
+	SchoolAddress     *string          `json:"schoolAddress" example:"33/33 Sriratch road"`           // School address
+	SchoolTelephone   *string          `json:"schoolTelephone" example:"0812232212"`                  // School telephone
 	SchoolContactName *string          `json:"schoolContactName" example:"Sriratch"`                  // School contact name
 	AppointmentAt     *time.Time       `json:"appointmentAt" example:"2024-12-02"`                    // Appointment date (null is now)
 	DueDateAt         time.Time        `json:"dueDateAt" example:"2024-12-02"`                        // Last due date

@@ -80,9 +80,9 @@ func (s *schoolService) CreateSchool(schoolInput dto.CreateSchool) (dto.SchoolRe
 		newSchool := model.School{
 			UserID:      user.ID,
 			Name:        schoolInput.Name,
-			ContactName: schoolInput.ContactName,
-			Address:     schoolInput.Address,
-			Telephone:   schoolInput.Telephone,
+			ContactName: &schoolInput.ContactName,
+			Address:     &schoolInput.Address,
+			Telephone:   &schoolInput.Telephone,
 			CreatedAt:   time.Now(),
 			UpdatedAt:   time.Now(),
 		}

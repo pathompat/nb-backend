@@ -43,7 +43,7 @@ func (r *userRepository) Create(user model.User) (model.User, error) {
 
 func (r *userRepository) FindByID(userID uuid.UUID) (model.User, error) {
 	var user model.User
-	err := r.db.First(&user, "uuid = ?", userID).Error
+	err := r.db.Unscoped().First(&user, "uuid = ?", userID).Error
 	if err != nil {
 		return model.User{}, err
 	}
