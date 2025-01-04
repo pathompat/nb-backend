@@ -15,7 +15,7 @@ type CreateQuotation struct {
 	SchoolID          uint            `json:"schoolId" binding:"required,gt=0" example:"2"`                                   // School id
 	SchoolName        string          `json:"schoolName" binding:"required" example:"School test"`                            // School name
 	SchoolAddress     *string         `json:"schoolAddress" binding:"-" example:"Address test"`                               // School address
-	SchoolTelephone   *string         `json:"schoolTelephone" binding:"-,min=9,max=11" example:"0812322212"`                  // School telephone
+	SchoolTelephone   *string         `json:"schoolTelephone" binding:"min=9,max=11" example:"0812322212"`                    // School telephone
 	SchoolContactName *string         `json:"schoolContactName" binding:"-" example:"Sriratch"`                               // School contact name
 	AppointmentAt     *time.Time      `json:"appointmentAt" binding:"-" example:"2024-12-00:00:00.0000+07:00"`                // Appointment date (null is now)
 	DueDateAt         time.Time       `json:"dueDateAt" binding:"required" example:"2024-12-06"`                              // Last due date
@@ -52,9 +52,9 @@ type QuotationItem struct {
 	ID             uint    `json:"id,omitempty" example:"2"`                                              // Unique id
 	Category       string  `json:"category" binding:"required" example:"Cut 8"`                           // Product name
 	Plate          string  `json:"plate" binding:"-" example:"LARGE"`                                     // Plate size (LARGE, SMALL)
-	Gram           int     `json:"gram" binding,gte=5:"required" example:"40"`                            // Notebook grams (40-150)
+	Gram           int     `json:"gram" binding:"required,gte=5" example:"40"`                            // Notebook grams (40-150)
 	Color          string  `json:"color" binding:"required" example:"1"`                                  // Color (1,4)
-	Page           int     `json:"page" binding,gte=10:"required" example:"40"`                           // Page count (30-80)
+	Page           int     `json:"page" binding:"required,gte=10" example:"40"`                           // Page count (30-80)
 	Pattern        string  `json:"pattern" binding:"required,uppercase" example:"TABLE"`                  // Page pattern
 	PrintedContent string  `json:"printedContent" binding:"required_if=Pattern PRINTING" example:"TABLE"` // Printed content
 	HasReference   *bool   `json:"hasReference" binding:"required" example:"false"`                       // Has reference
