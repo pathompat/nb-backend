@@ -59,9 +59,11 @@ CREATE TABLE quotation_items (
     page INT NOT NULL,
     pattern VARCHAR(50) NOT NULL,
     printing_type VARCHAR(100) DEFAULT NULL,
+    options VARCHAR[] DEFAULT ARRAY[]::VARCHAR[],
     has_reference BOOLEAN NOT NULL,
     quantity INT NOT NULL,
     price DOUBLE PRECISION NOT NULL,
+    discount DOUBLE PRECISION NOT NULL,
     CONSTRAINT fk_quotation FOREIGN KEY (quotation_id) REFERENCES quotations(id)
 );
 
@@ -89,6 +91,7 @@ CREATE TABLE production_items (
     page INT NOT NULL,
     pattern VARCHAR(50) NOT NULL,
     printing_type VARCHAR(100) DEFAULT NULL,
+    options VARCHAR[] DEFAULT ARRAY[]::VARCHAR[],
     has_reference BOOLEAN NOT NULL,
     quantity INT NOT NULL,
     status VARCHAR(20) NOT NULL,
