@@ -257,3 +257,35 @@ func (c *QuotationHandler) UpdateQuotationItemByID(ctx *gin.Context) {
 
 	helper.SuccessResponse(ctx, http.StatusOK, user)
 }
+
+// QuotationHandler GetAllConfig
+//
+// @id				GetAllConfig
+// @tags			quotations
+// @security	JwtToken
+// @accept		json
+// @produce		json
+//
+// @Param			filter query dto.QuotationConfigFilter false "Filter params"
+//
+// @response 200 {object} helper.ApiSuccessResponse{data=[]dto.QuotationConfigResponse} "OK"
+// @response 400 "Bad request"
+// @response 401 "Unauthorized"
+//
+// @router			/quotation/config [GET]
+func (c *QuotationHandler) GetAllConfig(ctx *gin.Context) {
+
+	var filter dto.QuotationConfigFilter
+	if err := ctx.ShouldBindQuery(&filter); err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	configs, err := c.service.GetAllConfig(filter)
+	if err != nil {
+		helper.ErrorResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	helper.SuccessResponse(ctx, http.StatusOK, configs)
+}

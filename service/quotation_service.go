@@ -31,6 +31,8 @@ type QuotationService interface {
 	CreateQuotation(input dto.CreateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotation(id uint, input dto.UpdateQuotation) (*dto.QuotationResponse, error)
 	UpdateQuotationItemByID(quotationID uint, itemID uint, input dto.UpdateQuotationItemRequest) (*dto.UpdateQuotationItemResponse, error)
+
+	GetAllConfig(filter dto.QuotationConfigFilter) ([]dto.QuotationConfigResponse, error)
 }
 
 type quotationService struct {
@@ -378,4 +380,35 @@ func (s *quotationService) UpdateQuotationItemByID(quotationID uint, itemID uint
 		Plate:       updatedItem.Plate,
 		Price:       updatedItem.Price,
 	}, nil
+}
+
+func (s *quotationService) GetAllConfig(filter dto.QuotationConfigFilter) ([]dto.QuotationConfigResponse, error) {
+
+	configs, err := s.quotationRepo.FindAllConfig(filter.Level)
+	if err != nil {
+		return nil, err
+	}
+
+	configList := []dto.QuotationConfigResponse{}
+	for _, config := range configs {
+		configList = append(configList, dto.QuotationConfigResponse{
+			ID:               config.ID,
+			CategoryID:       config.CategoryID,
+			CategoryKey:      &config.Category.Key,
+			TierIDList:       []int(config.TierIDList),
+			Key:              config.Key,
+			Value:            config.Value,
+			Description:      config.Description,
+			Label:            config.Label,
+			Unit:             config.Unit,
+			Level:            config.Level,
+			Comparator:       config.Comparator,
+			CompareValue:     config.CompareValue,
+			HasFixedCharge:   config.HasFixedCharge,
+			FixedChargePrice: config.FixedChargePrice,
+			Type:             config.Type,
+		})
+
+	}
+	return configList, nil
 }

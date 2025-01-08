@@ -1,6 +1,7 @@
 package model
 
 import (
+	"notebook-backend/types"
 	"time"
 
 	"gorm.io/gorm"
@@ -37,6 +38,24 @@ type QuotationItem struct {
 	HasReference   bool    `gorm:"not null"`
 	Quantity       int     `gorm:"not null"`
 	Price          float32 `gorm:"not null"`
+}
+
+type QuotationConfig struct {
+	gorm.Model
+	CategoryID       *uint               `gorm:"default:null"`
+	Category         Category            `gorm:"references:ID"`
+	TierIDList       types.SmallIntArray `gorm:"type:smallint[];column:tier_ids;default:ARRAY[]::SMALLINT[]"`
+	Key              string              `gorm:"not null;unique"`
+	Value            float32             `gorm:"not null"`
+	Description      *string             `gorm:"default:null"`
+	Label            *string             `gorm:"default:null"`
+	Unit             string              `gorm:"not null"`
+	Level            string              `gorm:"not null"`
+	Comparator       *string             `gorm:"default:null"`
+	CompareValue     int                 `gorm:"default:null"`
+	HasFixedCharge   bool                `gorm:"default:FALSE"`
+	FixedChargePrice float32             `gorm:"default:0"`
+	Type             *string             `gorm:"default:null"`
 }
 
 type StatusCount struct {

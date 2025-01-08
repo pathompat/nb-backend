@@ -66,6 +66,7 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		quotationRoutes.GET("", quotationHandler.GetAllQuotation)
 		quotationRoutes.GET("stat", quotationHandler.CountQuotationByStatus)
+		quotationRoutes.GET("config", quotationHandler.GetAllConfig)
 		quotationRoutes.GET(":quotationId", quotationHandler.GetQuotationByID)
 		quotationRoutes.POST("", quotationHandler.CreateQuotation)
 		quotationRoutes.PUT(":quotationId", roleMiddleware("ADMIN"), quotationHandler.UpdateQuotation)
