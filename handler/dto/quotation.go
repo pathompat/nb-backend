@@ -84,7 +84,7 @@ type QuotationConfigResponse struct {
 	ID               uint    `json:"id" example:"2"`                             // Config id
 	CategoryID       *uint   `json:"categoryId" example:"2"`                     // Category id
 	CategoryKey      *string `json:"categoryKey" example:"CUT_NINE"`             // Category key
-	TierIDList       []int   `json:"tierIds" example:"[1, 2]"`                   // Tier id list
+	TierIDList       []int   `json:"tierIds" example:"1,2"`                      // Tier id list
 	Key              string  `json:"key" example:"Q_CUT_NINE_PRINT_CLR_CHARGES"` // Key
 	Value            float32 `json:"value" example:"1000.00"`                    // Value
 	Description      *string `json:"description" example:"test"`                 // Description

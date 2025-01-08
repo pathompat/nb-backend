@@ -81,6 +81,10 @@ definitions:
         description: School address
         example: Address test
         type: string
+      schoolContactName:
+        description: School contact name
+        example: Sriratch
+        type: string
       schoolId:
         description: School id
         example: 2
@@ -102,10 +106,8 @@ definitions:
     required:
     - dueDateAt
     - items
-    - schoolAddress
     - schoolId
     - schoolName
-    - schoolTelephone
     - userId
     type: object
   dto.CreateSchool:
@@ -114,6 +116,10 @@ definitions:
         description: Address
         example: 81 test address
         type: string
+      contactName:
+        description: contact person name
+        example: John Doe
+        type: string
       name:
         description: Name
         example: school 2
@@ -121,15 +127,15 @@ definitions:
       telephone:
         description: Telephone
         example: "0815231112"
+        maxLength: 11
+        minLength: 9
         type: string
       userId:
         description: UserID
         example: ebf889fd-4f3c-4c15-b44b-1d37cd2ee5e4
         type: string
     required:
-    - address
     - name
-    - telephone
     - userId
     type: object
   dto.CreateUser:
@@ -260,6 +266,10 @@ definitions:
         description: Plate size (LARGE, SMALL)
         example: LARGE
         type: string
+      printedContent:
+        description: Printed content
+        example: TABLE
+        type: string
       quantity:
         description: Product quantity
         example: 1000
@@ -290,6 +300,14 @@ definitions:
     type: object
   dto.ProductionResponse:
     properties:
+      appointmentAt:
+        description: Appointment date (null is now)
+        example: "2024-12-02"
+        type: string
+      dueDateAt:
+        description: Last due date
+        example: "2024-12-02"
+        type: string
       id:
         description: Document id
         example: 1
@@ -310,6 +328,10 @@ definitions:
       schoolAddress:
         description: School address
         example: 33/33 Sriratch road
+        type: string
+      schoolContactName:
+        description: School contact name
+        example: Sriratch
         type: string
       schoolName:
         description: School name
@@ -332,6 +354,73 @@ definitions:
         example: adminTest
         type: string
     type: object
+  dto.QuotationConfigResponse:
+    properties:
+      categoryId:
+        description: Category id
+        example: 2
+        type: integer
+      categoryKey:
+        description: Category key
+        example: CUT_NINE
+        type: string
+      comparator:
+        description: Comparator
+        example: LESS_THAN
+        type: string
+      compareValue:
+        description: Compare value
+        example: 5000
+        type: integer
+      description:
+        description: Description
+        example: test
+        type: string
+      fixedChargePrice:
+        description: Fixed charge price
+        example: 500
+        type: number
+      hasFixedChange:
+        description: Has fixed change
+        example: false
+        type: boolean
+      id:
+        description: Config id
+        example: 2
+        type: integer
+      key:
+        description: Key
+        example: Q_CUT_NINE_PRINT_CLR_CHARGES
+        type: string
+      label:
+        description: Label
+        example: block gold
+        type: string
+      level:
+        description: Level
+        example: quotation_additional_lists
+        type: string
+      tierIds:
+        description: Tier id list
+        example:
+        - 1
+        - 2
+        items:
+          type: integer
+        type: array
+      type:
+        description: Type
+        example: CHARGES
+        type: string
+      unit:
+        description: Unit
+        example: BAHT
+        type: string
+      value:
+        description: Value
+        example: 1000
+        type: number
+    type: object
   dto.QuotationItem:
     properties:
       category:
@@ -345,6 +434,7 @@ definitions:
       gram:
         description: Notebook grams (40-150)
         example: 40
+        minimum: 5
         type: integer
       hasReference:
         description: Has reference
@@ -357,6 +447,7 @@ definitions:
       page:
         description: Page count (30-80)
         example: 40
+        minimum: 10
         type: integer
       pattern:
         description: Page pattern
@@ -369,7 +460,12 @@ definitions:
       price:
         description: Product price
         example: 5.5
+        minimum: 0
         type: number
+      printedContent:
+        description: Printed content
+        example: TABLE
+        type: string
       quantity:
         description: Product quantity
         example: 1000
@@ -378,9 +474,10 @@ definitions:
     required:
     - category
     - color
+    - gram
     - hasReference
+    - page
     - pattern
-    - price
     - quantity
     type: object
   dto.QuotationResponse:
@@ -421,6 +518,10 @@ definitions:
       schoolAddress:
         description: School address
         example: 33/33 Sriratch road
+        type: string
+      schoolContactName:
+        description: School contact name
+        example: Sriratch
         type: string
       schoolName:
         description: School name
@@ -468,6 +569,10 @@ definitions:
         description: address
         example: 22/11 test address
         type: string
+      contactName:
+        description: contact person name
+        example: John Doe
+        type: string
       createdAt:
         description: Created user date
         example: "2024-12-07T19:04:39.70268+07:00"
@@ -477,11 +582,11 @@ definitions:
         example: 1
         type: integer
       name:
-        description: name
+        description: school name
         example: school 1
         type: string
       telephone:
-        description: User tier (1,2,3)
+        description: Telephone
         example: "0815231112"
         type: string
       updatedAt:
@@ -563,7 +668,6 @@ definitions:
         example: testuser123
         type: string
     required:
-    - password
     - storeName
     - tierId
     - username
@@ -955,6 +1059,37 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
+      security:
+      - JwtToken: []
+      tags:
+      - quotations
+  /quotation/config:
+    get:
+      consumes:
+      - application/json
+      operationId: GetAllConfig
+      parameters:
+      - in: query
+        name: level
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ApiSuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.QuotationConfigResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
       security:
       - JwtToken: []
       tags:
