@@ -414,6 +414,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/quotation/config": {
+            "get": {
+                "security": [
+                    {
+                        "JwtToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quotations"
+                ],
+                "operationId": "GetAllConfig",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "level",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.ApiSuccessResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/dto.QuotationConfigResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/quotation/stat": {
             "get": {
                 "security": [
@@ -1138,10 +1193,8 @@ const docTemplate = `{
             "required": [
                 "dueDateAt",
                 "items",
-                "schoolAddress",
                 "schoolId",
                 "schoolName",
-                "schoolTelephone",
                 "userId"
             ],
             "properties": {
@@ -1172,6 +1225,11 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Address test"
                 },
+                "schoolContactName": {
+                    "description": "School contact name",
+                    "type": "string",
+                    "example": "Sriratch"
+                },
                 "schoolId": {
                     "description": "School id",
                     "type": "integer",
@@ -1199,9 +1257,7 @@ const docTemplate = `{
         "dto.CreateSchool": {
             "type": "object",
             "required": [
-                "address",
                 "name",
-                "telephone",
                 "userId"
             ],
             "properties": {
@@ -1209,6 +1265,11 @@ const docTemplate = `{
                     "description": "Address",
                     "type": "string",
                     "example": "81 test address"
+                },
+                "contactName": {
+                    "description": "contact person name",
+                    "type": "string",
+                    "example": "John Doe"
                 },
                 "name": {
                     "description": "Name",
@@ -1218,6 +1279,8 @@ const docTemplate = `{
                 "telephone": {
                     "description": "Telephone",
                     "type": "string",
+                    "maxLength": 11,
+                    "minLength": 9,
                     "example": "0815231112"
                 },
                 "userId": {
@@ -1393,6 +1456,11 @@ const docTemplate = `{
                     "type": "string",
                     "example": "LARGE"
                 },
+                "printedContent": {
+                    "description": "Printed content",
+                    "type": "string",
+                    "example": "TABLE"
+                },
                 "quantity": {
                     "description": "Product quantity",
                     "type": "integer",
@@ -1433,6 +1501,16 @@ const docTemplate = `{
         "dto.ProductionResponse": {
             "type": "object",
             "properties": {
+                "appointmentAt": {
+                    "description": "Appointment date (null is now)",
+                    "type": "string",
+                    "example": "2024-12-02"
+                },
+                "dueDateAt": {
+                    "description": "Last due date",
+                    "type": "string",
+                    "example": "2024-12-02"
+                },
                 "id": {
                     "description": "Document id",
                     "type": "integer",
@@ -1459,6 +1537,11 @@ const docTemplate = `{
                     "description": "School address",
                     "type": "string",
                     "example": "33/33 Sriratch road"
+                },
+                "schoolContactName": {
+                    "description": "School contact name",
+                    "type": "string",
+                    "example": "Sriratch"
                 },
                 "schoolName": {
                     "description": "School name",
@@ -1487,14 +1570,101 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.QuotationConfigResponse": {
+            "type": "object",
+            "properties": {
+                "categoryId": {
+                    "description": "Category id",
+                    "type": "integer",
+                    "example": 2
+                },
+                "categoryKey": {
+                    "description": "Category key",
+                    "type": "string",
+                    "example": "CUT_NINE"
+                },
+                "comparator": {
+                    "description": "Comparator",
+                    "type": "string",
+                    "example": "LESS_THAN"
+                },
+                "compareValue": {
+                    "description": "Compare value",
+                    "type": "integer",
+                    "example": 5000
+                },
+                "description": {
+                    "description": "Description",
+                    "type": "string",
+                    "example": "test"
+                },
+                "fixedChargePrice": {
+                    "description": "Fixed charge price",
+                    "type": "number",
+                    "example": 500
+                },
+                "hasFixedChange": {
+                    "description": "Has fixed change",
+                    "type": "boolean",
+                    "example": false
+                },
+                "id": {
+                    "description": "Config id",
+                    "type": "integer",
+                    "example": 2
+                },
+                "key": {
+                    "description": "Key",
+                    "type": "string",
+                    "example": "Q_CUT_NINE_PRINT_CLR_CHARGES"
+                },
+                "label": {
+                    "description": "Label",
+                    "type": "string",
+                    "example": "block gold"
+                },
+                "level": {
+                    "description": "Level",
+                    "type": "string",
+                    "example": "quotation_additional_lists"
+                },
+                "tierIds": {
+                    "description": "Tier id list",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2
+                    ]
+                },
+                "type": {
+                    "description": "Type",
+                    "type": "string",
+                    "example": "CHARGES"
+                },
+                "unit": {
+                    "description": "Unit",
+                    "type": "string",
+                    "example": "BAHT"
+                },
+                "value": {
+                    "description": "Value",
+                    "type": "number",
+                    "example": 1000
+                }
+            }
+        },
         "dto.QuotationItem": {
             "type": "object",
             "required": [
                 "category",
                 "color",
+                "gram",
                 "hasReference",
+                "page",
                 "pattern",
-                "price",
                 "quantity"
             ],
             "properties": {
@@ -1511,6 +1681,7 @@ const docTemplate = `{
                 "gram": {
                     "description": "Notebook grams (40-150)",
                     "type": "integer",
+                    "minimum": 5,
                     "example": 40
                 },
                 "hasReference": {
@@ -1526,6 +1697,7 @@ const docTemplate = `{
                 "page": {
                     "description": "Page count (30-80)",
                     "type": "integer",
+                    "minimum": 10,
                     "example": 40
                 },
                 "pattern": {
@@ -1541,7 +1713,13 @@ const docTemplate = `{
                 "price": {
                     "description": "Product price",
                     "type": "number",
+                    "minimum": 0,
                     "example": 5.5
+                },
+                "printedContent": {
+                    "description": "Printed content",
+                    "type": "string",
+                    "example": "TABLE"
                 },
                 "quantity": {
                     "description": "Product quantity",
@@ -1604,6 +1782,11 @@ const docTemplate = `{
                     "type": "string",
                     "example": "33/33 Sriratch road"
                 },
+                "schoolContactName": {
+                    "description": "School contact name",
+                    "type": "string",
+                    "example": "Sriratch"
+                },
                 "schoolName": {
                     "description": "School name",
                     "type": "string",
@@ -1664,6 +1847,11 @@ const docTemplate = `{
                     "type": "string",
                     "example": "22/11 test address"
                 },
+                "contactName": {
+                    "description": "contact person name",
+                    "type": "string",
+                    "example": "John Doe"
+                },
                 "createdAt": {
                     "description": "Created user date",
                     "type": "string",
@@ -1675,12 +1863,12 @@ const docTemplate = `{
                     "example": 1
                 },
                 "name": {
-                    "description": "name",
+                    "description": "school name",
                     "type": "string",
                     "example": "school 1"
                 },
                 "telephone": {
-                    "description": "User tier (1,2,3)",
+                    "description": "Telephone",
                     "type": "string",
                     "example": "0815231112"
                 },
@@ -1769,7 +1957,6 @@ const docTemplate = `{
         "dto.UpdateUser": {
             "type": "object",
             "required": [
-                "password",
                 "storeName",
                 "tierId",
                 "username"

@@ -39,7 +39,9 @@ CREATE TABLE categories (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     deleted_at TIMESTAMP DEFAULT NULL,
-    UNIQUE(key)
+    UNIQUE(key),
+    UNIQUE(name_th),
+    UNIQUE(name_en)
 );
 
 -- create table quotations
@@ -113,7 +115,8 @@ CREATE TABLE quotation_configs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT NULL,
-    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id),
+    UNIQUE(key)
 );
 
 -- create table productions

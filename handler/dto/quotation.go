@@ -79,3 +79,24 @@ type UpdateQuotationItemResponse struct {
 	Plate       string  `json:"plate" example:"LARGE"`   // Plate size (LARGE, SMALL)
 	Price       float32 `json:"price" example:"5.5"`     // Product price
 }
+
+type QuotationConfigResponse struct {
+	ID               uint    `json:"id" example:"2"`                             // Config id
+	CategoryID       *uint   `json:"categoryId" example:"2"`                     // Category id
+	CategoryKey      *string `json:"categoryKey" example:"CUT_NINE"`             // Category key
+	TierIDList       []int   `json:"tierIds" example:"1,2"`                      // Tier id list
+	Key              string  `json:"key" example:"Q_CUT_NINE_PRINT_CLR_CHARGES"` // Key
+	Value            float32 `json:"value" example:"1000.00"`                    // Value
+	Description      *string `json:"description" example:"test"`                 // Description
+	Label            *string `json:"label" example:"block gold"`                 // Label
+	Unit             string  `json:"unit" example:"BAHT"`                        // Unit
+	Level            string  `json:"level" example:"quotation_additional_lists"` // Level
+	Comparator       *string `json:"comparator" example:"LESS_THAN"`             // Comparator
+	CompareValue     int     `json:"compareValue" example:"5000"`                // Compare value
+	HasFixedCharge   bool    `json:"hasFixedChange" example:"false"`             // Has fixed change
+	FixedChargePrice float32 `json:"fixedChargePrice" example:"500.00"`          // Fixed charge price
+	Type             *string `json:"type" example:"CHARGES"`                     // Type
+}
+type QuotationConfigFilter struct {
+	Level *string `form:"level"`
+}
