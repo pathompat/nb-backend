@@ -121,6 +121,8 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_EXPIRED_IN: ${{ secrets.JWT_EXPIRED_IN }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_USER_ID: ${{ secrets.API_USER_ID }}
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.TEMP_SSH_HOST }}
@@ -141,5 +143,7 @@ jobs:
               -e DB_NAME=$DB_NAME \
               -e JWT_SECRET=$JWT_SECRET \
               -e JWT_EXPIRED_IN=$JWT_EXPIRED_IN \
+              -e API_KEY=$API_KEY \
+              -e API_USER_ID=$API_USER_ID \
               $IMAGE_URL:$IMAGE_TAG
             sudo docker image prune -af
