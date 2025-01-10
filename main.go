@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"notebook-backend/config"
+	"notebook-backend/helper"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -35,6 +36,12 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Print("Error loading .env file")
+	}
+
+	apiKey := os.Getenv("API_KEY")
+	apiUserID := os.Getenv("API_USER_ID")
+	if apiKey == "" || apiUserID == "" {
+		panic(helper.ErrAPIKeyOrAPIUserIDNotSet)
 	}
 
 	// database setup

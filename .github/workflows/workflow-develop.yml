@@ -103,6 +103,8 @@ jobs:
   #           -e DB_NAME=${{ secrets.DB_NAME }} \
   #           -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
   #           -e JWT_EXPIRED_IN=${{ secrets.JWT_EXPIRED_IN }} \
+  #           -e API_KEY=${{ secrets.API_KEY }} \
+  #           -e API_USER_ID=${{ secrets.API_USER_ID }} \
   #           $IMAGE_URL:$IMAGE_TAG
   #       "
 
@@ -121,12 +123,14 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_EXPIRED_IN: ${{ secrets.JWT_EXPIRED_IN }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_USER_ID: ${{ secrets.API_USER_ID }}
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.TEMP_SSH_HOST }}
           username: ${{ secrets.TEMP_SSH_USERNAME }}
           key: ${{ secrets.TEMP_SSH_KEY }}
-          envs: IMAGE_URL,IMAGE_TAG,GIN_MODE,DB_USERNAME,DB_PASSWORD,DB_HOST,DB_PORT,DB_NAME,JWT_SECRET,JWT_EXPIRED_IN
+          envs: IMAGE_URL,IMAGE_TAG,GIN_MODE,DB_USERNAME,DB_PASSWORD,DB_HOST,DB_PORT,DB_NAME,JWT_SECRET,JWT_EXPIRED_IN,API_KEY,API_USER_ID
           script: |
             echo "update docker image: $IMAGE_URL:$IMAGE_TAG"
             sudo docker pull $IMAGE_URL:$IMAGE_TAG
@@ -141,5 +145,7 @@ jobs:
               -e DB_NAME=$DB_NAME \
               -e JWT_SECRET=$JWT_SECRET \
               -e JWT_EXPIRED_IN=$JWT_EXPIRED_IN \
+              -e API_KEY=$API_KEY \
+              -e API_USER_ID=$API_USER_ID \
               $IMAGE_URL:$IMAGE_TAG
             sudo docker image prune -af
