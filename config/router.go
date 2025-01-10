@@ -47,7 +47,8 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	api.POST("/login", loginHandler.Login)
 
-	api.Use(authMiddleware())
+	apiKey := os.Getenv("API_KEY")
+	api.Use(authMiddleware(apiKey))
 	userRoutes := api.Group("/user")
 	{
 		userRoutes.GET("", userHandler.GetAllUsers)
@@ -84,8 +85,23 @@ func SetupRoutes(r *gin.Engine, db *gorm.DB) {
 	}
 }
 
-func authMiddleware() gin.HandlerFunc {
+func authMiddleware(apiKey string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		if apiKey == "" {
+			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrAPIKeyNotSet)
+		}
+
+		providedKey := c.GetHeader("X-API-KEY")
+		if providedKey == apiKey {
+			c.Set("role", "ADMIN")
+			c.Set("claims", jwt.MapClaims{
+				"userId": os.Getenv("API_USER_ID"),
+			})
+			c.Next()
+			return
+		}
+
 		authorization := c.GetHeader("Authorization")
 		if authorization == "" {
 			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrMissingToken)

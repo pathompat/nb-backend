@@ -8,6 +8,7 @@ var (
 	ErrUnauthorized = errors.New("Unauthorized")
 	ErrSelectRecord = errors.New("Database: select error")
 	ErrInsertRecord = errors.New("Database: insert error")
+	ErrAPIKeyNotSet = errors.New("API Key not set")
 
 	ErrInvalidUserOrPwd = errors.New("Invalid username or password")
 	ErrHashPassword     = errors.New("Error hashing password")
