@@ -5,10 +5,10 @@ import (
 )
 
 var (
-	ErrUnauthorized = errors.New("Unauthorized")
-	ErrSelectRecord = errors.New("Database: select error")
-	ErrInsertRecord = errors.New("Database: insert error")
-	ErrAPIKeyNotSet = errors.New("API Key not set")
+	ErrUnauthorized            = errors.New("Unauthorized")
+	ErrSelectRecord            = errors.New("Database: select error")
+	ErrInsertRecord            = errors.New("Database: insert error")
+	ErrAPIKeyOrAPIUserIDNotSet = errors.New("API_KEY or API_USER_ID not set")
 
 	ErrInvalidUserOrPwd = errors.New("Invalid username or password")
 	ErrHashPassword     = errors.New("Error hashing password")

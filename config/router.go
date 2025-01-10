@@ -89,7 +89,7 @@ func authMiddleware(apiKey string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		if apiKey == "" {
-			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrAPIKeyNotSet)
+			helper.ErrorResponse(c, http.StatusForbidden, helper.ErrAPIKeyOrAPIUserIDNotSet)
 		}
 
 		providedKey := c.GetHeader("X-API-KEY")
