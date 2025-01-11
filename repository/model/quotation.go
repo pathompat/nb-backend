@@ -26,9 +26,10 @@ type Quotation struct {
 }
 
 type QuotationItem struct {
-	ID             uint   `gorm:"primaryKey"`
-	QuotationID    uint   `gorm:"not null"`
-	Category       string `gorm:"not null"`
+	ID             uint     `gorm:"primaryKey"`
+	QuotationID    uint     `gorm:"not null"`
+	CategoryID     uint     `gorm:"not null"`
+	Category       Category `gorm:"references:ID"`
 	Plate          string
 	Gram           int     `gorm:"not null"`
 	Color          string  `gorm:"not null"`
@@ -38,6 +39,7 @@ type QuotationItem struct {
 	HasReference   bool    `gorm:"not null"`
 	Quantity       int     `gorm:"not null"`
 	Price          float32 `gorm:"not null"`
+	Charge         float32 `gorm:"not null;default:0"`
 }
 
 type QuotationConfig struct {

@@ -40,7 +40,7 @@ type ProductionItemResponse struct {
 
 type ProductionItem struct {
 	ID             uint      `json:"id" example:"1"`                                      // Item id
-	Category       string    `json:"category" example:"Cut 8"`                            // Product name
+	CategoryID     uint      `json:"categoryId" example:"1"`                              // Category id
 	Plate          string    `json:"plate" example:"LARGE"`                               // Plate size (LARGE, SMALL)
 	Gram           int       `json:"gram" example:"40"`                                   // Notebook grams (40-150)
 	Color          string    `json:"color" example:"1"`                                   // Color (1,4)

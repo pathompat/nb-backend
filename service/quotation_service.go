@@ -68,7 +68,7 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		for _, item := range quotation.Items {
 			quotationItemMap = append(quotationItemMap, dto.QuotationItem{
 				ID:             item.ID,
-				Category:       item.Category,
+				CategoryID:     item.CategoryID,
 				Plate:          item.Plate,
 				Gram:           item.Gram,
 				Color:          item.Color,
@@ -86,7 +86,7 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 			for _, item := range quotation.Production.Items {
 				productionItemMap = append(productionItemMap, dto.ProductionItem{
 					ID:             item.ID,
-					Category:       item.Category,
+					CategoryID:     item.CategoryID,
 					Plate:          item.Plate,
 					Gram:           item.Gram,
 					Color:          item.Color,
@@ -144,7 +144,7 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 	for _, item := range quotation.Items {
 		quotationItemMap = append(quotationItemMap, dto.QuotationItem{
 			ID:             item.ID,
-			Category:       item.Category,
+			CategoryID:     item.CategoryID,
 			Plate:          item.Plate,
 			Gram:           item.Gram,
 			Color:          item.Color,
@@ -234,7 +234,7 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 	items := []model.QuotationItem{}
 	for _, item := range input.Items {
 		items = append(items, model.QuotationItem{
-			Category:       item.Category,
+			CategoryID:     item.CategoryID,
 			Plate:          item.Plate,
 			Gram:           item.Gram,
 			Color:          item.Color,
@@ -303,7 +303,7 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 				input.Items[i].Plate, quotation.Items[j].Plate = request.Plate, request.Plate
 				input.Items[i].Price, quotation.Items[j].Price = request.Price, request.Price
 				productionItem = append(productionItem, model.ProductionItem{
-					Category:       item.Category,
+					CategoryID:     item.CategoryID,
 					Plate:          request.Plate,
 					Gram:           item.Gram,
 					Color:          item.Color,
