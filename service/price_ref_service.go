@@ -37,13 +37,13 @@ func (s *priceRefService) GetPriceRefByUserID(userID string) ([]dto.PriceRefResp
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return []dto.PriceRefResponse{}, nil
 		}
-		return nil, errors.New("database error")
+		return nil, err
 	}
 
 	priceRefMap := []dto.PriceRefResponse{}
 	for _, priceRef := range priceRefs {
 		priceRefMap = append(priceRefMap, dto.PriceRefResponse{
-			Category:     priceRef.Category,
+			CategoryID:   priceRef.CategoryID,
 			Plate:        priceRef.Plate,
 			Gram:         priceRef.Gram,
 			Color:        priceRef.Color,
@@ -61,7 +61,7 @@ func (s *priceRefService) CreatePriceRef(priceRefInput []dto.CreatePriceRef) ([]
 	for _, input := range priceRefInput {
 		priceRefs = append(priceRefs, model.PriceReference{
 			TierID:       input.TierID,
-			Category:     input.Category,
+			CategoryID:   input.CategoryID,
 			Plate:        input.Plate,
 			Gram:         input.Gram,
 			Color:        input.Color,
@@ -80,7 +80,7 @@ func (s *priceRefService) CreatePriceRef(priceRefInput []dto.CreatePriceRef) ([]
 	var responsePriceRefs []dto.PriceRefResponse
 	for _, ref := range createdPriceRefs {
 		responsePriceRefs = append(responsePriceRefs, dto.PriceRefResponse{
-			Category:     ref.Category,
+			CategoryID:   ref.CategoryID,
 			Plate:        ref.Plate,
 			Gram:         ref.Gram,
 			Color:        ref.Color,
