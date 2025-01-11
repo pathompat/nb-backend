@@ -21,7 +21,7 @@ func NewPriceRefRepository(db *gorm.DB) PriceRefRepository {
 
 func (r *priceRefRepository) FindByTierID(TierID int) ([]model.PriceReference, error) {
 	var priceRef []model.PriceReference
-	err := r.db.Unscoped().Where("tier_id = ?", TierID).Find(&priceRef).Error
+	err := r.db.Unscoped().Preload("Category").Where("tier_id = ?", TierID).Find(&priceRef).Error
 	if err != nil {
 		return []model.PriceReference{}, err
 	}

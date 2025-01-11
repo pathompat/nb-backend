@@ -67,17 +67,18 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		quotationItemMap := []dto.QuotationItem{}
 		for _, item := range quotation.Items {
 			quotationItemMap = append(quotationItemMap, dto.QuotationItem{
-				ID:             item.ID,
-				CategoryID:     item.CategoryID,
-				Plate:          item.Plate,
-				Gram:           item.Gram,
-				Color:          item.Color,
-				Page:           item.Page,
-				Pattern:        item.Pattern,
-				PrintedContent: item.PrintedContent,
-				HasReference:   &item.HasReference,
-				Quantity:       item.Quantity,
-				Price:          item.Price,
+				ID:                item.ID,
+				CategoryID:        item.CategoryID,
+				QuotationConfigID: []int(item.QuotationConfigID),
+				Plate:             item.Plate,
+				Gram:              item.Gram,
+				Color:             item.Color,
+				Page:              item.Page,
+				Pattern:           item.Pattern,
+				PrintedContent:    item.PrintedContent,
+				HasReference:      &item.HasReference,
+				Quantity:          item.Quantity,
+				Price:             item.Price,
 			})
 		}
 
@@ -85,19 +86,20 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 		if quotation.Production != nil {
 			for _, item := range quotation.Production.Items {
 				productionItemMap = append(productionItemMap, dto.ProductionItem{
-					ID:             item.ID,
-					CategoryID:     item.CategoryID,
-					Plate:          item.Plate,
-					Gram:           item.Gram,
-					Color:          item.Color,
-					Page:           item.Page,
-					Pattern:        item.Pattern,
-					PrintedContent: item.PrintedContent,
-					HasReference:   item.HasReference,
-					Quantity:       item.Quantity,
-					Status:         item.Status,
-					CreatedAt:      item.CreatedAt,
-					UpdatedAt:      item.UpdatedAt,
+					ID:                item.ID,
+					CategoryID:        item.CategoryID,
+					QuotationConfigID: []int(item.QuotationConfigID),
+					Plate:             item.Plate,
+					Gram:              item.Gram,
+					Color:             item.Color,
+					Page:              item.Page,
+					Pattern:           item.Pattern,
+					PrintedContent:    item.PrintedContent,
+					HasReference:      item.HasReference,
+					Quantity:          item.Quantity,
+					Status:            item.Status,
+					CreatedAt:         item.CreatedAt,
+					UpdatedAt:         item.UpdatedAt,
 				})
 			}
 		}
@@ -143,17 +145,18 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 	quotationItemMap := []dto.QuotationItem{}
 	for _, item := range quotation.Items {
 		quotationItemMap = append(quotationItemMap, dto.QuotationItem{
-			ID:             item.ID,
-			CategoryID:     item.CategoryID,
-			Plate:          item.Plate,
-			Gram:           item.Gram,
-			Color:          item.Color,
-			Page:           item.Page,
-			Pattern:        item.Pattern,
-			PrintedContent: item.PrintedContent,
-			HasReference:   &item.HasReference,
-			Quantity:       item.Quantity,
-			Price:          item.Price,
+			ID:                item.ID,
+			CategoryID:        item.CategoryID,
+			QuotationConfigID: []int(item.QuotationConfigID),
+			Plate:             item.Plate,
+			Gram:              item.Gram,
+			Color:             item.Color,
+			Page:              item.Page,
+			Pattern:           item.Pattern,
+			PrintedContent:    item.PrintedContent,
+			HasReference:      &item.HasReference,
+			Quantity:          item.Quantity,
+			Price:             item.Price,
 		})
 	}
 
@@ -234,16 +237,17 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 	items := []model.QuotationItem{}
 	for _, item := range input.Items {
 		items = append(items, model.QuotationItem{
-			CategoryID:     item.CategoryID,
-			Plate:          item.Plate,
-			Gram:           item.Gram,
-			Color:          item.Color,
-			Page:           item.Page,
-			Pattern:        item.Pattern,
-			PrintedContent: item.PrintedContent,
-			HasReference:   *item.HasReference,
-			Quantity:       item.Quantity,
-			Price:          item.Price,
+			CategoryID:        item.CategoryID,
+			QuotationConfigID: []int(item.QuotationConfigID),
+			Plate:             item.Plate,
+			Gram:              item.Gram,
+			Color:             item.Color,
+			Page:              item.Page,
+			Pattern:           item.Pattern,
+			PrintedContent:    item.PrintedContent,
+			HasReference:      *item.HasReference,
+			Quantity:          item.Quantity,
+			Price:             item.Price,
 		})
 	}
 
@@ -304,7 +308,7 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 				input.Items[i].Price, quotation.Items[j].Price = request.Price, request.Price
 				productionItem = append(productionItem, model.ProductionItem{
 					CategoryID:     item.CategoryID,
-					Plate:          request.Plate,
+					Plate:          *request.Plate,
 					Gram:           item.Gram,
 					Color:          item.Color,
 					Page:           item.Page,
@@ -366,7 +370,7 @@ func (s *quotationService) UpdateQuotationItemByID(quotationID uint, itemID uint
 		return nil, err
 	}
 
-	item.Plate = input.Plate
+	item.Plate = &input.Plate
 	item.Price = input.Price
 
 	updatedItem, err := s.quotationRepo.UpdateItem(*item)
@@ -377,7 +381,7 @@ func (s *quotationService) UpdateQuotationItemByID(quotationID uint, itemID uint
 	return &dto.UpdateQuotationItemResponse{
 		QuotationID: item.QuotationID,
 		ID:          item.ID,
-		Plate:       updatedItem.Plate,
+		Plate:       *updatedItem.Plate,
 		Price:       updatedItem.Price,
 	}, nil
 }
