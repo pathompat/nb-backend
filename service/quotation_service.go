@@ -388,7 +388,17 @@ func (s *quotationService) UpdateQuotationItemByID(quotationID uint, itemID uint
 
 func (s *quotationService) GetAllConfig(filter dto.QuotationConfigFilter) ([]dto.QuotationConfigResponse, error) {
 
-	configs, err := s.quotationRepo.FindAllConfig(filter.Level)
+	userID, err := uuid.Parse(filter.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := s.userRepo.FindByID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	configs, err := s.quotationRepo.FindAllConfig(user.TierID, filter.Level)
 	if err != nil {
 		return nil, err
 	}

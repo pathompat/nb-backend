@@ -99,5 +99,6 @@ type QuotationConfigResponse struct {
 	Type             *string `json:"type" example:"CHARGES"`                     // Type
 }
 type QuotationConfigFilter struct {
-	Level *string `form:"level"`
+	Level  *string `form:"level"`
+	UserID string  `form:"userId" binding:"required"`
 }
