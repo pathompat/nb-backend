@@ -80,7 +80,7 @@ CREATE TABLE quotation_items (
     has_reference BOOLEAN NOT NULL DEFAULT FALSE,
     quantity INT NOT NULL,
     price DOUBLE PRECISION NOT NULL,
-    discount DOUBLE PRECISION NOT NULL,
+    charge DOUBLE PRECISION NOT NULL,
     CONSTRAINT fk_quotation FOREIGN KEY (quotation_id) REFERENCES quotations(id),
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );
