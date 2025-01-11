@@ -11,7 +11,7 @@ type CreatePriceRef struct {
 }
 
 type PriceRefResponse struct {
-	CategoryID     uint     `json:"category_id" example:"1"`       // Category id
+	CategoryID     uint     `json:"categoryId" example:"1"`        // Category id
 	CategoryNameTH string   `json:"categoryName" example:"รายงาน"` // Category name
 	Options        []Option `json:"options"`                       // List of options
 }
