@@ -17,9 +17,9 @@ type PriceRefResponse struct {
 }
 
 type Option struct {
-	Gram    int      `json:"gram" example:"55"`                       // Gram
-	Pattern []string `json:"pattern" example:"[SINGLE, HALF, TABLE]"` // Pattern
-	Page    int      `json:"page" example:"30"`                       // Page
-	Color   *string  `json:"color" example:"1"`                       // Color
-	Price   float64  `json:"price" example:"3.5"`                     // Price
+	Gram    int      `json:"gram" example:"55"`                     // Gram
+	Pattern []string `json:"pattern" example:"SINGLE, HALF, TABLE"` // Pattern
+	Page    int      `json:"page" example:"30"`                     // Page
+	Color   *string  `json:"color" example:"1"`                     // Color
+	Price   float64  `json:"price" example:"3.5"`                   // Price
 }
