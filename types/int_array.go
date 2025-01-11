@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-type SmallIntArray []int
+type IntArray []int
 
-func (a *SmallIntArray) Scan(src interface{}) error {
+func (a *IntArray) Scan(src interface{}) error {
 	if src == nil {
 		*a = []int{}
 		return nil
@@ -16,7 +16,7 @@ func (a *SmallIntArray) Scan(src interface{}) error {
 
 	srcStr, ok := src.(string)
 	if !ok {
-		return fmt.Errorf("cannot convert %T to SmallIntArray", src)
+		return fmt.Errorf("cannot convert %T to IntArray", src)
 	}
 
 	srcStr = strings.Trim(srcStr, "{}")
@@ -39,7 +39,7 @@ func (a *SmallIntArray) Scan(src interface{}) error {
 	return nil
 }
 
-func (a SmallIntArray) Value() (driver.Value, error) {
+func (a IntArray) Value() (driver.Value, error) {
 	if len(a) == 0 {
 		return "{}", nil
 	}

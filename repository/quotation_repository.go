@@ -16,7 +16,7 @@ type QuotationRepository interface {
 	Update(quotation model.Quotation) (*model.Quotation, error)
 	UpdateItem(item model.QuotationItem) (*model.QuotationItem, error)
 
-	FindAllConfig(level *string) ([]model.QuotationConfig, error)
+	FindAllConfig(tierID int, level *string) ([]model.QuotationConfig, error)
 }
 
 type quotationRepository struct {
@@ -105,9 +105,9 @@ func (r *quotationRepository) UpdateItem(item model.QuotationItem) (*model.Quota
 	return &item, nil
 }
 
-func (r *quotationRepository) FindAllConfig(level *string) ([]model.QuotationConfig, error) {
+func (r *quotationRepository) FindAllConfig(tierID int, level *string) ([]model.QuotationConfig, error) {
 	var listConfig []model.QuotationConfig
-	db := r.db.Preload("Category")
+	db := r.db.Preload("Category").Where("? = ANY (tier_ids)", tierID)
 
 	if level != nil {
 		db.Where("level = ?", level)

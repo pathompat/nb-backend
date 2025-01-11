@@ -20,43 +20,6 @@ definitions:
     - type
     type: object
   dto.CreatePriceRef:
-    properties:
-      category:
-        description: Category
-        example: cut8
-        type: string
-      color:
-        description: Color
-        example: "1"
-        type: string
-      gram:
-        description: Gram
-        example: 12
-        type: integer
-      hasReference:
-        description: HasReference
-        example: false
-        type: boolean
-      page:
-        description: Page
-        example: 30
-        type: integer
-      pattern:
-        description: Pattern
-        example: TABLE
-        type: string
-      plate:
-        description: Plate
-        example: LARGE
-        type: string
-      priceRef:
-        description: Price
-        example: 5.5
-        type: number
-      tierId:
-        description: TierID
-        example: 1
-        type: integer
     type: object
   dto.CreateQuotation:
     properties:
@@ -177,40 +140,49 @@ definitions:
     - password
     - username
     type: object
-  dto.PriceRefResponse:
+  dto.Option:
     properties:
-      category:
-        description: Category
-        example: cut8
-        type: string
       color:
         description: Color
         example: "1"
         type: string
       gram:
         description: Gram
-        example: 12
+        example: 55
         type: integer
-      hasReference:
-        description: HasReference
-        example: false
-        type: boolean
       page:
         description: Page
         example: 30
         type: integer
       pattern:
         description: Pattern
-        example: TABLE
-        type: string
-      plate:
-        description: Plate
-        example: LARGE
-        type: string
-      priceRef:
+        example:
+        - SINGLE
+        - ' HALF'
+        - ' TABLE'
+        items:
+          type: string
+        type: array
+      price:
         description: Price
-        example: 5.5
+        example: 3.5
         type: number
+    type: object
+  dto.PriceRefResponse:
+    properties:
+      category_id:
+        description: Category id
+        example: 1
+        type: integer
+      categoryName:
+        description: Category name
+        example: รายงาน
+        type: string
+      options:
+        description: List of options
+        items:
+          $ref: '#/definitions/dto.Option'
+        type: array
     type: object
   dto.Production:
     properties:
@@ -230,10 +202,10 @@ definitions:
     type: object
   dto.ProductionItem:
     properties:
-      category:
-        description: Product name
-        example: Cut 8
-        type: string
+      categoryId:
+        description: Category id
+        example: 1
+        type: integer
       color:
         description: Color (1,4)
         example: "1"
@@ -274,6 +246,14 @@ definitions:
         description: Product quantity
         example: 1000
         type: integer
+      quotationConfigId:
+        description: Quotation config id list
+        example:
+        - 1
+        - 2
+        items:
+          type: integer
+        type: array
       status:
         description: Production status
         example: PRINTING
@@ -423,10 +403,10 @@ definitions:
     type: object
   dto.QuotationItem:
     properties:
-      category:
-        description: Product name
-        example: Cut 8
-        type: string
+      categoryId:
+        description: Category id
+        example: 1
+        type: integer
       color:
         description: Color (1,4)
         example: "1"
@@ -471,8 +451,16 @@ definitions:
         example: 1000
         minimum: 1
         type: integer
+      quotationConfigId:
+        description: Quotation config id list
+        example:
+        - 1
+        - 2
+        items:
+          type: integer
+        type: array
     required:
-    - category
+    - categoryId
     - color
     - gram
     - hasReference
@@ -1071,6 +1059,10 @@ paths:
       parameters:
       - in: query
         name: level
+        type: string
+      - in: query
+        name: userId
+        required: true
         type: string
       produces:
       - application/json
