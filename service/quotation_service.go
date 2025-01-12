@@ -79,6 +79,7 @@ func (s *quotationService) GetAllQuotation(userID uuid.UUID, filter dto.Quotatio
 				HasReference:          &item.HasReference,
 				Quantity:              item.Quantity,
 				Price:                 item.Price,
+				Charge:                item.Charge,
 			})
 		}
 
@@ -157,6 +158,15 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 			HasReference:          &item.HasReference,
 			Quantity:              item.Quantity,
 			Price:                 item.Price,
+			Charge:                item.Charge,
+		})
+	}
+	quotationAdditionalMap := []dto.QuotationAdditionalList{}
+	for _, item := range quotation.AdditionalLists {
+		quotationAdditionalMap = append(quotationAdditionalMap, dto.QuotationAdditionalList{
+			QuotationConfigID: item.QuotationConfigID,
+			Key:               item.Key,
+			Value:             item.Value,
 		})
 	}
 
@@ -173,6 +183,7 @@ func (s *quotationService) GetQuotationByID(quotationID uint) (dto.QuotationResp
 		DueDateAt:         quotation.DueDateAt,
 		Status:            quotation.Status,
 		Items:             quotationItemMap,
+		AdditionalLists:   quotationAdditionalMap,
 		CreatedAt:         quotation.CreatedAt,
 		UpdatedAt:         quotation.UpdatedAt,
 		ProductionID:      nil,
@@ -248,6 +259,16 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 			HasReference:          *item.HasReference,
 			Quantity:              item.Quantity,
 			Price:                 item.Price,
+			Charge:                item.Charge,
+		})
+	}
+
+	additionalMap := []model.QuotationAdditionalList{}
+	for _, item := range input.AdditionalLists {
+		additionalMap = append(additionalMap, model.QuotationAdditionalList{
+			QuotationConfigID: item.QuotationConfigID,
+			Key:               item.Key,
+			Value:             item.Value,
 		})
 	}
 
@@ -266,6 +287,7 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 		Status:            Q_STAT_REVIEWING,
 		Remark:            input.Remark,
 		Items:             items,
+		AdditionalLists:   additionalMap,
 	}
 
 	createdQuotation, err := s.quotationRepo.Create(quotationMap)
@@ -286,6 +308,7 @@ func (s *quotationService) CreateQuotation(input dto.CreateQuotation) (*dto.Quot
 		Status:            createdQuotation.Status,
 		Remark:            createdQuotation.Remark,
 		Items:             input.Items,
+		AdditionalLists:   input.AdditionalLists,
 		CreatedAt:         createdQuotation.CreatedAt,
 		UpdatedAt:         createdQuotation.UpdatedAt,
 	}, nil
@@ -318,6 +341,15 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 					Quantity:       item.Quantity,
 					Status:         P_STAT_DESIGNING,
 				})
+			}
+		}
+	}
+
+	// Update additional Value
+	for _, request := range input.AdditionalLists {
+		for j, item := range quotation.AdditionalLists {
+			if request.ID == item.ID {
+				quotation.AdditionalLists[j].Value = request.Value
 			}
 		}
 	}
@@ -359,6 +391,7 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 		Status:            updatedQuotation.Status,
 		Remark:            updatedQuotation.Remark,
 		Items:             input.Items,
+		AdditionalLists:   input.AdditionalLists,
 		CreatedAt:         updatedQuotation.CreatedAt,
 		UpdatedAt:         updatedQuotation.UpdatedAt,
 	}, nil

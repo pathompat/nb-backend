@@ -65,10 +65,11 @@ type QuotationConfig struct {
 
 type QuotationAdditionalList struct {
 	gorm.Model
-	QuotationID        uint            `gorm:"not null"`
-	QuotationConfigID  uint            `gorm:"not null"`
-	QuotationConfig    QuotationConfig `gorm:"references:ID"`
-	QuotationConfigKey string          `gorm:"not null"`
+	QuotationID       uint            `gorm:"not null"`
+	QuotationConfigID uint            `gorm:"not null"`
+	QuotationConfig   QuotationConfig `gorm:"references:ID"`
+	Key               string          `gorm:"not null"`
+	Value             float32         `gorm:"not null"`
 }
 
 type StatusCount struct {
