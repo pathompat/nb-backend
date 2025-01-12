@@ -88,12 +88,14 @@ CREATE TABLE quotation_items (
 -- create quotation additional list
 CREATE TABLE quotation_additional_lists (
     id SERIAL NOT NULL PRIMARY KEY,
+    quotation_id INT NOT NULL,
     quotation_config_id INT NOT NULL,
     quotation_config_key VARCHAR(100) NOT NULL,
     value DOUBLE PRECISION NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP DEFAULT NULL
+    deleted_at TIMESTAMP DEFAULT NULL,
+    CONSTRAINT fk_quotation FOREIGN KEY (quotation_id) REFERENCES quotations(id),
 );
 
 -- create quotation config
