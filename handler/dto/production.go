@@ -39,17 +39,18 @@ type ProductionItemResponse struct {
 }
 
 type ProductionItem struct {
-	ID             uint      `json:"id" example:"1"`                                      // Item id
-	CategoryID     uint      `json:"categoryId" example:"1"`                              // Category id
-	Plate          string    `json:"plate" example:"LARGE"`                               // Plate size (LARGE, SMALL)
-	Gram           int       `json:"gram" example:"40"`                                   // Notebook grams (40-150)
-	Color          string    `json:"color" example:"1"`                                   // Color (1,4)
-	Page           int       `json:"page" example:"40"`                                   // Page count (30-80)
-	Pattern        string    `json:"pattern" example:"TABLE"`                             // Page pattern
-	PrintedContent string    `json:"printedContent" example:"TABLE"`                      // Printed content
-	HasReference   bool      `json:"hasReference" example:"false"`                        // Has reference
-	Quantity       int       `json:"quantity" example:"1000"`                             // Product quantity
-	Status         string    `json:"status" example:"PRINTING"`                           // Production status
-	CreatedAt      time.Time `json:"createdAt" example:"2024-12-07T19:04:39.70268+07:00"` // Created date
-	UpdatedAt      time.Time `json:"updatedAt" example:"2024-12-07T19:04:39.70268+07:00"` // Updated date
+	ID                uint      `json:"id" example:"1"`                                      // Item id
+	CategoryID        uint      `json:"categoryId" example:"1"`                              // Category id
+	QuotationConfigID []int     `json:"quotationConfigId" example:"1,2"`                     // Quotation config id list
+	Plate             string    `json:"plate" example:"LARGE"`                               // Plate size (LARGE, SMALL)
+	Gram              int       `json:"gram" example:"40"`                                   // Notebook grams (40-150)
+	Color             string    `json:"color" example:"1"`                                   // Color (1,4)
+	Page              int       `json:"page" example:"40"`                                   // Page count (30-80)
+	Pattern           string    `json:"pattern" example:"TABLE"`                             // Page pattern
+	PrintedContent    *string   `json:"printedContent" example:"TABLE"`                      // Printed content
+	HasReference      bool      `json:"hasReference" example:"false"`                        // Has reference
+	Quantity          int       `json:"quantity" example:"1000"`                             // Product quantity
+	Status            string    `json:"status" example:"PRINTING"`                           // Production status
+	CreatedAt         time.Time `json:"createdAt" example:"2024-12-07T19:04:39.70268+07:00"` // Created date
+	UpdatedAt         time.Time `json:"updatedAt" example:"2024-12-07T19:04:39.70268+07:00"` // Updated date
 }

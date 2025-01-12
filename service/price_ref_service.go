@@ -5,6 +5,7 @@ import (
 	"notebook-backend/handler/dto"
 	"notebook-backend/repository"
 	"notebook-backend/repository/model"
+	"sort"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -26,10 +27,13 @@ func NewPriceRefService(priceRefRepo repository.PriceRefRepository, userRepo rep
 
 func (s *priceRefService) GetPriceRefByUserID(userID string) ([]dto.PriceRefResponse, error) {
 	parsedUUID, err := uuid.Parse(userID)
+	if err != nil {
+		return []dto.PriceRefResponse{}, err
+	}
 
 	user, err := s.userRepo.FindByID(parsedUUID)
 	if err != nil {
-		return []dto.PriceRefResponse{}, errors.New("User not found")
+		return []dto.PriceRefResponse{}, err
 	}
 
 	priceRefs, err := s.priceRefRepo.FindByTierID(user.TierID)
@@ -40,35 +44,55 @@ func (s *priceRefService) GetPriceRefByUserID(userID string) ([]dto.PriceRefResp
 		return nil, err
 	}
 
-	priceRefMap := []dto.PriceRefResponse{}
+	// Group data by categoryID
+	categoryMap := make(map[uint]*dto.PriceRefResponse)
 	for _, priceRef := range priceRefs {
-		priceRefMap = append(priceRefMap, dto.PriceRefResponse{
-			CategoryID:   priceRef.CategoryID,
-			Plate:        priceRef.Plate,
-			Gram:         priceRef.Gram,
-			Color:        priceRef.Color,
-			Page:         priceRef.Page,
-			Pattern:      priceRef.Pattern,
-			HasReference: priceRef.HasReference,
-			Price:        priceRef.Price,
-		})
+		if _, exists := categoryMap[priceRef.CategoryID]; !exists {
+			categoryMap[priceRef.CategoryID] = &dto.PriceRefResponse{
+				CategoryID:     priceRef.CategoryID,
+				CategoryNameTH: priceRef.Category.NameTH,
+				Options:        []dto.Option{},
+			}
+		}
+
+		// Append options to the category
+		categoryMap[priceRef.CategoryID].Options = append(
+			categoryMap[priceRef.CategoryID].Options,
+			dto.Option{
+				Gram:    priceRef.Gram,
+				Pattern: []string(priceRef.Pattern),
+				Page:    priceRef.Page,
+				Color:   priceRef.Color,
+				Price:   priceRef.Price,
+			},
+		)
 	}
-	return priceRefMap, nil
+
+	// Convert map to slice
+	result := []dto.PriceRefResponse{}
+	for _, category := range categoryMap {
+		result = append(result, *category)
+	}
+
+	// Sort result by CategoryID
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].CategoryID < result[j].CategoryID
+	})
+
+	return result, nil
 }
 
 func (s *priceRefService) CreatePriceRef(priceRefInput []dto.CreatePriceRef) ([]dto.PriceRefResponse, error) {
 	var priceRefs []model.PriceReference
 	for _, input := range priceRefInput {
 		priceRefs = append(priceRefs, model.PriceReference{
-			TierID:       input.TierID,
-			CategoryID:   input.CategoryID,
-			Plate:        input.Plate,
-			Gram:         input.Gram,
-			Color:        input.Color,
-			Page:         input.Page,
-			Pattern:      input.Pattern,
-			HasReference: input.HasReference,
-			Price:        input.Price,
+			TierID:     input.TierID,
+			CategoryID: input.CategoryID,
+			Gram:       input.Gram,
+			Color:      input.Color,
+			Page:       input.Page,
+			Pattern:    input.Pattern,
+			Price:      input.Price,
 		})
 	}
 
@@ -77,19 +101,40 @@ func (s *priceRefService) CreatePriceRef(priceRefInput []dto.CreatePriceRef) ([]
 		return nil, err
 	}
 
-	var responsePriceRefs []dto.PriceRefResponse
-	for _, ref := range createdPriceRefs {
-		responsePriceRefs = append(responsePriceRefs, dto.PriceRefResponse{
-			CategoryID:   ref.CategoryID,
-			Plate:        ref.Plate,
-			Gram:         ref.Gram,
-			Color:        ref.Color,
-			Page:         ref.Page,
-			Pattern:      ref.Pattern,
-			HasReference: ref.HasReference,
-			Price:        ref.Price,
-		})
+	// Group data by categoryID
+	categoryMap := make(map[uint]*dto.PriceRefResponse)
+	for _, priceRef := range createdPriceRefs {
+		if _, exists := categoryMap[priceRef.CategoryID]; !exists {
+			categoryMap[priceRef.CategoryID] = &dto.PriceRefResponse{
+				CategoryID:     priceRef.CategoryID,
+				CategoryNameTH: priceRef.Category.NameTH,
+				Options:        []dto.Option{},
+			}
+		}
+
+		// Append options to the category
+		categoryMap[priceRef.CategoryID].Options = append(
+			categoryMap[priceRef.CategoryID].Options,
+			dto.Option{
+				Gram:    priceRef.Gram,
+				Pattern: []string(priceRef.Pattern),
+				Page:    priceRef.Page,
+				Color:   priceRef.Color,
+				Price:   priceRef.Price,
+			},
+		)
 	}
 
-	return responsePriceRefs, nil
+	// Convert map to slice
+	result := []dto.PriceRefResponse{}
+	for _, category := range categoryMap {
+		result = append(result, *category)
+	}
+
+	// Sort result by CategoryID
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].CategoryID < result[j].CategoryID
+	})
+
+	return result, nil
 }
