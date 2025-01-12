@@ -1157,6 +1157,13 @@ const docTemplate = `{
                 "userId"
             ],
             "properties": {
+                "additionalLists": {
+                    "description": "Quotation additional lists",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationAdditionalList"
+                    }
+                },
                 "appointmentAt": {
                     "description": "Appointment date (null is now)",
                     "type": "string",
@@ -1554,6 +1561,31 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.QuotationAdditionalList": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Additional list id",
+                    "type": "integer",
+                    "example": 1
+                },
+                "key": {
+                    "description": "Key",
+                    "type": "string",
+                    "example": "Q_CUT_NINE_PRINT_CLR_CHARGES"
+                },
+                "quotationConfigId": {
+                    "description": "Quotation config id",
+                    "type": "integer",
+                    "example": 1
+                },
+                "value": {
+                    "description": "Value",
+                    "type": "number",
+                    "example": 1000
+                }
+            }
+        },
         "dto.QuotationConfigResponse": {
             "type": "object",
             "properties": {
@@ -1662,6 +1694,12 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "charge": {
+                    "description": "Charge",
+                    "type": "number",
+                    "minimum": 0,
+                    "example": 0
+                },
                 "color": {
                     "description": "Color (1,4)",
                     "type": "string",
@@ -1732,6 +1770,13 @@ const docTemplate = `{
         "dto.QuotationResponse": {
             "type": "object",
             "properties": {
+                "additionalLists": {
+                    "description": "Quotation additional lists",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationAdditionalList"
+                    }
+                },
                 "appointmentAt": {
                     "description": "Appointment date (null is now)",
                     "type": "string",
@@ -1886,6 +1931,13 @@ const docTemplate = `{
                 "status"
             ],
             "properties": {
+                "additionalLists": {
+                    "description": "Quotation additional lists",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuotationAdditionalList"
+                    }
+                },
                 "items": {
                     "description": "Quotation product list",
                     "type": "array",

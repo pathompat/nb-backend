@@ -23,6 +23,11 @@ definitions:
     type: object
   dto.CreateQuotation:
     properties:
+      additionalLists:
+        description: Quotation additional lists
+        items:
+          $ref: '#/definitions/dto.QuotationAdditionalList'
+        type: array
       appointmentAt:
         description: Appointment date (null is now)
         example: 2024-12-00:00:00.0000+07:00
@@ -334,6 +339,25 @@ definitions:
         example: adminTest
         type: string
     type: object
+  dto.QuotationAdditionalList:
+    properties:
+      id:
+        description: Additional list id
+        example: 1
+        type: integer
+      key:
+        description: Key
+        example: Q_CUT_NINE_PRINT_CLR_CHARGES
+        type: string
+      quotationConfigId:
+        description: Quotation config id
+        example: 1
+        type: integer
+      value:
+        description: Value
+        example: 1000
+        type: number
+    type: object
   dto.QuotationConfigResponse:
     properties:
       categoryId:
@@ -411,6 +435,11 @@ definitions:
         description: Category id
         example: 1
         type: integer
+      charge:
+        description: Charge
+        example: 0
+        minimum: 0
+        type: number
       color:
         description: Color (1,4)
         example: "1"
@@ -474,6 +503,11 @@ definitions:
     type: object
   dto.QuotationResponse:
     properties:
+      additionalLists:
+        description: Quotation additional lists
+        items:
+          $ref: '#/definitions/dto.QuotationAdditionalList'
+        type: array
       appointmentAt:
         description: Appointment date (null is now)
         example: "2024-12-02"
@@ -588,6 +622,11 @@ definitions:
     type: object
   dto.UpdateQuotation:
     properties:
+      additionalLists:
+        description: Quotation additional lists
+        items:
+          $ref: '#/definitions/dto.QuotationAdditionalList'
+        type: array
       items:
         description: Quotation product list
         items:
