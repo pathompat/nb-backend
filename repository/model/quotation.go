@@ -26,28 +26,28 @@ type Quotation struct {
 }
 
 type QuotationItem struct {
-	ID                uint           `gorm:"primaryKey"`
-	QuotationID       uint           `gorm:"not null"`
-	CategoryID        uint           `gorm:"not null"`
-	QuotationConfigID types.IntArray `gorm:"type:int[];column:quotation_config_ids;default:ARRAY[]::INT[]"`
-	Category          Category       `gorm:"references:ID"`
-	Plate             *string        `gorm:"default:null"`
-	Gram              int            `gorm:"not null"`
-	Color             string         `gorm:"not null"`
-	Page              int            `gorm:"not null"`
-	Pattern           string         `gorm:"not null"`
-	PrintedContent    *string        `gorm:"default:null"`
-	HasReference      bool           `gorm:"not null"`
-	Quantity          int            `gorm:"not null"`
-	Price             float32        `gorm:"not null"`
-	Charge            float32        `gorm:"not null;default:0"`
+	ID                    uint           `gorm:"primaryKey"`
+	QuotationID           uint           `gorm:"not null"`
+	CategoryID            uint           `gorm:"not null"`
+	ListQuotationConfigID types.IntArray `gorm:"type:int[];column:quotation_config_ids;default:ARRAY[]::INT[]"`
+	Category              Category       `gorm:"references:ID"`
+	Plate                 *string        `gorm:"default:null"`
+	Gram                  int            `gorm:"not null"`
+	Color                 string         `gorm:"not null"`
+	Page                  int            `gorm:"not null"`
+	Pattern               string         `gorm:"not null"`
+	PrintedContent        *string        `gorm:"default:null"`
+	HasReference          bool           `gorm:"not null"`
+	Quantity              int            `gorm:"not null"`
+	Price                 float32        `gorm:"not null"`
+	Charge                float32        `gorm:"not null;default:0"`
 }
 
 type QuotationConfig struct {
 	gorm.Model
 	CategoryID       *uint          `gorm:"default:null"`
 	Category         Category       `gorm:"references:ID"`
-	TierIDList       types.IntArray `gorm:"type:smallint[];column:tier_ids;default:ARRAY[]::SMALLINT[]"`
+	ListTierID       types.IntArray `gorm:"type:smallint[];column:tier_ids;default:ARRAY[]::SMALLINT[]"`
 	Color            *string        `gorm:"default:NULL"`
 	Key              string         `gorm:"not null;unique"`
 	Value            float32        `gorm:"not null"`

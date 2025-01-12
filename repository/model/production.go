@@ -19,16 +19,16 @@ type Production struct {
 
 type ProductionItem struct {
 	gorm.Model
-	ProductionID      uint           `gorm:"not null"`
-	CategoryID        uint           `gorm:"not null"`
-	QuotationConfigID types.IntArray `gorm:"type:int[];column:quotation_config_ids;default:ARRAY[]::INT[]"`
-	Plate             string         `gorm:"not null"`
-	Gram              int            `gorm:"not null"`
-	Color             string         `gorm:"not null"`
-	Page              int            `gorm:"not null"`
-	Pattern           string         `gorm:"not null"`
-	PrintedContent    *string        `gorm:"default:null"`
-	HasReference      bool           `gorm:"not null"`
-	Quantity          int            `gorm:"not null"`
-	Status            string         `gorm:"not null"`
+	ProductionID          uint           `gorm:"not null"`
+	CategoryID            uint           `gorm:"not null"`
+	ListQuotationConfigID types.IntArray `gorm:"type:int[];column:quotation_config_ids;default:ARRAY[]::INT[]"`
+	Plate                 string         `gorm:"not null"`
+	Gram                  int            `gorm:"not null"`
+	Color                 string         `gorm:"not null"`
+	Page                  int            `gorm:"not null"`
+	Pattern               string         `gorm:"not null"`
+	PrintedContent        *string        `gorm:"default:null"`
+	HasReference          bool           `gorm:"not null"`
+	Quantity              int            `gorm:"not null"`
+	Status                string         `gorm:"not null"`
 }

@@ -49,18 +49,18 @@ type QuotationResponse struct {
 }
 
 type QuotationItem struct {
-	ID                uint    `json:"id,omitempty" example:"2"`                                              // Unique id
-	CategoryID        uint    `json:"categoryId" binding:"required" example:"1"`                             // Category id
-	QuotationConfigID []int   `json:"quotationConfigId" example:"1,2"`                                       // Quotation config id list
-	Plate             *string `json:"plate" binding:"-" example:"LARGE"`                                     // Plate size (LARGE, SMALL)
-	Gram              int     `json:"gram" binding:"required,gte=5" example:"40"`                            // Notebook grams (40-150)
-	Color             string  `json:"color" binding:"required" example:"1"`                                  // Color (1,4)
-	Page              int     `json:"page" binding:"required,gte=10" example:"40"`                           // Page count (30-80)
-	Pattern           string  `json:"pattern" binding:"required,uppercase" example:"TABLE"`                  // Page pattern
-	PrintedContent    *string `json:"printedContent" binding:"required_if=Pattern PRINTING" example:"TABLE"` // Printed content
-	HasReference      *bool   `json:"hasReference" binding:"required" example:"false"`                       // Has reference
-	Quantity          int     `json:"quantity" binding:"required,gte=1" example:"1000"`                      // Product quantity
-	Price             float32 `json:"price" binding:"gte=0" example:"5.5"`                                   // Product price
+	ID                    uint    `json:"id,omitempty" example:"2"`                                              // Unique id
+	CategoryID            uint    `json:"categoryId" binding:"required" example:"1"`                             // Category id
+	ListQuotationConfigID []int   `json:"configIds" example:"1,2"`                                               // Quotation config id list
+	Plate                 *string `json:"plate" binding:"-" example:"LARGE"`                                     // Plate size (LARGE, SMALL)
+	Gram                  int     `json:"gram" binding:"required,gte=5" example:"40"`                            // Notebook grams (40-150)
+	Color                 string  `json:"color" binding:"required" example:"1"`                                  // Color (1,4)
+	Page                  int     `json:"page" binding:"required,gte=10" example:"40"`                           // Page count (30-80)
+	Pattern               string  `json:"pattern" binding:"required,uppercase" example:"TABLE"`                  // Page pattern
+	PrintedContent        *string `json:"printedContent" binding:"required_if=Pattern PRINTING" example:"TABLE"` // Printed content
+	HasReference          *bool   `json:"hasReference" binding:"required" example:"false"`                       // Has reference
+	Quantity              int     `json:"quantity" binding:"required,gte=1" example:"1000"`                      // Product quantity
+	Price                 float32 `json:"price" binding:"gte=0" example:"5.5"`                                   // Product price
 }
 
 type CountByStatus struct {
@@ -86,7 +86,7 @@ type QuotationConfigResponse struct {
 	CategoryID       *uint   `json:"categoryId" example:"2"`                     // Category id
 	CategoryKey      *string `json:"categoryKey" example:"CUT_NINE"`             // Category key
 	Color            *string `json:"color" example:"1"`                          // Color
-	TierIDList       []int   `json:"tierIds" example:"1,2"`                      // Tier id list
+	ListTierID       []int   `json:"tierIds" example:"1,2"`                      // Tier id list
 	Key              string  `json:"key" example:"Q_CUT_NINE_PRINT_CLR_CHARGES"` // Key
 	Value            float32 `json:"value" example:"1000.00"`                    // Value
 	Description      *string `json:"description" example:"test"`                 // Description
