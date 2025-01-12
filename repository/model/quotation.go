@@ -47,6 +47,7 @@ type QuotationConfig struct {
 	CategoryID       *uint               `gorm:"default:null"`
 	Category         Category            `gorm:"references:ID"`
 	TierIDList       types.SmallIntArray `gorm:"type:smallint[];column:tier_ids;default:ARRAY[]::SMALLINT[]"`
+	Color            *string             `gorm:"default:NULL"`
 	Key              string              `gorm:"not null;unique"`
 	Value            float32             `gorm:"not null"`
 	Description      *string             `gorm:"default:null"`

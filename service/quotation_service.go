@@ -405,6 +405,7 @@ func (s *quotationService) GetAllConfig(filter dto.QuotationConfigFilter) ([]dto
 			ID:               config.ID,
 			CategoryID:       config.CategoryID,
 			CategoryKey:      &config.Category.Key,
+			Color:            config.Color,
 			TierIDList:       []int(config.TierIDList),
 			Key:              config.Key,
 			Value:            config.Value,
