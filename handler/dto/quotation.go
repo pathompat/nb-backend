@@ -20,14 +20,14 @@ type CreateQuotation struct {
 	AppointmentAt     *time.Time                `json:"appointmentAt" binding:"-" example:"2024-12-00:00:00.0000+07:00"`                // Appointment date (null is now)
 	DueDateAt         time.Time                 `json:"dueDateAt" binding:"required" example:"2024-12-06"`                              // Last due date
 	Items             []QuotationItem           `json:"items" binding:"required,dive"`                                                  // Quotation product list
-	AdditionalLists   []QuotationAdditionalList `json:"additionalLists"`                                                                // Quotation additional lists
+	AdditionalLists   []QuotationAdditionalList `json:"additionalLists" binding:"required,dive"`                                        // Quotation additional lists
 	Remark            string                    `json:"remark" example:"remark test"`                                                   // Any remark
 }
 
 type UpdateQuotation struct {
 	Status          string                    `json:"status" binding:"required" example:"APPROVED"` // Document status
 	Items           []QuotationItem           `json:"items" binding:"required,dive"`                // Quotation product list
-	AdditionalLists []QuotationAdditionalList `json:"additionalLists"`                              // Quotation additional lists
+	AdditionalLists []QuotationAdditionalList `json:"additionalLists" binding:"required,dive"`      // Quotation additional lists
 }
 
 type QuotationResponse struct {
@@ -68,10 +68,10 @@ type QuotationItem struct {
 }
 
 type QuotationAdditionalList struct {
-	ID                uint    `json:"id" example:"1"`                             // Additional list id
-	QuotationConfigID uint    `json:"quotationConfigId" example:"1"`              // Quotation config id
-	Key               string  `json:"key" example:"Q_CUT_NINE_PRINT_CLR_CHARGES"` // Key
-	Value             float32 `json:"value" example:"1000.00"`                    // Value
+	ID                uint    `json:"id,omitempty" example:"1"`                                      // Additional list id
+	QuotationConfigID uint    `json:"quotationConfigId" binding:"required" example:"1"`              // Quotation config id
+	Key               string  `json:"key" binding:"required" example:"Q_CUT_NINE_PRINT_CLR_CHARGES"` // Key
+	Value             float32 `json:"value" binding:"number" example:"1000.00"`                      // Value
 }
 
 type CountByStatus struct {
