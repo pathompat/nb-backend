@@ -9,20 +9,21 @@ import (
 
 type Quotation struct {
 	gorm.Model
-	UserID            uint            `gorm:"not null"`
-	User              User            `gorm:"references:ID"`
-	SchoolID          uint            `gorm:"not null"`
-	StoreName         string          `gorm:"not null"`
-	SchoolName        string          `gorm:"not null"`
-	SchoolAddress     *string         `gorm:"default:null"`
-	SchoolTelephone   *string         `gorm:"default:null"`
-	SchoolContactName *string         `gorm:"default:null"`
-	AppointmentAt     *time.Time      `gorm:"default:null"`
-	DueDateAt         time.Time       `gorm:"not null;column:duedate_at"`
-	Status            string          `gorm:"not null;default:'REVIEWING'"`
-	Remark            string          `gorm:"default:null"`
-	Production        *Production     `gorm:"foreignKey:QuotationID"`
-	Items             []QuotationItem `gorm:"foreignKey:QuotationID"`
+	UserID            uint                      `gorm:"not null"`
+	User              User                      `gorm:"references:ID"`
+	SchoolID          uint                      `gorm:"not null"`
+	StoreName         string                    `gorm:"not null"`
+	SchoolName        string                    `gorm:"not null"`
+	SchoolAddress     *string                   `gorm:"default:null"`
+	SchoolTelephone   *string                   `gorm:"default:null"`
+	SchoolContactName *string                   `gorm:"default:null"`
+	AppointmentAt     *time.Time                `gorm:"default:null"`
+	DueDateAt         time.Time                 `gorm:"not null;column:duedate_at"`
+	Status            string                    `gorm:"not null;default:'REVIEWING'"`
+	Remark            string                    `gorm:"default:null"`
+	Production        *Production               `gorm:"foreignKey:QuotationID"`
+	Items             []QuotationItem           `gorm:"foreignKey:QuotationID"`
+	AdditionalLists   []QuotationAdditionalList `gorm:"foreignKey:QuotationID"`
 }
 
 type QuotationItem struct {
@@ -60,6 +61,14 @@ type QuotationConfig struct {
 	HasFixedCharge   bool           `gorm:"default:FALSE"`
 	FixedChargePrice float32        `gorm:"default:0"`
 	Type             *string        `gorm:"default:null"`
+}
+
+type QuotationAdditionalList struct {
+	gorm.Model
+	QuotationID        uint            `gorm:"not null"`
+	QuotationConfigID  uint            `gorm:"not null"`
+	QuotationConfig    QuotationConfig `gorm:"references:ID"`
+	QuotationConfigKey string          `gorm:"not null"`
 }
 
 type StatusCount struct {
