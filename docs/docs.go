@@ -1340,15 +1340,15 @@ const docTemplate = `{
         "dto.PriceRefResponse": {
             "type": "object",
             "properties": {
+                "categoryId": {
+                    "description": "Category id",
+                    "type": "integer",
+                    "example": 1
+                },
                 "categoryName": {
                     "description": "Category name",
                     "type": "string",
                     "example": "รายงาน"
-                },
-                "category_id": {
-                    "description": "Category id",
-                    "type": "integer",
-                    "example": 1
                 },
                 "options": {
                     "description": "List of options",
@@ -1394,6 +1394,17 @@ const docTemplate = `{
                     "type": "string",
                     "example": "1"
                 },
+                "configIds": {
+                    "description": "Quotation config id list",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2
+                    ]
+                },
                 "createdAt": {
                     "description": "Created date",
                     "type": "string",
@@ -1438,17 +1449,6 @@ const docTemplate = `{
                     "description": "Product quantity",
                     "type": "integer",
                     "example": 1000
-                },
-                "quotationConfigId": {
-                    "description": "Quotation config id list",
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    },
-                    "example": [
-                        1,
-                        2
-                    ]
                 },
                 "status": {
                     "description": "Production status",
@@ -1567,6 +1567,11 @@ const docTemplate = `{
                     "type": "string",
                     "example": "CUT_NINE"
                 },
+                "color": {
+                    "description": "Color",
+                    "type": "string",
+                    "example": "1"
+                },
                 "comparator": {
                     "description": "Comparator",
                     "type": "string",
@@ -1662,6 +1667,17 @@ const docTemplate = `{
                     "type": "string",
                     "example": "1"
                 },
+                "configIds": {
+                    "description": "Quotation config id list",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2
+                    ]
+                },
                 "gram": {
                     "description": "Notebook grams (40-150)",
                     "type": "integer",
@@ -1710,17 +1726,6 @@ const docTemplate = `{
                     "type": "integer",
                     "minimum": 1,
                     "example": 1000
-                },
-                "quotationConfigId": {
-                    "description": "Quotation config id list",
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    },
-                    "example": [
-                        1,
-                        2
-                    ]
                 }
             }
         },
