@@ -34,20 +34,20 @@ func (s *productionService) GetProductionByID(productionID uint) (dto.Production
 	productionItemMap := []dto.ProductionItem{}
 	for _, item := range production.Items {
 		productionItemMap = append(productionItemMap, dto.ProductionItem{
-			ID:                item.ID,
-			CategoryID:        item.CategoryID,
-			QuotationConfigID: []int(item.QuotationConfigID),
-			Plate:             item.Plate,
-			Gram:              item.Gram,
-			Color:             item.Color,
-			Page:              item.Page,
-			Pattern:           item.Pattern,
-			PrintedContent:    item.PrintedContent,
-			HasReference:      item.HasReference,
-			Quantity:          item.Quantity,
-			Status:            item.Status,
-			CreatedAt:         item.CreatedAt,
-			UpdatedAt:         item.UpdatedAt,
+			ID:                    item.ID,
+			CategoryID:            item.CategoryID,
+			ListQuotationConfigID: []int(item.ListQuotationConfigID),
+			Plate:                 item.Plate,
+			Gram:                  item.Gram,
+			Color:                 item.Color,
+			Page:                  item.Page,
+			Pattern:               item.Pattern,
+			PrintedContent:        item.PrintedContent,
+			HasReference:          item.HasReference,
+			Quantity:              item.Quantity,
+			Status:                item.Status,
+			CreatedAt:             item.CreatedAt,
+			UpdatedAt:             item.UpdatedAt,
 		})
 	}
 

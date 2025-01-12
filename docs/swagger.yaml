@@ -170,7 +170,7 @@ definitions:
     type: object
   dto.PriceRefResponse:
     properties:
-      category_id:
+      categoryId:
         description: Category id
         example: 1
         type: integer
@@ -210,6 +210,14 @@ definitions:
         description: Color (1,4)
         example: "1"
         type: string
+      configIds:
+        description: Quotation config id list
+        example:
+        - 1
+        - 2
+        items:
+          type: integer
+        type: array
       createdAt:
         description: Created date
         example: "2024-12-07T19:04:39.70268+07:00"
@@ -246,14 +254,6 @@ definitions:
         description: Product quantity
         example: 1000
         type: integer
-      quotationConfigId:
-        description: Quotation config id list
-        example:
-        - 1
-        - 2
-        items:
-          type: integer
-        type: array
       status:
         description: Production status
         example: PRINTING
@@ -344,6 +344,10 @@ definitions:
         description: Category key
         example: CUT_NINE
         type: string
+      color:
+        description: Color
+        example: "1"
+        type: string
       comparator:
         description: Comparator
         example: LESS_THAN
@@ -411,6 +415,14 @@ definitions:
         description: Color (1,4)
         example: "1"
         type: string
+      configIds:
+        description: Quotation config id list
+        example:
+        - 1
+        - 2
+        items:
+          type: integer
+        type: array
       gram:
         description: Notebook grams (40-150)
         example: 40
@@ -451,14 +463,6 @@ definitions:
         example: 1000
         minimum: 1
         type: integer
-      quotationConfigId:
-        description: Quotation config id list
-        example:
-        - 1
-        - 2
-        items:
-          type: integer
-        type: array
     required:
     - categoryId
     - color
