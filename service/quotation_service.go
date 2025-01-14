@@ -330,16 +330,17 @@ func (s *quotationService) UpdateQuotation(id uint, input dto.UpdateQuotation) (
 				input.Items[i].Plate, quotation.Items[j].Plate = request.Plate, request.Plate
 				input.Items[i].Price, quotation.Items[j].Price = request.Price, request.Price
 				productionItem = append(productionItem, model.ProductionItem{
-					CategoryID:     item.CategoryID,
-					Plate:          *request.Plate,
-					Gram:           item.Gram,
-					Color:          item.Color,
-					Page:           item.Page,
-					Pattern:        item.Pattern,
-					PrintedContent: item.PrintedContent,
-					HasReference:   item.HasReference,
-					Quantity:       item.Quantity,
-					Status:         P_STAT_DESIGNING,
+					CategoryID:            item.CategoryID,
+					Plate:                 *request.Plate,
+					Gram:                  item.Gram,
+					Color:                 item.Color,
+					Page:                  item.Page,
+					Pattern:               item.Pattern,
+					PrintedContent:        item.PrintedContent,
+					HasReference:          item.HasReference,
+					ListQuotationConfigID: item.ListQuotationConfigID,
+					Quantity:              item.Quantity,
+					Status:                P_STAT_DESIGNING,
 				})
 			}
 		}
