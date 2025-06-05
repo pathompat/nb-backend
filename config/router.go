@@ -107,12 +107,13 @@ func authMiddleware(apiKey string) gin.HandlerFunc {
 			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrMissingToken)
 			return
 		}
-		splitToken := strings.Split(authorization, "Bearer ")
-		tokenString := splitToken[1]
-		if len(splitToken) < 2 {
+
+		parts := strings.SplitN(authorization, "Bearer ", 2)
+		if len(parts) < 2 || strings.TrimSpace(parts[1]) == "" {
 			helper.ErrorResponse(c, http.StatusUnauthorized, helper.ErrMissingToken)
 			return
 		}
+		tokenString := strings.TrimSpace(parts[1])
 
 		// Parse the token
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
